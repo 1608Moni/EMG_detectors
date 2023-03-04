@@ -1,0 +1,25 @@
+clc
+clear all
+close all
+
+Outdir     = 'costfunction\';
+
+datafile   = strcat('NewaallSNRplot_laplacian_step','.mat');
+datafile   = string(datafile);
+outputfile = Outdir + datafile;
+
+output =  load(outputfile);
+
+%% rearrange the matrix
+% A = [output.cost{1};output.cost{2};output.cost{3};output.cost{4};...
+%     output.cost{5};output.cost{6};output.cost{7};output.cost{8};output.cost{9};output.cost{10};output.cost{11};output.cost{12}];
+
+for i = 1:12
+A = output.cost{i};
+
+A_snr0 
+
+end
+
+
+h

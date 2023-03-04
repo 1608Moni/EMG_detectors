@@ -1,0 +1,8 @@
+clc 
+clear all
+close all
+
+for i = 1:5
+A( = {rand(100,4),  rand(20,4)*.8,  rand(1000,4)+.2};
+boxplotGroup(x)
+title('boxplotGroup(x)','FontName','FixedWidth')
