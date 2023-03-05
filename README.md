@@ -13,6 +13,6 @@
  
  To compute the cost - use [Computecost.m](https://github.com/1608Moni/EMG_detectors/blob/main/detectors_review_paper/ComputingCost.m)
  
- To visualise the compairson boxplot use [Results]()
+ To visualise the compairson boxplot use [Results](https://github.com/1608Moni/EMG_detectors/blob/main/detectors_review_paper/Results.m)
  
 
