@@ -14,11 +14,11 @@ datadir         = '..\data\';
 addpath('..\library\');
 mode   = "Train";
 method = "Pmove";
-Model  = ["gaussian","laplacian"];
-SNR    = ["0","-3"];
+Model  = ["gaussian"];
+SNR    = ["-3"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["hodges1","hodges2","AGLRstep1","AGLRstep2","FuzzyEnt","bonato","TKEO","lidierth1","lidierth2"];
+Detectors =["hodges1","hodges2","AGLRstep1","AGLRstep2","bonato","TKEO","lidierth1","lidierth2"];
 
 %% Run through all model and all SNRs
 for k = 1:length(Model)

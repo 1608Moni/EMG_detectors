@@ -42,7 +42,7 @@ emg.param = emg_param;
      emg.Probmove = ProbMove;
      emg.Groundtruth =  Groundtruth;
      emg.method = "Pmove";
-     emg.mode   = "Test";
+     emg.mode   = "Train";
      field      = strcat(char(emg.method),char(emg.mode),'SNR',num2str(round(emg_param.SNRs(i))),...
                   'trail',num2str(emg_param.notrials),...
                   'dur',num2str(emg_param.dur),emg_param.type);
