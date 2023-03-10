@@ -24,24 +24,29 @@ emg.param = emg_param;
 
 
  for i = 1:n
-    [D, Dyn_variance] = generating_signal(emg_param);
-    data(:,:,i) = D;
+    [Output] = generating_signal(emg_param);
+    data(:,:,i) = Output.data;
+    Dyn_variance(:,:,i) = Output.DynVariance;
+    ProbMove(i) = Output.Pmove;
+    Groundtruth(i,:) = Output.groundtruth;
  end
  
- data = permute(data,[3,2,1]);  % matrix with dimension: n x C x R
- 
+ data = permute(data,[3,2,1]);                      % matrix with dimension: n x C x R
+ Dyn_variance = permute(Dyn_variance,[3,2,1]); 
  
 %% Save the data file along with parameters
  for i = 1:length(emg_param.SNRs)
      emg.data   = data(:,:,i);
      emg.SNR    = emg_param.SNRs(i);
-     emg.dynVar = Dyn_variance(i,:);               % regenerate the same test data
-     emg.type   = "testdata";
-     field      = strcat('SNR',num2str(round(emg_param.SNRs(i))),...
+     emg.dynVar = Dyn_variance(:,:,i);               % regenerate the same test data
+     emg.Probmove = ProbMove;
+     emg.Groundtruth =  Groundtruth;
+     emg.method = "Pmove";
+     emg.mode   = "Test";
+     field      = strcat(char(emg.method),char(emg.mode),'SNR',num2str(round(emg_param.SNRs(i))),...
                   'trail',num2str(emg_param.notrials),...
                   'dur',num2str(emg_param.dur),emg_param.type);
-
-     name       = fullfile(datadir, strcat('TestEMGData',field));
+     name       = fullfile(datadir, strcat(field));
      save(name,'-struct','emg')
  end
 

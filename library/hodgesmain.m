@@ -32,6 +32,7 @@ processSaveflag = 0;
         params.combo{j}
         for i= 1:N
             % Hodeges Detector
+%              figure(200*i); plot(EMG.Groundtruth(i,:),'LineWidth',1.25)
             if choice == '1'
                 hodgesOutput = hodges(x(i,:), params.combo{j}, params, EMG.param);
             elseif choice == '2'
@@ -51,7 +52,7 @@ processSaveflag = 0;
             disp('Internal variable saved')
             %% Save output for each trail and each parameter combination in .mat
             %file
-            field      = strcat(EMG.mode,detectors(str2num(choice)),'trail',num2str(i),...
+            field      = strcat(EMG.method,EMG.mode,detectors(str2num(choice)),'trail',num2str(i),...
                         'paramcombo',num2str(j),EMG.param.type,'SNR',num2str(round(EMG.SNR)));
             pathname   = fileparts(processdir);
             name       = fullfile(pathname, strcat('Output',field));

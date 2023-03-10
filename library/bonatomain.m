@@ -63,7 +63,7 @@ plotflag        = 'N';
          end
          if plotflag ~= "Y" 
          pathname   = fileparts(outdir);
-         name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+         name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
          save(name,'-struct','BonatoOp','-v7.3')   
          end
 end

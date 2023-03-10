@@ -23,11 +23,11 @@ hold on
 plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
 hold on
 yline(Output.thresh,'r--')
-hold on
-xline(Output.t0cap,'r','LineWidth',1)
-hold on
-xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{rect}','emg_{lpf}','testfunc','binop','thrshold','Onset_{est}','Onset_{act}')
+% hold on
+% xline(Output.t0cap,'r','LineWidth',1)
+% hold on
+% xline(Output.dataparams.t0,'g','LineWidth',1)
+legend('emg_{rect}','emg_{lpf}','testfunc','binop','thrshold')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)

@@ -65,7 +65,7 @@ plotflag        = 'N';%input(prompt,'s');
         end
         if plotflag ~= "Y" 
          pathname   = fileparts(outdir);
-         name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+         name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
          save(name,'-struct','TKEOOp','-v7.3') 
         end
 end

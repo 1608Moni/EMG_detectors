@@ -21,7 +21,7 @@ plotflag        = 'N';%input(prompt,'s');
     for j = 1:numel(params.combo)
         params.combo{j}
         for i= 1:N
-            % Hodeges Detector
+            % RMS Detector
             detectorOutput   = EMGdetector(x(i,:), params.combo{j}, params, EMG.param);
                                        
             % plot the intermediate steps to verify
@@ -57,7 +57,7 @@ plotflag        = 'N';%input(prompt,'s');
         detectorOp.params     = params;
         detectorOp.dataparams = detectorOutput.dataparams;
         detectorOp.dataparams.SNR  = EMG.SNR;
-         detectorOp.dataparams.mode = EMG.mode;
+        detectorOp.dataparams.mode = EMG.mode;
 % 
         if EMG.param.type == "gaussian" || EMG.param.type == "laplacian" 
             field      = strcat('Detector2018','trail',num2str(N),...
@@ -70,7 +70,7 @@ plotflag        = 'N';%input(prompt,'s');
         end
         if plotflag ~= "Y" 
         pathname   = fileparts(outdir);
-        name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
         %%to save the parameter as in the paper
         %name       = fullfile(pathname, strcat('Param2',EMG.mode,'Output',field));
         save(name,'-struct','detectorOp','-v7.3')               

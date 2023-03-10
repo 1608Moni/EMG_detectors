@@ -38,8 +38,6 @@ plotflag        = 'N';
             %% Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)    = AGLRstepOutput.binop;
             t0cap(i)      = AGLRstepOutput.t0cap;
-            testfunc(i,:) = AGLRstepOutput.testfunc;
-
             %% Save output for each trail and each parameter combination in .mat
 %             field      = strcat(detectors(str2num(choice)),'trail',num2str(i),...
 %                         'paramcombo',num2str(j),EMG.param.type,'SNR',num2str(round(EMG.SNR)),'force',num2str((EMG.force)));
@@ -72,7 +70,7 @@ plotflag        = 'N';
      end
      if plotflag ~= "Y" 
         pathname   = fileparts(outdir);
-        name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
         save(name,'-struct','AGLRstepOp','-v7.3') 
      end
 end

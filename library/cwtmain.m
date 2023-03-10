@@ -51,7 +51,6 @@ plotflag        = 'N';%input(prompt,'s');
         CWTOp.binop      = Binaryop;
         CWTOp.t0cap      = Onset;
         CWTOp.params     = params;
-        CWTOp.Testfunc   = Testfunc;
         CWTOp.dataparams = cwtOutput.dataparams;
         CWTOp.dataparams.SNR  = EMG.SNR;
         CWTOp.dataparams.mode = EMG.mode;
@@ -67,7 +66,7 @@ plotflag        = 'N';%input(prompt,'s');
          end
          if plotflag ~= "Y" 
          pathname   = fileparts(outdir);
-         name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+         name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
          save(name,'-struct','CWTOp','-v7.3') 
          end
 end

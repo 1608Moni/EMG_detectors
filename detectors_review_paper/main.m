@@ -12,20 +12,20 @@ close all;
 
 datadir         = '..\data\';
 addpath('..\library\');
-mode   = "Test";
-Model  = ["gaussian","laplacian","biophy"];
+mode   = "Train";
+method = "Pmove";
+Model  = ["gaussian","laplacian"];
 SNR    = ["0","-3"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["Detector2018","hodges1","hodges2","lidierth1","lidierth2",...
-    "AGLRstep1","AGLRstep2","FuzzyEnt","SampEnt","bonato","TKEO","SSA","CWT"];
+Detectors =["hodges1","hodges2","AGLRstep1","AGLRstep2","FuzzyEnt","bonato","TKEO","lidierth1","lidierth2"];
 
 %% Run through all model and all SNRs
 for k = 1:length(Model)
     for l = 1:length(SNR)       
-        datafile = strcat("EMGDataSNR",SNR(l),"trail",num2str(trial),"dur",num2str(dur),Model(k));
+        datafile = strcat(method,mode,"SNR",SNR(l),"trail",num2str(trial),"dur",num2str(dur),Model(k));
         if mode == "Test"
-            datafile = strcat("Test",datafile);
+%             datafile = strcat("Test",datafile);
             disp("Running the validation set")
         end
         %% Read the data file and carryout analysis.
