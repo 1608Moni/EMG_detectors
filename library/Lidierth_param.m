@@ -21,8 +21,8 @@ if mode == "Test"
     params.T1      = optparams.param(4);
 else
 params.Wsize  = 0.1:0.1:0.5;     % Moving avg window 
-params.weight = 1:5;             % multiplier for threshold 
-params.T2     = 5:5:95;          % window to check if atleast 1 crosses
+params.weight = 1:3;             % multiplier for threshold 
+params.T2     = 5:10:95;          % window to check if atleast 1 crosses
 params.T1     = [30,60,100];     % Condition for period of active state[50,60,70,80,90,100];               % atleast 1 out of a window cross threshold
 end
 %% 

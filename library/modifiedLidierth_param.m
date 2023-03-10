@@ -22,8 +22,8 @@ if mode == "Test"
     params.T1     = optparams.param(4);
 else
 params.fc     = 1.5:2:10;             % LPF cutoff frequency
-params.weight = 1:5;                  % multiplier for threshold 
-params.T2     = 5:5:95;               % window to check if atleast 1 crosses
+params.weight = 1:3;                  % multiplier for threshold 
+params.T2     = 5:10:95;               % window to check if atleast 1 crosses
 params.T1     = [30,60,100];          %Condition for period of active state
 end
 

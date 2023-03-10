@@ -19,7 +19,7 @@ datafile = strcat(type,detector,num2str(round(SNR)),'.mat');
     
 else
 params.weight = 1:5;               % multiplier for threshold 
-params.T2     = 5:5:95;            % window to check if atleast 1 crosses
+params.T2     = 5:10:95;            % window to check if atleast 1 crosses
 params.T1     = [30,60,100];       % duration of active state 
 end
 %% Different combination of parameters in a array
