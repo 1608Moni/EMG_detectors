@@ -1,4 +1,4 @@
-function plotfunc(Output,j,detector)
+function plotfunc(Output,j,detector,groundtruth)
 %% Function to plot internal variables of the detector
 
 %% Initialise parameters
@@ -51,38 +51,42 @@ title(detector)
 end
 
 if detector == "modifiedhodges" || detector == "modifiedLidierth"
-plot(t,Output.emgrect,'Color', [0.8 0.85 1]);
-hold on
-plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
-hold on
-plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
-hold on
-yline(Output.h,'r--')
-hold on
-xline(Output.t0cap,'r','LineWidth',1)
-hold on
-xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{rect}','emg_{lpf}','binop','thrshold','Onset_{est}','Onset_{act}')
-xlabel('Time (sec)')
-ylabel('Amplitude')
-title(detector)
-
- if detector == "modifiedLidierth"
+if detector == "modifiedLidierth"
         figure
         subplot(3,1,1)
-        plot(t,Output.testfunc,'m','LineWidth',1.5)
+        plot(t,Output.emglpf,'m','LineWidth',1.5)
         hold on
         stairs(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
         hold on
         yline(Output.h,'r--')
-        legend('testfunc','binop','threshold')
+        hold on
+        yline(Output.mean_baseline,'b')
+        hold on
+        yline(Output.mean_baseline+Output.stdv_baseline )
+        legend('testfunc','binop','threshold','mean','stdv')
         subplot(3,1,2)
         plot(t,Output.bin1,'Color', [0 0 0], 'LineWidth',1)
         ylim([-0.1 1.1])
         subplot(3,1,3)
         plot(t,Output.bin2,'Color', [0 0 0], 'LineWidth',1)
         ylim([-0.1 1.1])
-    end
+else
+    
+plot(t,Output.emgrect,'Color', [0.8 0.85 1]);
+hold on
+plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
+hold on
+plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
+hold on
+plot(t,groundtruth,'Color','r','LineWidth',1)
+hold on
+yline(Output.h,'r--')
+legend('emg_{rect}','emg_{lpf}','binop','groundtruth','thrshold')
+xlabel('Time (sec)')
+ylabel('Amplitude')
+title(detector)
+
+end
 end
 
 if detector == "AGLRstep" || detector == "AGLRstepLaplace"
@@ -237,5 +241,6 @@ if detector == "Detector2018"
 
 
 end
-
+pause(2)
+close all
 end

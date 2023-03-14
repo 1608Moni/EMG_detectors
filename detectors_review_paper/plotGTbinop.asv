@@ -1,0 +1,7 @@
+clc
+clear all
+close all
+
+data = laod('C:\Users\Monisha\Desktop\EMG detectors\data\PmoveTrainSNR0trail50dur13biophy.mat');
+output = load('C:\Users\Monisha\Desktop\EMG detectors\detectors_review_paper\output\Test\PmoveTestOutputmodifiedhodgestrail50BioPhydur13SNR0force300.mat');
+

@@ -49,7 +49,7 @@ end
 AGLRstepOutput.signcond   = y;
 AGLRstepOutput.testfunc   = S;
 AGLRstepOutput.binop      = binop;
-AGLRstepOutput.t0cap      = t0cap;
+AGLRstepOutput.t0cap      = NaN;
 AGLRstepOutput.paramcombo = variable;
 AGLRstepOutput.h          = h; 
 AGLRstepOutput.mean_baseline  = mean_baseline;

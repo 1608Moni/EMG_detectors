@@ -9,7 +9,7 @@ params          = struct();
 params.M        = 3000;           % Window to compute baseline (ms)
 params.tB       = 3000;           % start of relax phase to test (ms)
 if mode == "Test"
-    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

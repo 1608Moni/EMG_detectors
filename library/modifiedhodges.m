@@ -48,7 +48,7 @@ end
 hodgesOutput.emgrect    = EMG_rect;
 hodgesOutput.testfunc     = EMG_lpf;
 hodgesOutput.binop      = binop;
-hodgesOutput.t0cap      = t0cap;
+hodgesOutput.t0cap      = NaN;
 hodgesOutput.paramcombo = variable;
 hodgesOutput.h  = h;
 hodgesOutput.mean_baseline  = mean_baseline;

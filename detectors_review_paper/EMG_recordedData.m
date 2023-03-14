@@ -158,10 +158,11 @@ end
  emg.param.dur      = 13;
  emg.param.notrials = 50;
  emg.param.type     = "BioPhy";
+ emg.method         = "Pmove";
+ emg.mode           = "Train";
 
- field = strcat('SNR',num2str(emg.SNR),'trail',num2str(emg.param.notrials),'force',num2str(emg.force));
- pathname = fileparts(savedir);
- name = fullfile(pathname, strcat('ModifiedTestdataNoiseEMG',field));
-
- save(name,'-struct','emg')
-
+ field      = strcat(char(emg.method),char(emg.mode),'SNR',num2str(round(emg.SNR)),...
+                  'trail',num2str(emg.param.notrials),...
+                  'dur',num2str(emg.param.dur),emg.param.type);
+     name       = fullfile(datadir, strcat(field));
+     save(name,'-struct','emg')

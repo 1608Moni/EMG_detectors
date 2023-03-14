@@ -41,7 +41,7 @@ processSaveflag = 0;
                     
             % plot the intermediate steps to verify
             if plotflag == "Y"
-                plotfunc(hodgesOutput,j,string(detectors{str2num(choice)}));
+                plotfunc(hodgesOutput,i,string(detectors{str2num(choice)}),EMG.groundtruth(i,:));
             end
             
             % Save binary o/p and estimated onset seperately for further analysis
@@ -86,7 +86,7 @@ processSaveflag = 0;
         end
         if plotflag ~= "Y"
             pathname   = fileparts(outdir);
-            name       = fullfile(pathname, strcat(EMG.mode,'Output',field));
+            name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
             save(name,'-struct','hodgesOp','-v7.3')    
             disp('filesaved')
         end

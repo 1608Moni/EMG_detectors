@@ -10,7 +10,7 @@ params.M      = 3000;             % wnidow to compute the baseline thrshold
 params.tB     = 3000;             % start of relax phase to test (ms)
 params.n      = 1; 
 if mode == "Test"
-    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

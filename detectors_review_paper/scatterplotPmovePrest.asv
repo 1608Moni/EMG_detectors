@@ -1,0 +1,12 @@
+function[]=scatterplotPmovePrest(q,a,prest1,pmove1,name)
+
+figure
+su
+scatter(prest1(q,:),pmove1(q,:))
+xlabel('P_d (rest)')
+ylabel('P_d (move)')
+xlim([0 1])
+ylim([0 1])
+title(name,'Interpreter','none')
+
+end

@@ -61,7 +61,7 @@ end
 %% Save internal variables in a struct
 fuzzEntOutput.testfunc   = fuzzen;
 fuzzEntOutput.binop      = binop;
-fuzzEntOutput.t0cap      = t0cap;
+fuzzEntOutput.t0cap      = NaN;
 fuzzEntOutput.paramcombo = variable;
 fuzzEntOutput.h          = h; 
 fuzzEntOutput.mean_baseline  = mean_baseline;

@@ -14,12 +14,12 @@ datadir         = '..\data\';
 addpath('..\library\');
 mode   = "Train";
 method = "Pmove";
-Model  = ["gaussian"];
-SNR    = ["-3"];
+Model  = ["biophy"];
+SNR    = ["0"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["hodges1","hodges2","AGLRstep1","AGLRstep2","bonato","TKEO","lidierth1","lidierth2"];
-
+Detectors =["hodges2"];%,"Detector2018","lidierth1","bonato",...
+    %"AGLRstep1","AGLRstep2","lidierth2","FuzzyEnt","TKEO","hodges1","hodges2"];
 %% Run through all model and all SNRs
 for k = 1:length(Model)
     for l = 1:length(SNR)       
