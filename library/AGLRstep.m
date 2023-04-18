@@ -37,11 +37,13 @@ for i = 1:length(t)
 end
 
 %% If the decision rule not satisfied
-if isempty(binop(binop>0)) == 1
-    t0cap = NaN;
+if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end) > 0 )) == 1
+    t0capon = NaN;
+    t0capoff = NaN;
     disp('Onset not found')
 else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capon = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capoff = t(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur-1 + min(find(binop(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur:end) == 0)));
 end
 
 
@@ -49,7 +51,8 @@ end
 AGLRstepOutput.signcond   = y;
 AGLRstepOutput.testfunc   = S;
 AGLRstepOutput.binop      = binop;
-AGLRstepOutput.t0cap      = t0cap;
+AGLRstepOutput.t0capon    = t0capon;
+AGLRstepOutput.t0capoff   = t0capoff;
 AGLRstepOutput.paramcombo = variable;
 AGLRstepOutput.h          = h; 
 AGLRstepOutput.mean_baseline  = mean_baseline;

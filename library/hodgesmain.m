@@ -9,7 +9,7 @@ detectors       = {'hodges','modifiedhodges'};
 
 %% Define parameters for the hodges detector
 addpath('..\detectors_review_paper\')
-outdir          = strcat('output\',EMG.mode,'\');
+outdir          = strcat('output\');
 mkdir(strcat('process\',EMG.mode,'\'));
 processdir      = strcat('process\',EMG.mode,'\');
 if choice == '1'
@@ -24,7 +24,7 @@ hodgesOp        = struct();
 % prompt          = 'Save output enter 1 else 0: ';
 % saveflag        = input(prompt,'s');
 plotflag        = 'N';  
-processSaveflag = 0;
+processSaveflag = 1;
 
  
 %% Run the detectors for different parameter combination over N trails 
@@ -45,7 +45,8 @@ processSaveflag = 0;
             
             % Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)    = hodgesOutput.binop;
-            t0cap(i)      = hodgesOutput.t0cap;
+            t0capon(i)      = hodgesOutput.t0capon;
+            t0capoff(i)      = hodgesOutput.t0capoff;
 
             if processSaveflag == 1
             disp('Internal variable saved')
@@ -61,12 +62,14 @@ processSaveflag = 0;
         end
     %% Save the output alone without internal variables to analyse.
         Binaryop{j} = binop;
-        Onset{j}    = t0cap;       
+        Onset{j}    =  t0capon;  
+        Offset{j}   = t0capoff;
     end   
     
     %% Saving the output for all parameter combination and all trails in a mat file
         hodgesOp.binop      = Binaryop;
-        hodgesOp.t0cap      = Onset;
+        hodgesOp.t0capON    = Onset;
+        hodgesOp.t0capOFF   = Offset;
         hodgesOp.params     = params;
         hodgesOp.dataparams = hodgesOutput.dataparams;
         hodgesOp.dataparams.SNR  = EMG.SNR;

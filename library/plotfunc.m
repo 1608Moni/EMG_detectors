@@ -59,10 +59,12 @@ plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
 hold on
 yline(Output.h,'r--')
 hold on
-xline(Output.t0cap,'r','LineWidth',1)
+xline(Output.t0capon,'r','LineWidth',1)
+hold on
+xline(Output.t0capoff,'m','LineWidth',1)
 hold on
 xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{rect}','emg_{lpf}','binop','thrshold','Onset_{est}','Onset_{act}')
+legend('emg_{rect}','emg_{lpf}','binop','thrshold','Ton_{est}','Toff_{est}','Onset_{act}')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
@@ -94,10 +96,12 @@ plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
 hold on
 yline(Output.h,'r--')
 hold on
-xline(Output.t0cap,'r','LineWidth',1)
+xline(Output.t0capon,'r','LineWidth',1)
+hold on
+xline(Output.t0capoff,'m','LineWidth',1)
 hold on
 xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{whitened}','testfunc','binop','thrshold','Onset_{est}','Onset_{act}')
+legend('emg_{whitened}','testfunc','binop','thrshold','Onset_{est}','Offset','Onset_{act}')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
@@ -112,11 +116,13 @@ yline(Output.h,'r--')
 subplot(2,1,2)
 plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',0.5)
 hold on
-xline(Output.t0cap,'r','LineWidth',1)
+xline(Output.t0capon,'r','LineWidth',1)
+hold on
+xline(Output.t0capoff,'m','LineWidth',1)
 ylim([-0.1 1.1])
 hold on
 xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('testfunc','binop','thrshold','Onset_{est}','Onset_{act}')
+legend('testfunc','binop','thrshold','Onset_{est}','Offset','Onset_{act}')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)

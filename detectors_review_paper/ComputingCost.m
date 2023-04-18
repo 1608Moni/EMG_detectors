@@ -5,20 +5,20 @@ clear all
 close all
 
 %% Defining parameters in the script
-mode       = "Train";                                   % 1. Test :  To compare the detectors ,  2. Train : To identify the best parameter 
+mode       = "Pulse500Train";                                   % 1. Test :  To compare the detectors ,  2. Train : To identify the best parameter 
 opt        = "Cuboid";
 Optparamsdir  = 'Optparams\cuboid\';                    
-Outdir     = strcat('output\',mode,'\');
+Outdir     = strcat('output\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
-type       = {'gaussian','laplacian','biophy'};
-algoname   = {'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+type       = {'biophy'};
+algoname   = {'modifiedhodges'};%,'AGLRstep','AGLRstepLaplace'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
-SNRdB      = [0,-3];           % Testing for 2 different SNR 0 dB and -3 dB
+SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
-saveflag   = 0;                % 1 to enable saving the files
+saveflag   = 1;                % 1 to enable saving the files
 
 
 %% Go through the datafiles and compute the cost function
@@ -53,7 +53,7 @@ for k = 1:length(type)
                Cost_SNRneg3(:,a) = P(:,i); 
             end
         
-            if mode == "Train"
+            if mode == "Pulse500Train"
              %% save the optimum paramters for each detector in .mat file
                 pathname   = fileparts(Optparamsdir);
                 name = fullfile(pathname,strcat(type{k},algoname{a},num2str(SNRdB(i)),'.mat'));
@@ -62,7 +62,7 @@ for k = 1:length(type)
                 end
             end
     
-            if mode == "Test"
+            if mode == "Pulse500Test"
                 pathname       = fileparts(savedir);
                 text           = strcat('Optcost',char(mode),type(k),algoname{a},'SNR',num2str(SNRdB(i)));    
                 name           = fullfile(pathname, text{1});

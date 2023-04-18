@@ -5,7 +5,7 @@ function AGLRstepmain(EMG,choice)
 detectors       = {'AGLRstep','AGLRstepLaplace'};
 %% Define parameters for the detector
 addpath('..\detectors_review_paper\')
-outdir          = strcat('output\',EMG.mode,'\');
+outdir          = strcat('output\');
 processdir      = strcat('process\',EMG.mode,'\');
 if choice == '1'
     params = AGLRstep_params(EMG.mode,EMG.param.type,EMG.SNR,detectors{str2num(choice)});
@@ -37,8 +37,8 @@ plotflag        = 'N';
          
             %% Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)    = AGLRstepOutput.binop;
-            t0cap(i)      = AGLRstepOutput.t0cap;
-            testfunc(i,:) = AGLRstepOutput.testfunc;
+            t0capon(i)    = AGLRstepOutput.t0capon;
+            t0capoff(i)   = AGLRstepOutput.t0capoff;
 
             %% Save output for each trail and each parameter combination in .mat
 %             field      = strcat(detectors(str2num(choice)),'trail',num2str(i),...
@@ -50,12 +50,14 @@ plotflag        = 'N';
         end              
         %% Save the output alone without internal variables to analyse.
         Binaryop{j} = binop;
-        Onset{j}    = t0cap;    
+        Onset{j}    =  t0capon;  
+        Offset{j}   = t0capoff;
     end
     
     %% Format and save as mat file for all combination all trials
      AGLRstepOp.binop      = Binaryop;
-     AGLRstepOp.t0cap      = Onset;
+     AGLRstepOp.t0capON    = Onset;
+     AGLRstepOp.t0capOFF   = Offset;
      AGLRstepOp.params     = params;
      AGLRstepOp.dataparams = AGLRstepOutput.dataparams;
      AGLRstepOp.dataparams.SNR  = EMG.SNR;

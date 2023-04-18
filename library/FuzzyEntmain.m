@@ -4,8 +4,8 @@ function FuzzyEntmain(EMG,detector)
 
 %% Define parameters for the detector
 
-outdir          = strcat('output\',EMG.mode,'\');
-processdir      = strcat('process\',EMG.mode,'\');
+outdir          = strcat('output\');
+processdir      = strcat('process\');
 addpath('..\detectors_review_paper\')
 params          = FuzzEntparams(EMG.mode,EMG.param.type,EMG.SNR,detector);
 N               = EMG.param.notrials;
@@ -31,7 +31,8 @@ plotflag        = 'N';%input(prompt,'s');
          
             % Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)   = FuzzEntOutput.binop;
-            t0cap(i)     = FuzzEntOutput.t0cap;
+            t0capon(i)   = FuzzEntOutput.t0capon;
+            t0capoff(i)   = FuzzEntOutput.t0capoff;
 
             % Save output for each trail and each parameter combination in .mat
             %file
@@ -45,12 +46,14 @@ plotflag        = 'N';%input(prompt,'s');
  
         %% Save the output alone without internal variables to analyse.
         Binaryop{j} = binop;
-        Onset{j}    = t0cap;                 
+        Onset{j}    = t0capon;  
+        Offset{j}   = t0capoff;
      end   
     
     %% format
         fuzzEntOp.binop      = Binaryop;
-        fuzzEntOp.t0cap      = Onset;
+        fuzzEntOp.t0capON    = Onset;
+        fuzzEntOp.t0capOFF   = Offset;
         fuzzEntOp.params     = params;
         fuzzEntOp.dataparams = FuzzEntOutput.dataparams;
         fuzzEntOp.dataparams.SNR  = EMG.SNR;

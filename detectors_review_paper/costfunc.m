@@ -5,9 +5,10 @@ function [CFoutput] = costfunc(output,algoname,type)
 % Output : Cost function distribution of all trials and Optimum index (kopt)
 
 %% Initialise parameters
-      datadir            = '..\data\data\';
+      datadir            = '..\data\';
       fs                 = output.dataparams.fs;
       t0                 = (output.dataparams.t0*output.dataparams.fs);      % Actual Onset time
+      tdur               = output.dataparams.pulsedur;
       params             = output.params.combo;
       No_of_combo_params = numel(params); 
       Ntrial             = output.dataparams.notrials;
@@ -26,9 +27,9 @@ function [CFoutput] = costfunc(output,algoname,type)
       elseif type == "biophy"
         if output.dataparams.mode == "Test" 
             datafile   =  strcat(char(output.dataparams.mode),...
-                'EMGDataSNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));  
+                'SNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));  
         else
-           datafile   =  strcat('EMGDataSNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));
+           datafile   =  strcat(char(output.dataparams.mode),'SNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));
         end
         GTfile     = datadir + string(datafile);
         data       = load(GTfile);
@@ -38,7 +39,12 @@ function [CFoutput] = costfunc(output,algoname,type)
 %%    %For each parameter combination compute cost function      
         for q = 1:No_of_combo_params      
             binop    =  output.binop{q};
-            t0cap    =  output.t0cap{q};
+            t0capon    =  output.t0capON{q};
+            t0capoff    =  output.t0capOFF{q};
+            
+            %% Plot the binary output
+            binavg = sum(binop,1)/Ntrial;
+            plot(binavg);
 %% To Obtain the Wshift to generalise time samples  for computing the factor
             if string(algoname) == "Detector2018" 
                 params = output.params.combo{q};              
@@ -55,11 +61,14 @@ function [CFoutput] = costfunc(output,algoname,type)
             end
             %% Compute cost function for N = 50 trails for each parameter combination
             for p = 1:Ntrial
-                    binary1 = binop(p,:);
-                    t0cap1   = t0cap(p);                                  
+                    binary1    = binop(p,:);
+                    t0capon1   = t0capon(p);  
+                    t0capoff1  = t0capoff(p);
+%                     stairs(binary1);
+%                     ylim([-0.1 1.1])
                 [CF(q,p),...
-                Latency(q,p),f_delT(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0cap1...
-                                                              ,groundtruth(p,:),t0,tB,fs,Wshift);                 
+                Latency(q,p),f_delT(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0capon1,t0capoff1...
+                                                              ,groundtruth,t0,tB,fs,Wshift,tdur);                 
             end   
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination

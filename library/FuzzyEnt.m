@@ -51,17 +51,20 @@ end
 
 %% If the decision rule not satisfied
 if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
-    t0cap = NaN;
+    t0capon = NaN;
+    t0capoff = NaN;
     disp('Onset not found')
 else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capon = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capoff = t(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur-1 + min(find(binop(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur:end) == 0)));
 end
 
 
 %% Save internal variables in a struct
 fuzzEntOutput.testfunc   = fuzzen;
 fuzzEntOutput.binop      = binop;
-fuzzEntOutput.t0cap      = t0cap;
+fuzzEntOutput.t0capon    = t0capon;
+fuzzEntOutput.t0capoff   = t0capoff;
 fuzzEntOutput.paramcombo = variable;
 fuzzEntOutput.h          = h; 
 fuzzEntOutput.mean_baseline  = mean_baseline;

@@ -12,18 +12,18 @@ close all;
 
 datadir         = '..\data\';
 addpath('..\library\');
-mode   = "Test";
-Model  = ["gaussian","laplacian","biophy"];
-SNR    = ["0","-3"];
+mode   = "Pulse500Train";
+Model  = ["biophy"];
+SNR    = ["0"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["Detector2018","hodges1","hodges2","lidierth1","lidierth2",...
-    "AGLRstep1","AGLRstep2","FuzzyEnt","SampEnt","bonato","TKEO","SSA","CWT"];
+Detectors =["FuzzyEnt"];%"Detector2018","hodge,"lidierth1","lidierth2",...
+    %"AGLRstep1","AGLRstep2","FuzzyEnt","SampEnt","bonato","TKEO","SSA","CWT"];
 
 %% Run through all model and all SNRs
 for k = 1:length(Model)
     for l = 1:length(SNR)       
-        datafile = strcat("EMGDataSNR",SNR(l),"trail",num2str(trial),"dur",num2str(dur),Model(k));
+        datafile = strcat(mode,"SNR",SNR(l),"trail",num2str(trial),"dur",num2str(dur),Model(k));
         if mode == "Test"
             datafile = strcat("Test",datafile);
             disp("Running the validation set")
@@ -32,6 +32,7 @@ for k = 1:length(Model)
         datafile = datadir + datafile;          % for each filename in the datafile array
         %% Load the generated EMG_data of the specific SNR
         EMG = load(datafile);
+        EMG.mode = mode;
         for j = 1:length(Detectors)
             detectors(EMG, Detectors(j))
         end       
