@@ -12,12 +12,12 @@ close all;
 
 datadir         = '..\data\';
 addpath('..\library\');
-mode   = "Pulse500Train";
+mode   = "Pulse500Test";
 Model  = ["biophy"];
 SNR    = ["0"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["FuzzyEnt"];%"Detector2018","hodge,"lidierth1","lidierth2",...
+Detectors =["hodges2","AGLRstep1","AGLRstep2","FuzzyEnt"];%"Detector2018","hodge,"lidierth1","lidierth2",...
     %"AGLRstep1","AGLRstep2","FuzzyEnt","SampEnt","bonato","TKEO","SSA","CWT"];
 
 %% Run through all model and all SNRs

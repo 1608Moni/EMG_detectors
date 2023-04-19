@@ -43,6 +43,7 @@ function [CFoutput] = costfunc(output,algoname,type)
             t0capoff    =  output.t0capOFF{q};
             
             %% Plot the binary output
+            figure
             binavg = sum(binop,1)/Ntrial;
             plot(binavg);
 %% To Obtain the Wshift to generalise time samples  for computing the factor

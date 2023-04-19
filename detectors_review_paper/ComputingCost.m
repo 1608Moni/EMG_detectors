@@ -9,10 +9,10 @@ mode       = "Pulse500Train";                                   % 1. Test :  To 
 opt        = "Cuboid";
 Optparamsdir  = 'Optparams\cuboid\';                    
 Outdir     = strcat('output\');
-savedir    = strcat('costfunction\',mode,'\',opt,'\');
+savedir    = strcat('costfunction\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges'};%,'AGLRstep','AGLRstepLaplace'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt'};%,'AGLRstep','AGLRstepLaplace'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -74,7 +74,12 @@ for k = 1:length(type)
         end 
         A{a}   = P;
     end
-    if mode == "Test"
+    
+    %%
+    figure
+    boxplot(Cost_SNR0);
+    
+    if mode == "Pulse500Test"
         %% Save the opt cost (Test data) and Plot the boxchart for the 2 different SNR and detectors
         Optcost{1} = Cost_SNR0;
         Optcost{2} = Cost_SNRneg3;

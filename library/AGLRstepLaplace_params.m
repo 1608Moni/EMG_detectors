@@ -4,13 +4,13 @@ function params = AGLRstepLaplace_params(mode,type,SNR,detector)
 %
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\'; 
+Optdir          = '..\detectors_review_paper\Optparams\cuboid\'; 
 params        = struct;
 params.tB     = 3000;
 params.M      = 3000;
 
 %%
-if mode == "Test"
+if mode == "Pulse500Test"
     datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
