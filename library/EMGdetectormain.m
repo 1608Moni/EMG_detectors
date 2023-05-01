@@ -4,7 +4,7 @@ function EMGdetectormain(EMG,detector)
 
 
 %% Define parameters for the detector
-outdir          = strcat('output\',EMG.mode,'\');
+outdir          = strcat('output\');
 processdir      = strcat('process\',EMG.mode,'\');
 addpath('..\detectors_review_paper\')
 
@@ -14,7 +14,7 @@ detectorOp      = struct();
 params          = EMGdetector_param(EMG.mode,EMG.param.type,EMG.SNR,detector);
 % To enable plot function 
 %prompt          = 'Do you want to plot? Y/N [Y]: ';
-plotflag        = 'N';%input(prompt,'s');  
+plotflag        = 'Y';%input(prompt,'s');  
 % binop           = zeros(N,EMG.param.dur*EMG.param.fs);
  
 %% Run the detectors for different parameter combination over N trails 
@@ -31,8 +31,8 @@ plotflag        = 'N';%input(prompt,'s');
 %             
             % Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)   = detectorOutput.binop;
-            t0cap(i)     = detectorOutput.t0cap;
-% 
+            t0capon(i)     = detectorOutput.t0capon;
+            t0capoff(i)     = detectorOutput.t0capoff;
 % 
           %  Save output for each trail and each parameter combination in .mat
 %         
@@ -48,12 +48,16 @@ plotflag        = 'N';%input(prompt,'s');
 %        
         % Save the output alone without internal variables to analyse.
         Binaryop{j} = binop;
-        Onset{j}    = t0cap;
-        clear binop        
+        Onset{j}    = t0capon;
+        Offset{j}   = t0capoff;
+        clear binop
+        clear t0capon  
+        clear t0capoff 
     end
         
         detectorOp.binop      = Binaryop;
-        detectorOp.t0cap      = Onset;
+        detectorOp.t0capON    = Onset;
+        detectorOp.t0capOFF   = Offset;
         detectorOp.params     = params;
         detectorOp.dataparams = detectorOutput.dataparams;
         detectorOp.dataparams.SNR  = EMG.SNR;

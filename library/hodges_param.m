@@ -8,7 +8,7 @@ Optdir          = '..\detectors_review_paper\Optparams\';
 params          = struct();
 params.M        = 3000;           % Window to compute baseline (ms)
 params.tB       = 3000;           % start of relax phase to test (ms)
-if mode == "Test"
+if mode == "Pulse500Test"
     datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters

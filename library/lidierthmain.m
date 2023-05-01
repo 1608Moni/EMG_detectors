@@ -9,8 +9,8 @@ detectors       = {'lidierth','modifiedLidierth'};
 
 %% Define parameters for the hodges detector
 addpath('..\detectors_review_paper\')
-outdir          = strcat('output\',EMG.mode,'\');
-processdir      = strcat('process\',EMG.mode,'\');
+outdir          = strcat('output\');
+processdir      = strcat('process\');
 if choice == '1'
     params = Lidierth_param(EMG.mode,EMG.param.type,EMG.SNR,detectors{str2num(choice)});
 elseif choice == '2'
@@ -42,7 +42,8 @@ plotflag        = 'N';%input(prompt,'s');
          
             % Save binary o/p and estimated onset seperately for further analysis
             binop(i,:)   = lidierthOutput.binop;
-            t0cap(i)     = lidierthOutput.t0cap;
+            t0capon(i)   = lidierthOutput.t0capon;
+            t0capoff(i)  = lidierthOutput.t0capoff;
            
 
             % Save output for each trail and each parameter combination in .mat
@@ -57,12 +58,14 @@ plotflag        = 'N';%input(prompt,'s');
       
         %% Save the output alone without internal variables to analyse.
         Binaryop{j} = binop;
-        Onset{j}    = t0cap;
+        Onset{j}    = t0capon;
+        Offset{j}   = t0capoff;
                        
     end  
     %% format and save
         lidierthOp.binop      = Binaryop;
-        lidierthOp.t0cap      = Onset;
+        lidierthOp.t0capON    = Onset;
+        lidierthOp.t0capOFF   = Offset;
         lidierthOp.params     = params;
         lidierthOp.dataparams = lidierthOutput.dataparams;
         lidierthOp.dataparams.SNR  = EMG.SNR;

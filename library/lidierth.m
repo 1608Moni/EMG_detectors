@@ -58,10 +58,12 @@ end
 
 %% If the decision rule not satisfied
 if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
-    t0cap = NaN;
+       t0capon = NaN;
+    t0capoff = NaN;
     disp('Onset not found')
 else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capon = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+    t0capoff = t(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur-1 + min(find(binop(Dataparams.t0*Dataparams.fs+Dataparams.pulsedur:end) == 0)));
 end
 
 
@@ -72,7 +74,8 @@ lidierthOutput.testfunc   = g;
 lidierthOutput.binop      = binop;
 lidierthOutput.bin1       = bin1;
 lidierthOutput.bin2       = bin2;
-lidierthOutput.t0cap      = t0cap;
+lidierthOutput.t0capon    = t0capon;
+lidierthOutput.t0capoff   = t0capoff;
 lidierthOutput.paramcombo = variable;
 lidierthOutput.thresh     = threshold; 
 lidierthOutput.mean_baseline  = mean_baseline;

@@ -15,7 +15,7 @@ end
 N               = EMG.param.notrials;
 x               = EMG.data;
 AGLRstepOp      = struct();
-plotflag        = 'N';
+plotflag        = 'Y';
 
  
 %% Run the detectors for different parameter combination over N trails 

@@ -1,4 +1,4 @@
-function [CFoutput] = costfunc(output,algoname,type)
+function [CFoutput] = costfunc(output,algoname,type,a)
 %% Function to compute the cost function: maximum of latency, FPR and FNR and choose the
 %% paramter corresponding to minimum cost in terms of median and IQR (minimum Euclidean distance)
 % Input  : The binary output of the detector
@@ -36,16 +36,16 @@ function [CFoutput] = costfunc(output,algoname,type)
         groundtruth = data.groundtruth;
       end
 %
+l=1;
 %%    %For each parameter combination compute cost function      
         for q = 1:No_of_combo_params      
             binop    =  output.binop{q};
             t0capon    =  output.t0capON{q};
             t0capoff    =  output.t0capOFF{q};
+%             output.params.combo{q}
+
             
-            %% Plot the binary output
-            figure
-            binavg = sum(binop,1)/Ntrial;
-            plot(binavg);
+            
 %% To Obtain the Wshift to generalise time samples  for computing the factor
             if string(algoname) == "Detector2018" 
                 params = output.params.combo{q};              
@@ -65,15 +65,46 @@ function [CFoutput] = costfunc(output,algoname,type)
                     binary1    = binop(p,:);
                     t0capon1   = t0capon(p);  
                     t0capoff1  = t0capoff(p);
-%                     stairs(binary1);
-%                     ylim([-0.1 1.1])
-                [CF(q,p),...
-                Latency(q,p),f_delT(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0capon1,t0capoff1...
+%                      stairs(binary1);
+%                      hold on
+%                      xline(8000,'g','Linewidth',1)
+%                      hold on
+%                      xline(t0capoff1*fs,'r--','Linewidth',1)
+%                      hold on
+%                      xline(8500,'m','Linewidth',1)
+%                      hold on
+%                      xline(t0capon1*fs,'k--','Linewidth',1)
+%                      ylim([-0.1 1.1])
+                     
+                [CF(q,p),Latency_on(q,p),f_delT_on(q,p),...
+                Latency_off(q,p),f_delT_off(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0capon1,t0capoff1...
                                                               ,groundtruth,t0,tB,fs,Wshift,tdur);                 
             end   
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination
             [Avg_CF(q), range_CF(q)] = medIqr(CF(q,:));
+            
+            
+%             %% To plot the ensemble average of the binary output
+%             name = strcat(algoname,'_','SNR',num2str(SNR),'_',char(type),'_');
+%             figure(1)
+%             subplot(9,1,l)
+%             plot(sum(binop,1)/50);
+%             hold on
+%             plot(groundtruth)
+%             hold on
+% %             xline(8000 + prctile(Latency_on,80))
+%             ylim([-0.1 1.1])
+%             l=l+1;
+%             xlim([7800 9200])
+%             
+% %             hold on
+% %             xline(t0, 'r')
+% %             hold on
+% %             xline(t0+500, 'r')
+% %             ylim([-0.1 1.1])
+%             title(name,'Interpreter','none')
+            
         end   
    %% Compute the optimum parameter   
    %% To find the closest point from origin to choose the best parameter.
@@ -84,10 +115,12 @@ function [CFoutput] = costfunc(output,algoname,type)
      CFoutput.CF          = CF;
      CFoutput.Avg_CF      = Avg_CF;
      CFoutput.range_CF    = range_CF;
-     CFoutput.f_delT      = f_delT;
+     CFoutput.f_delT_off  = f_delT_off;
+     CFoutput.f_delT_on   = f_delT_on;
      CFoutput.rFP         = rFP;
      CFoutput.rFN         = rFN;
-     CFoutput.Latency     = Latency;
+     CFoutput.Latency_off = Latency_off;
+     CFoutput.Latency_on = Latency_on;
      CFoutput.Optindex    = index;
  %% Save the cost function and factors of the optimal parameters
      if output.dataparams.mode == "Test"
@@ -100,4 +133,30 @@ function [CFoutput] = costfunc(output,algoname,type)
         name = strcat(algoname,'_','SNR',num2str(SNR),'_',char(type),'_',char(output.dataparams.mode));
         plotcostfunc(CFoutput,name);
      end
+     
+%      for i =1:5
+%          figure(i)
+%       subplot(4,1,1)
+%       boxplot(Latency_on(i:5:end,:)','Labels',{})
+%       xlabel('Windowsize')
+%       ylabel('Latency_on (ms)')
+%       
+%       subplot(4,1,2)
+%       boxplot(Latency_off(i:5:end,:)','Labels',{})
+%       xlabel('Windowsize')
+%       ylabel('Latency_off (ms)')
+%     
+%       subplot(4,1,3)
+%       boxplot(rFP(i:5:end,:)','Labels',{})
+%       xlabel('Windowsize')
+%       ylabel('False postivie rate')
+%      
+%       
+%       subplot(4,1,4)
+%       boxplot(rFN(i:5:end,:)','Labels',{})
+%       xlabel('Windowsize')
+%       ylabel('False negative rate')
+%       sgtitle(strcat(name,'weight = ',num2str(i)),'Interpreter','none')
+%      
+%      end
 end

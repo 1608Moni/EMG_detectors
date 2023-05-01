@@ -3,10 +3,10 @@ clc
 clear all
 close all
 
-optparamsdir = 'Optparams\';
-type       = {'gaussian','laplacian','biophy'};
-algoname   = {'hodges','modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','lidierth','modifiedLidierth','bonato','TKEO','CWT','SSA','Detector2018'};%,'modifiedhodges','AGLRstep','AGLRstepLaplace','fuzzyEnt','SamEnt','lidierth','modifiedLidierth','Bonato','TKEO','cwt','SSA'};
-SNR        = [0,-3];
+optparamsdir = 'Optparams\cuboid\';
+type       = {'biophy'};
+algoname   = {'hodges','modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','lidierth','modifiedLidierth','Detector2018'};%,'modifiedhodges','AGLRstep','AGLRstepLaplace','fuzzyEnt','SamEnt','lidierth','modifiedLidierth','Bonato','TKEO','cwt','SSA'};
+SNR        = [0];
 paramalgo  = [];
 paramSNR   = [];
 %%
@@ -27,4 +27,4 @@ for i = 1:length(SNR)
     paramalgo = [];
 end
 
-writematrix(paramSNR,'InfinityNormOptimumparameter.xls')
+writematrix(paramSNR,'PulseDetectionOptimumparameter.xls')

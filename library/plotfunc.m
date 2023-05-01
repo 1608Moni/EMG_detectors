@@ -101,7 +101,9 @@ hold on
 xline(Output.t0capoff,'m','LineWidth',1)
 hold on
 xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{whitened}','testfunc','binop','thrshold','Onset_{est}','Offset','Onset_{act}')
+hold on
+xline(Output.dataparams.t0+0.5,'g','LineWidth',1)
+legend('emg_{whitened}','testfunc','binop','thrshold','Onset_{est}','Offset','Onset_{act}','Offset_{act]')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)

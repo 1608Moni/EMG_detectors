@@ -12,7 +12,7 @@ Outdir     = strcat('output\');
 savedir    = strcat('costfunction\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt'};%,'AGLRstep','AGLRstepLaplace'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','hodges','Detector2018','lidierth','modifiedlidierth'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','hodges','Detector2018','lidierth','modifiedlidierth'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt'};%,'AGLRstep','AGLRstepLaplace'};%,'AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -41,14 +41,24 @@ for k = 1:length(type)
             outputfile = Outdir + datafile;       
             output =  load(outputfile);
             %% Compute the cost func for each detector
-            [CFoutput] = costfunc(output,algoname{a},string(type{k}));         
+            [CFoutput] = costfunc(output,algoname{a},string(type{k}),a);         
             P(:,i)     = CFoutput.CF(CFoutput.Optindex,:)';  
+            Q(:,i)     = CFoutput.f_delT_off(CFoutput.Optindex,:)';  
+            R(:,i)     = CFoutput.f_delT_on(CFoutput.Optindex,:)';  
+            S(:,i)     = CFoutput.rFP(CFoutput.Optindex,:)';  
+            T(:,i)     = CFoutput.rFN(CFoutput.Optindex,:)';  
+            
             %% store the optimum paramters 
             d = ['The optimum parameters for','are : ',num2str( output.params.combo{CFoutput.Optindex})];
             param = output.params.combo{CFoutput.Optindex};             
             %% Formating to create box plot
             if i == 1
                Cost_SNR0(:,a) = P(:,i); 
+               f_delToff_SNR0(:,a) = Q(:,i); 
+               f_delTOn_SNR0(:,a) = R(:,i); 
+               rFP_SNR0(:,a) = S(:,i); 
+               rFN_SNR0(:,a) = T(:,i); 
+               
             elseif i == 2
                Cost_SNRneg3(:,a) = P(:,i); 
             end
@@ -77,7 +87,31 @@ for k = 1:length(type)
     
     %%
     figure
-    boxplot(Cost_SNR0);
+    subplot(5,1,1)
+    boxplot(Cost_SNR0,'Labels',algoname);
+    yline(0.2 , 'r--');
+    ylabel('Cost')
+    xlabel('Detector')
+    subplot(5,1,2)
+    boxplot(f_delToff_SNR0,'Labels',algoname);
+    yline(0.2 , 'r--');
+    ylabel('f_delTOFF')
+    xlabel('Detector')
+    subplot(5,1,3)
+    boxplot(f_delTOn_SNR0,'Labels',algoname);
+    yline(0.2 , 'r--');
+    ylabel('f_delTON')
+    xlabel('Detector')
+    subplot(5,1,4)
+    boxplot(rFP_SNR0,'Labels',algoname);
+    yline(0.2 , 'r--');
+    ylabel('FPR')
+    xlabel('Detector')
+    subplot(5,1,5)
+    boxplot(rFN_SNR0,'Labels',algoname);
+    yline(0.2 , 'r--');
+    ylabel('FNR')
+    xlabel('Detector')
     
     if mode == "Pulse500Test"
         %% Save the opt cost (Test data) and Plot the boxchart for the 2 different SNR and detectors
