@@ -12,13 +12,13 @@ close all;
 
 datadir         = '..\data\';
 addpath('..\library\');
-mode   = "Train";
+mode   = "Test";
 method = "Pmove";
 Model  = ["biophy"];
 SNR    = ["0"];
 trial  = 50;                % Total number of trials
 dur    = 13;                % Duration in seconds
-Detectors =["hodges2"];%,"Detector2018","lidierth1","bonato",...
+Detectors =["hodges1","hodges2","AGLRstep1","AGLRstep2","FuzzyEnt","lidierth1","lidierth2","Detector2018"];%"hodges1","hodges2","AGLRstep1","AGLRstep2"];%,"Detector2018","lidierth1","bonato",...
     %"AGLRstep1","AGLRstep2","lidierth2","FuzzyEnt","TKEO","hodges1","hodges2"];
 %% Run through all model and all SNRs
 for k = 1:length(Model)

@@ -4,16 +4,16 @@ clear all
 close all
 
 optparamsdir = 'Optparams\';
-type       = {'gaussian','laplacian','biophy'};
-algoname   = {'hodges','modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','lidierth','modifiedLidierth','bonato','TKEO','CWT','SSA','Detector2018'};%,'modifiedhodges','AGLRstep','AGLRstepLaplace','fuzzyEnt','SamEnt','lidierth','modifiedLidierth','Bonato','TKEO','cwt','SSA'};
-SNR        = [0,-3];
+type       = {'biophy'};
+algoname   = {'hodges','modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','lidierth','modifiedLidierth','Detector2018'};%,'modifiedhodges','AGLRstep','AGLRstepLaplace','fuzzyEnt','SamEnt','lidierth','modifiedLidierth','Bonato','TKEO','cwt','SSA'};
+SNR        = [0];
 paramalgo  = [];
 paramSNR   = [];
 %%
 for i = 1:length(SNR)
     for j = 1:length(algoname)
         for k = 1:length(type)
-            filename = strcat(type{k},algoname{j},num2str(SNR(i)),'.mat');
+            filename = strcat('Pmove',type{k},algoname{j},num2str(SNR(i)),'.mat');
             filename = string(filename);
             optparamfile = optparamsdir + filename;
             optparam     = load(optparamfile);
@@ -27,4 +27,4 @@ for i = 1:length(SNR)
     paramalgo = [];
 end
 
-writematrix(paramSNR,'InfinityNormOptimumparameter.xls')
+writematrix(paramSNR,'pulseCohensOptimumparameter.xls')

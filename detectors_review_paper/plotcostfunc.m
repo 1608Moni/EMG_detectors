@@ -57,20 +57,20 @@ function [] = plotcostfunc(CF,name)
       set(gca,"FontSize",12);
 
 %% Plot the factors of cost function
- hold on
-% figure(1)
-subplot(1,3,3)
-[u1,v1] = ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
-[u2,v2] = ksdensity(CF.f_delT(CF.Optindex,:),'Bandwidth',Bw);
-[u3,v3] = ksdensity(CF.rFP(CF.Optindex,:),'Bandwidth',Bw);
-[u4,v4] = ksdensity(CF.rFN(CF.Optindex,:),'Bandwidth',Bw);
-p = area(v1,u1,'EdgeColor',[0.8, 0, 0],'FaceColor',[1 0.9 0.9],'LineWidth', 1.25);
-hold on
-plot(v2,u2,'Color','b','LineWidth', 1.25)
-hold on
-plot(v3,u3,'LineWidth', 1.25)
-hold on
-plot(v4,u4,'LineWidth', 1.25)
+%  hold on
+% % figure(1)
+% subplot(1,3,3)
+% [u1,v1] = ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
+% [u2,v2] = ksdensity(CF.f_delT(CF.Optindex,:),'Bandwidth',Bw);
+% [u3,v3] = ksdensity(CF.rFP(CF.Optindex,:),'Bandwidth',Bw);
+% [u4,v4] = ksdensity(CF.rFN(CF.Optindex,:),'Bandwidth',Bw);
+% p = area(v1,u1,'EdgeColor',[0.8, 0, 0],'FaceColor',[1 0.9 0.9],'LineWidth', 1.25);
+% hold on
+% plot(v2,u2,'Color','b','LineWidth', 1.25)
+% hold on
+% plot(v3,u3,'LineWidth', 1.25)
+% hold on
+% plot(v4,u4,'LineWidth', 1.25)
 % histogram(CF.CF(CF.Optindex,:),'BinWidth',0.1,'EdgeColor',[0.8, 0, 0],'FaceColor',[0.8, 0, 0],'FaceAlpha',0.2,'LineWidth',1.5);%'Displaystyle','stairs'
 % hold on
 % histogram(CF.f_delT(CF.Optindex,:),'BinWidth',0.1,'Displaystyle','stairs','EdgeColor',[1 0.7 0.3],'LineWidth',1.5);%,'Displaystyle','stairs'
@@ -79,15 +79,15 @@ plot(v4,u4,'LineWidth', 1.25)
 % hold on
 % histogram(CF.rFN(CF.Optindex,:),'BinWidth',0.1,'EdgeColor',[0 0 1],'FaceColor',[0 0 1],'FaceAlpha',0.2,'LineWidth',1.5);
 
-ylabel('PDF (No of trials)');
-xlabel('C, f({\Delta}t), r_{FP}, r_{FN}')
-set(gca,"FontSize",12)
-set(gca, "LineWidth",1.1)
-set(gca, 'Box', 'off')
-xlim([0 0.4])
-l=legend('C','f({{\Delta}t})','r_{FP}','r_{FN}');
-set(legend, 'Box','off','Orientation','horizontal','NumColumns',2);
-
-set(gcf,'Position', [-1 296.3333 1.2753e+03 342.0000]);
+% ylabel('PDF (No of trials)');
+% xlabel('C, f({\Delta}t), r_{FP}, r_{FN}')
+% set(gca,"FontSize",12)
+% set(gca, "LineWidth",1.1)
+% set(gca, 'Box', 'off')
+% xlim([0 0.4])
+% l=legend('C','f({{\Delta}t})','r_{FP}','r_{FN}');
+% set(legend, 'Box','off','Orientation','horizontal','NumColumns',2);
+% 
+% set(gcf,'Position', [-1 296.3333 1.2753e+03 342.0000]);
 %  sgtitle(name,'Interpreter','none')
 end
