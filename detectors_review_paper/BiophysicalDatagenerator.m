@@ -19,22 +19,32 @@ for j = 1:length(SNR)
  elseif mode == "Test"
     datafile1 = "TestDataRawEMGforce300.mat";
  end
- %% Read the data file and carryout analysis.
+ 
+  %% Read the data file and carryout analysis.
  datafile = datadir + datafile;          % for each filename in the datafile array
  datafile1 = datadir + datafile1;
  %% Load the generated EMG_data of the specific SNR
  Data = load(datafile);
  Groundtruth = Data.Groundtruth;
  EMG = load(datafile1);
- x = EMG.data;
+ x  = EMG.data;
 p   = 8;
 fl  = 10;
 fh  = 450;
 fs  = 1000;
-t0  = 8*fs;
+t0  = 8;
+t   = (1/fs):(1/fs):13; 
+ 
+ %% Generate groundtruth for different values of P_ON , lamda_on and lamda_off
+ ProbON = 0.5;
+ lamda_on = 5000;
+ lamda_off = 500;
+ 
+ output = randomGTgenerator(ProbON,lamda_on,lamda_off,t0,t,10);  
+
  for i=1:size(EMG.data,1)
 
-  y(i,:) = x(i,:).*Groundtruth(i,:);
+    y(i,:) = x(i,:).*Groundtruth(i,:);
   
     signal_power = var(x(i,t0:end));
 
