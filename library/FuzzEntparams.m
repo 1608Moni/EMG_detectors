@@ -1,7 +1,7 @@
 function params = FuzzEntparams(mode,type,SNR,detector)
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 params      = struct;
 params.dim  = 2;
 params.n    = 2;
@@ -9,7 +9,7 @@ params.r    = 0.25;
 params.tB   = 3000;
 params.M    = 3000;
 if mode == "Test"
-    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

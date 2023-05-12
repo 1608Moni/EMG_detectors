@@ -1,6 +1,6 @@
 function params = cwt_param(mode,type,SNR,detector)
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 params = struct;
 params.lamda = [0.5, 1.5, 2, 3];
 params.a     = [1, 3, 4, 6];%[10, 50, 100, 150, 200, 250, 450]; 

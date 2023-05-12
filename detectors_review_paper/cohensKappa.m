@@ -1,4 +1,4 @@
-function kappa = cohensKappa(y, yhat)
+function [kappa C] = cohensKappa(y, yhat)
     C = confusionmat(y, yhat); % compute confusion matrix
     n = sum(C(:)); % get total N
     C = C./n; % Convert confusion matrix counts to proportion of n
@@ -7,8 +7,13 @@ function kappa = cohensKappa(y, yhat)
     expected = r*s; % expected proportion for random agree
     po = sum(diag(C)); % Observed proportion correct
     pe = sum(diag(expected)); % Proportion correct expected
-    kappa = (po-pe)/(1-pe); % Cohen's kappa
-    
+%     diff1 = yhat-y;
+%     if isempty(find(diff1 ~=0)) == 1
+%         kappa = 1;
+%     else
+        kappa = (po-pe)/(1-pe); % Cohen's kappa
+%     end
+%       C
 %      figure
 %      subplot(2,1,1)
 %      stairs(y,'Linewidth',1.5)

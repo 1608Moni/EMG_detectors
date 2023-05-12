@@ -2,16 +2,16 @@ function EMGdetectormain(EMG,detector)
 %% function to run the detector in (Sivakumar et.al) no of trails for different parameter combination
 %
 
-
+mode            = char(EMG.mode);
 %% Define parameters for the detector
-outdir          = strcat('output\',EMG.mode,'\');
-processdir      = strcat('process\',EMG.mode,'\');
+outdir          = strcat('output\',string(mode(1:4)),'\');
+processdir      = strcat('process\',string(mode(1:4)),'\');
 addpath('..\detectors_review_paper\')
-
+mode            = char(EMG.mode);
 N               = EMG.param.notrials;
 x               = EMG.data;
 detectorOp      = struct();
-params          = EMGdetector_param(EMG.mode,EMG.param.type,EMG.SNR,detector);
+params          = EMGdetector_param(string(mode(1:4)),EMG.param.type,EMG.SNR,detector);
 % To enable plot function 
 %prompt          = 'Do you want to plot? Y/N [Y]: ';
 plotflag        = 'N';%input(prompt,'s');  
@@ -70,7 +70,7 @@ plotflag        = 'N';%input(prompt,'s');
         end
         if plotflag ~= "Y" 
         pathname   = fileparts(outdir);
-        name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
         %%to save the parameter as in the paper
         %name       = fullfile(pathname, strcat('Param2',EMG.mode,'Output',field));
         save(name,'-struct','detectorOp','-v7.3')               

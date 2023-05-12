@@ -3,14 +3,14 @@ function params = Lidierth_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 %% Define parameters in the function
 params        = struct;
 params.M      = 3000;             % wnidow to compute the baseline thrshold
 params.tB     = 3000;             % start of relax phase to test (ms)
 params.n      = 1; 
 if mode == "Test"
-    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

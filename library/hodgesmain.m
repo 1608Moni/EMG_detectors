@@ -6,16 +6,16 @@ function hodgesmain(EMG,choice)
 % prompt          = 'choose detector : 1 - hodges ; 2 - modifiedhodges ';
 % choice          = input(prompt,'s');  
 detectors       = {'hodges','modifiedhodges'};
-
+mode            = char(EMG.mode);
 %% Define parameters for the hodges detector
 addpath('..\detectors_review_paper\')
-outdir          = strcat('output\',EMG.mode,'\');
-mkdir(strcat('process\',EMG.mode,'\'));
-processdir      = strcat('process\',EMG.mode,'\');
+outdir          = strcat('output\',string(mode(1:4)),'\');
+mkdir(strcat('process\',string(mode(1:4)),'\'));
+processdir      = strcat('process\',string(mode(1:4)),'\');
 if choice == '1'
-    params = hodges_param(EMG.mode,EMG.param.type,EMG.SNR,detectors{str2num(choice)});
+    params = hodges_param(string(mode(1:4)),EMG.param.type,EMG.SNR,detectors{str2num(choice)});
 elseif choice == '2'
-    params = modifiedhodges_param(EMG.mode,EMG.param.type,EMG.SNR,detectors{str2num(choice)});
+    params = modifiedhodges_param(string(mode(1:4)),EMG.param.type,EMG.SNR,detectors{str2num(choice)});
 end
 N               = EMG.param.notrials;
 x               = EMG.data;
@@ -86,7 +86,7 @@ processSaveflag = 0;
         end
         if plotflag ~= "Y"
             pathname   = fileparts(outdir);
-            name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
+            name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
             save(name,'-struct','hodgesOp','-v7.3')    
             disp('filesaved')
         end

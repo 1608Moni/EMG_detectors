@@ -1,12 +1,12 @@
 function params = TKEO_param(mode,type,SNR,detector)
 %% Function to define parameters for TKEO processing
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 params        = struct;
 params.M      = 3000;
 params.tB     = 3000; 
 if mode == "Test"
-    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

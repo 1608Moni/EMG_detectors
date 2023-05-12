@@ -20,9 +20,9 @@ function output = randomGTgenerator(ProbON,lamda_on,lamda_off,t0,t,NoTrials)
              end
         end
         output(i,:) = u(1:length(t));
-        figure(1)
-        subplot(2,5,i)
-        stairs(output(i,:),'Linewidth',1);
-        ylim([-0.1 1.1])
+%         figure(1)
+%         subplot(2,5,i)
+%         stairs(output(i,:),'Linewidth',1);
+%         ylim([-0.1 1.1])
     end
 end

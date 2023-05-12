@@ -3,10 +3,10 @@ function cwtmain(EMG,detector)
 %
 
 %% Define parameters for the detector
-outdir          = strcat('output\',EMG.mode,'\');
-processdir      = strcat('process\',EMG.mode,'\');
+outdir          = strcat('output\',string(mode(1:4)),'\');
+processdir      = strcat('process\',string(mode(1:4)),'\');
 addpath('..\detectors_review_paper\')
-params          = cwt_param(EMG.mode,EMG.param.type,EMG.SNR,detector);
+params          = cwt_param(string(mode(1:4)),EMG.param.type,EMG.SNR,detector);
 N               = EMG.param.notrials;
 x               = EMG.data;
 CWTOp           = struct();
@@ -66,7 +66,7 @@ plotflag        = 'N';%input(prompt,'s');
          end
          if plotflag ~= "Y" 
          pathname   = fileparts(outdir);
-         name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
+         name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
          save(name,'-struct','CWTOp','-v7.3') 
          end
 end

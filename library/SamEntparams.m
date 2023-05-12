@@ -1,7 +1,7 @@
 function params = SamEntparams(mode,type,SNR,detector)
 %% Function to define parameters for sample entropy algorithm
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 %%
 
 params      = struct;

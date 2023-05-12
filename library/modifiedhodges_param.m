@@ -4,14 +4,14 @@ function params = modifiedhodges_param(mode,type,SNR,detector)
 % different paramter combination.  
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 
 %%
 params          = struct();
 params.tB       = 3000;           % start of relax phase to test (ms)
 params.M        = 3000; 
 if mode == "Test"  
-    datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

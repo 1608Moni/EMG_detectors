@@ -1,6 +1,6 @@
 function params = SSA_param(mode,type,SNR,detector)
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 params = struct;
 params.tB = 3000;
 if mode == "Test"

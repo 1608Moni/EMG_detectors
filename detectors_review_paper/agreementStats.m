@@ -1,4 +1,4 @@
-function [CFoutput] = agreementStats(output,algoname,type)
+function [CFoutput] = agreementStats(output,algoname,type,a)
 %% Function to compute the cost function: maximum of latency, FPR and FNR and choose the
 %% paramter corresponding to minimum cost in terms of median and IQR (minimum Euclidean distance)
 % Input  : The binary output of the detector
@@ -8,6 +8,7 @@ function [CFoutput] = agreementStats(output,algoname,type)
       datadir            = '..\data\';
       fs                 = output.dataparams.fs;
       t0                 = (output.dataparams.t0*output.dataparams.fs);      % Actual Onset time
+      tB                 = 3*fs;
       params             = output.params.combo;
       No_of_combo_params = numel(params); 
       Ntrial             = output.dataparams.notrials;
@@ -19,6 +20,7 @@ function [CFoutput] = agreementStats(output,algoname,type)
       tB                 = output.params.tB;
       CFoutput           = struct();
       plotflag           = 0;   % 1 to enable plotting 0 otherwise
+      
          
       %% Generating Groundtruth   
       if type  == "gaussian" || type == "laplacian"
@@ -54,26 +56,56 @@ function [CFoutput] = agreementStats(output,algoname,type)
                 Wsize  = 0;
             end
             %% Compute cost function for N = 50 trails for each parameter combination
+            t1 = (Wshift/fs):(Wshift/fs):13000/fs; 
+            t = (1/fs):(1/fs):13;
             for p = 1:Ntrial
-                    binary1 = binop(p,(t0/Wshift):end);
-                    t0cap1   = t0cap(p);                                  
-             cohenCoeff(q,p) = cohensKappa(groundtruth(p,t0:Wshift:end),binary1);               
-            end   
+                    binary1 = binop(p,tB:Wshift:end);
+                    t0cap1  = t0cap(p);                                  
+                    GT      = groundtruth(p,tB:Wshift:end);
+%                     if isempty(GT(GT>0)) == 1 && isempty(binary1(binary1>0)) == 1 
+%                         cohenCoeff(q,p) = 0;     
+%                     elseif isempty(GT(GT>0)) == 1 && isempty(binary1(binary1>0)) ~= 1 
+%                         cohenCoeff(q,p) = -1; 
+%                     else
+                        [cohenCoeff(q,p) C] = cohensKappa(groundtruth(p,tB:Wshift:end),binary1);               
+% %                     end
+             
+             figure(p)
+%              subplot(5,10,p)
+             stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
+%              title('Groundtruth')
+             hold on
+%              subplot(2,1,2)
+             stairs(t1,binop(p,:),'r--','Linewidth',1.5)
+%              sgtitle(algoname)
+             txt = {strcat(num2str(round( cohenCoeff(q,p),5)))};
+             text(1.5,0.8,txt,'FontSize',8)
+             
+          
+             pause(2)
+             close all
+% %             
+            
+            end 
+%             savefig(strcat('ON_4500','OFF_500',algoname,'.fig'));
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination
-            [Avg_CF(q), range_CF(q)] =  medIqr(cohenCoeff(q,:));
-            mu(q) = mean(cohenCoeff(q,:));
+%             [Avg_CF(q), range_CF(q)] =  medIqr(cohenCoeff(q,:));
+            mu(q) = mean(cohenCoeff(q,:),"omitnan");
+            
+             
         end   
    %% Compute the optimum parameter   
    %% To find the closest point from origin to choose the best parameter.
     index    = find(mu == max(mu));%bestparam(Avg_CF, range_CF);
   
-    
+  
  %%   Saving all internal variables in a structure
      CFoutput.CF          = cohenCoeff;
-     CFoutput.Avg_CF      = Avg_CF;
-     CFoutput.range_CF    = range_CF;
+%      CFoutput.Avg_CF      = Avg_CF;
+%      CFoutput.range_CF    = range_CF;
      CFoutput.Optindex    = index;
+     CFoutput.mean    = mu;
      
      if  plotflag == 1
       %% Plot the cost function and factors plots

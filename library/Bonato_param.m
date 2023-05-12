@@ -1,14 +1,14 @@
 function params = Bonato_param(mode,type,SNR,detector)
 %% Function to define the parameters of bonato algorithm
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
 %% Define the ranges for each parameter
 params        = struct;
 params.M      = 3000;
 params.tB     = 3000;  
 params.n      = 1;
 if mode == "Test"
-datafile = strcat('Pmove',type,detector,num2str(round(SNR)),'.mat');    
+datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
