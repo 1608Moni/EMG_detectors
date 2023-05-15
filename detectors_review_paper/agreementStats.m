@@ -59,7 +59,7 @@ function [CFoutput] = agreementStats(output,algoname,type,a)
             t1 = (Wshift/fs):(Wshift/fs):13000/fs; 
             t = (1/fs):(1/fs):13;
             for p = 1:Ntrial
-                    binary1 = binop(p,tB:Wshift:end);
+                    binary1 = binop(p,(tB/Wshift):end);
                     t0cap1  = t0cap(p);                                  
                     GT      = groundtruth(p,tB:Wshift:end);
 %                     if isempty(GT(GT>0)) == 1 && isempty(binary1(binary1>0)) == 1 
@@ -69,21 +69,19 @@ function [CFoutput] = agreementStats(output,algoname,type,a)
 %                     else
                         [cohenCoeff(q,p) C] = cohensKappa(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
-             
-             figure(p)
+%              
+%              figure(a)
 %              subplot(5,10,p)
-             stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
-%              title('Groundtruth')
-             hold on
-%              subplot(2,1,2)
-             stairs(t1,binop(p,:),'r--','Linewidth',1.5)
+%              stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
+%              hold on
+%              stairs(t1,binop(p,:),'r--','Linewidth',1.5)
 %              sgtitle(algoname)
-             txt = {strcat(num2str(round( cohenCoeff(q,p),5)))};
-             text(1.5,0.8,txt,'FontSize',8)
-             
-          
-             pause(2)
-             close all
+%              txt = {strcat(num2str(round( cohenCoeff(q,p),5)))};
+%              text(1.5,0.8,txt,'FontSize',8)
+%              
+%           
+%              pause(2)
+%              close all
 % %             
             
             end 
