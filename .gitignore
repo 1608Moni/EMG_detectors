@@ -50,8 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-detectors_review_paper/output/Test/*
-!detectors_review_paper/output/Test/.gitkeep
 detectors_review_paper/output/Train/*
 !detectors_review_paper/output/Train/.gitkeep
 detectors_review_paper/output/Pulse500Test/*
