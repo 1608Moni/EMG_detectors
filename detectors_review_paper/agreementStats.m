@@ -70,8 +70,8 @@ function [CFoutput] = agreementStats(output,algoname,type,a)
                         [cohenCoeff(q,p) C] = cohensKappa(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
 %              
-%              figure(a)
-%              subplot(5,10,p)
+%              figure(p)
+% %              subplot(5,10,p)
 %              stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
 %              hold on
 %              stairs(t1,binop(p,:),'r--','Linewidth',1.5)

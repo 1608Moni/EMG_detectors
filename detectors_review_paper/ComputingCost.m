@@ -32,7 +32,7 @@ for k = 1:length(type)
             field      = strcat(algoname{a},'trail',num2str(N),type{k},'dur',...
             num2str(dur),'SNR',num2str(SNRdB(i)),'force',num2str(force));
             end
-            datafile   = strcat(char(mode),'Output',field,'.mat');
+            datafile   = strcat('Pmove',char(mode),'Output',field,'.mat');
 %%            
 % %             %%Detector 2018 with the parameters used in the paper
 %              datafile  = strcat('Param2', char(mode),'Output',field,'.mat');
