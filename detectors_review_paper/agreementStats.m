@@ -70,16 +70,16 @@ function [CFoutput] = agreementStats(output,algoname,type,a)
                         [cohenCoeff(q,p) C] = cohensKappa(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
 %              
-%              figure(p)
-% %              subplot(5,10,p)
-%              stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
-%              hold on
-%              stairs(t1,binop(p,:),'r--','Linewidth',1.5)
-%              sgtitle(algoname)
-%              txt = {strcat(num2str(round( cohenCoeff(q,p),5)))};
-%              text(1.5,0.8,txt,'FontSize',8)
-%              
-%           
+             figure(a)
+             subplot(5,10,p)
+             stairs(t,data.groundtruth(p,:),'Linewidth',1.5)
+             hold on
+             stairs(t1,binop(p,:),'r--','Linewidth',1.5)
+             sgtitle(algoname)
+             txt = {strcat(num2str(round( cohenCoeff(q,p),5)))};
+             text(1.5,0.8,txt,'FontSize',8)
+             
+          
 %              pause(2)
 %              close all
 % %             
