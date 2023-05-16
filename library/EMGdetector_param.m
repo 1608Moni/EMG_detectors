@@ -3,7 +3,7 @@ function params = EMGdetector_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
+Optdir          = '..\detectors_review_paper\Optparams\old\';
 %%
 params          = struct();
 params.fl       = 10;            % Cutoff of BPF lower limit
@@ -12,10 +12,10 @@ params.M        = 3000;          % Window to compute baseline (ms)
 params.tB       = 3000;          % start of relax phase to test (ms)
 %%
 if mode == "Test"
-  datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
-%%To run the detector with parameters in the paper Balasubranian 2018 et al
-% datafile = strcat('Detector2018','.mat');    
-optparamsfile = Optdir + (datafile);
+%   datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
+%To run the detector with parameters in the paper Balasubranian 2018 et al
+datafile = strcat('Detector2018','.mat');    
+optparamsfile = Optdir + string(datafile);
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
