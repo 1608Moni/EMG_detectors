@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges'};%,'Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'Detector2018'};%,'Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -20,7 +20,7 @@ SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
 saveflag   = 1;                % 1 to enable saving the files
 
- lamda_on  = 1500;%5000:-500:500; 
+ lamda_on  = 1497;%5000:-500:500; 
  lamda_off = 500:500:5000; 
  
  
@@ -39,7 +39,7 @@ for a = 1:length(algoname)
             end
             if string(algoname{a}) == "Detector2018" 
                datafile   = strcat('Param2',char(mode),'Output',field,'.mat');
-               disp('a')
+%                disp('a')
             else
                datafile   = strcat('ConstantPmove',char(mode),'Output',field,'.mat');
             end
