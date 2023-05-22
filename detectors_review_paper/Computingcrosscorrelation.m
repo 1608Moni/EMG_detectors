@@ -75,21 +75,21 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,type,lamda_on,la
                         CorrCoeff(q,p) = crosscorrcompute(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
              
-             figure(p)
-% %              subplot(5,10,p)
-             stairs(t,groundtruth(p,:),'Linewidth',1.5)
-             hold on
-             stairs(t1,binop(p,:),'r--','Linewidth',1.5)
-             sgtitle(algoname)
-             txt = {strcat(num2str(round( CorrCoeff(q,p),5)))};
-             text(1.5,0.8,txt,'FontSize',8)    
-             name = char(figuredir + string(strcat('Constant','ON_',num2str(lamda_off),'OFF_',num2str(lamda_on),algoname)));
+%              figure(p)
+% % %              subplot(5,10,p)
+%              stairs(t,groundtruth(p,:),'Linewidth',1.5)
+%              hold on
+%              stairs(t1,binop(p,:),'r--','Linewidth',1.5)
+%              sgtitle(algoname)
+%              txt = {strcat(num2str(round( CorrCoeff(q,p),5)))};
+%              text(1.5,0.8,txt,'FontSize',8)    
+%              name = char(figuredir + string(strcat('Constant','ON_',num2str(lamda_off),'OFF_',num2str(lamda_on),algoname)));
 %              export_fig(name,'-pdf','-append',figure(p)); 
 %              print(figure(p), '-append', '-dpsc2', strcat('ON_',num2str(lamda_off),'OFF_',num2str(lamda_on),algoname,'.ps'));
             
 %              pause(2)
             end 
-        close all         
+%         close all         
 %             savefig(strcat('ON_4500','OFF_500',algoname,'.fig'));
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination
