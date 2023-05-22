@@ -45,6 +45,11 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+
+# PDF files
+*.pdf
+*.ps
+
 .tmp_versions/
 modules.order
 Module.symvers
