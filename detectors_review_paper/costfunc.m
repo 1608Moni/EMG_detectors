@@ -5,7 +5,7 @@ function [CFoutput] = costfunc(output,algoname,type)
 % Output : Cost function distribution of all trials and Optimum index (kopt)
 
 %% Initialise parameters
-      datadir            = '..\data\data\';
+      datadir            = '..\data\';
       fs                 = output.dataparams.fs;
       t0                 = (output.dataparams.t0*output.dataparams.fs);      % Actual Onset time
       params             = output.params.combo;

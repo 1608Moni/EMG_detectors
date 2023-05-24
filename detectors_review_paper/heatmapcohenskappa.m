@@ -37,12 +37,12 @@ for a = 1:length(algoname)
             field      = strcat(algoname{a},'trail',num2str(N),type{1},'dur',...
             num2str(dur),'SNR',num2str(SNRdB(1)),'force',num2str(force));
             end
-            if string(algoname{a}) == "Detector2018" 
-               datafile   = strcat('Param2',char(mode),'Output',field,'.mat');
-%                disp('a')
-            else
+%             if string(algoname{a}) == "Detector2018" 
+%                datafile   = strcat('Param2',char(mode),'Output',field,'.mat');
+% %                disp('a')
+%             else
                datafile   = strcat('ConstantPmove',char(mode),'Output',field,'.mat');
-            end
+%             end
            
 %%            
 % %             %%Detector 2018 with the parameters used in the paper
@@ -88,13 +88,15 @@ for a = 1:length(algoname)
             clear output   
         end 
     end
-    figure(1)
-    subplot(2,4,a)
-    h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.7 1]);
-    h.Colormap = spring;
-    ylabel('LamdaON')
-    xlabel('LamdaOFF')
-    title(algoname{a})
+    box(:,a) = mean_cohenkappa(:);
+ 
+%     figure(1)
+%     subplot(2,4,a)
+%     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.7 1]);
+%     h.Colormap = spring;
+%     ylabel('LamdaON')
+%     xlabel('LamdaOFF')
+%     title(algoname{a})
 %     if mode == "Test"
 %         %% Save the opt cost (Test data) and Plot the boxchart for the 2 different SNR and detectors
 %         Optcost{1} = Cost_SNR0;
@@ -115,3 +117,9 @@ for a = 1:length(algoname)
 %         end
 %     end
 end
+
+boxplot(box,'Label',algoname);
+ylim([0.7 1])
+ylabel('Cross correlation')
+xlabel('Detectors')
+title('Step Groundtruth')
