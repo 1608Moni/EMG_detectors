@@ -72,7 +72,7 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,type,lamda_on,la
 %                         cohenCoeff(q,p) = -1; 
 %                     else
            
-                        CorrCoeff(q,p) = crosscorrcompute(groundtruth(p,tB:Wshift:end),binary1);               
+                        [CorrCoeff(q,p),rFP(q,p),rFN(q,p)] = crosscorrcompute(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
              
 %              figure(p)
@@ -97,14 +97,27 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,type,lamda_on,la
              mu(q) = mean(CorrCoeff(q,:));
             
              
-        end   
-   %% Compute the optimum parameter   
+        end
+      
+%         figure
+%         subplot(2,1,1)
+%         boxplot(rFP)
+%         title('False positive rate')
+%         ylim([0 0.2])
+%         subplot(2,1,2)
+%         boxplot(rFN)
+%         ylim([0 0.2])
+%         title('False negative rate')
+    %% Compute the optimum parameter
    %% To find the closest point from origin to choose the best parameter.
     index    = find(mu == max(mu));%bestparam(Avg_CF, range_CF);
   
   
  %%   Saving all internal variables in a structure
      CFoutput.CF          = CorrCoeff;
+     CFoutput.rFP         = rFP;
+     CFoutput.rFN         = rFN;
+   
 %      CFoutput.Avg_CF      = Avg_CF;
 %      CFoutput.range_CF    = range_CF;
      CFoutput.Optindex    = index;

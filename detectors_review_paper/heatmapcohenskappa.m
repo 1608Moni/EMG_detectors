@@ -20,8 +20,8 @@ SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
 saveflag   = 1;                % 1 to enable saving the files
 
- lamda_on  = 5000:-500:500; 
- lamda_off = 500:500:5000; 
+ lamda_on  = 500;%5000:-500:500; 
+ lamda_off = 5000;%:500:5000; 
  
  
 %% Go through the datafiles and compute the cost function
@@ -89,6 +89,8 @@ for a = 1:length(algoname)
         end 
     end
     box(:,a) = mean_cohenkappa(:);
+    RFP(:,a) = CFoutput.rFP;
+    RFN(:,a) = CFoutput.rFN;
  
 %     figure(1)
 %     subplot(2,4,a)
@@ -117,9 +119,14 @@ for a = 1:length(algoname)
 %         end
 %     end
 end
-
-boxplot(box,'Label',algoname);
-ylim([0.7 1])
-ylabel('Cross correlation')
+figure
+subplot(2,1,1)
+boxplot(RFP,'Label',algoname);
+ylim([0 0.2])
+ylabel('False positive rate')
+title('500 ms Pulse')
+subplot(2,1,2)
+boxplot(RFN,'Label',algoname);
+ylim([0 0.2])
+ylabel('False negative rate')
 xlabel('Detectors')
-title('Step Groundtruth')
