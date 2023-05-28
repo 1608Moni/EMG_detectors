@@ -15,7 +15,7 @@ if mode == "Test"
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.W   = optparams.param(1);
-    params.h   = optparams.param(2); 
+    params.h   = 1:10; 
 else
 params.W    = 10:10:100;
 params.h    = 1:5;

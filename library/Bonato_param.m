@@ -13,7 +13,7 @@ datafile = strcat(type,detector,num2str(round(SNR)),'.mat');
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
-    params.weight  = optparams.param(1);  
+    params.weight  = 1:10;  
     params.T2      = optparams.param(2);
     params.T1      = optparams.param(3);
     

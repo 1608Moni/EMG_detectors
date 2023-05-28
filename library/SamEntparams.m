@@ -15,7 +15,7 @@ if mode == "Test"
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.W  = optparams.param(1);
-    params.h  = optparams.param(2);  
+    params.h  = 1:10;%optparams.param(2);  
     params.rho = optparams.param(3);  
 else
 params.rho    = 0.5:1:2.5;   % Tolerance for chebyshave distance

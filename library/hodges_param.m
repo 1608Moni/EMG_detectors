@@ -15,7 +15,7 @@ if mode == "Test"
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.Wsize  = optparams.param(1);
-    params.weight = optparams.param(2);
+    params.weight   = 1:10;
     params.fc     = optparams.param(3); 
 else
 %% Range of parameters to train    

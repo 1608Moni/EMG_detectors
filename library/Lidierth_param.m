@@ -16,7 +16,7 @@ if mode == "Test"
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.Wsize   = optparams.param(1);
-    params.weight  = optparams.param(2);  
+    params.weight  = 1:10;%optparams.param(2);  
     params.T2      = optparams.param(3);  
     params.T1      = optparams.param(4);
 else

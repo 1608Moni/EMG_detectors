@@ -16,7 +16,7 @@ if mode == "Test"
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
-    params.weight = optparams.param(1);
+    params.weight = 1:10;%optparams.param(1);
     params.fc     = optparams.param(2);    
 else
 params.fc       = 0.5:1:10;      % Cutoff frequency range for lpf(Hz)

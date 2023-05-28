@@ -72,7 +72,7 @@ plotflag        = 'N';%input(prompt,'s');
         pathname   = fileparts(outdir);
 %         name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
         %%to save the parameter as in the paper
-        name       = fullfile(pathname, strcat('Param2',EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat('Alpha_pulse500',EMG.mode,'Output',field));
         save(name,'-struct','detectorOp','-v7.3')               
         end
 end
