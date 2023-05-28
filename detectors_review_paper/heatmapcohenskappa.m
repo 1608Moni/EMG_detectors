@@ -41,7 +41,7 @@ for a = 1:length(algoname)
 %                datafile   = strcat('Param2',char(mode),'Output',field,'.mat');
 % %                disp('a')
 %             else
-               datafile   = strcat('ConstantPmove',char(mode),'Output',field,'.mat');
+               datafile   = strcat('Alpha_pulse500',char(mode),'Output',field,'.mat');
 %             end
            
 %%            
@@ -52,10 +52,10 @@ for a = 1:length(algoname)
             outputfile = Outdir + datafile;       
             output =  load(outputfile);
             %% Compute the cost func for each detector
-            [CFoutput] = Computingcrosscorrelation(output,algoname{a},string(type{1}),...
+            [CFoutput] = Computingcrosscorrelation(output,algoname{a},a,string(type{1}),...
             lamda_on(k),lamda_off(i));         
             
-            mean_cohenkappa(k,i) = CFoutput.mean; 
+%             mean_cohenkappa(k,i) = CFoutput.mean; 
 %             P(:,i)     = CFoutput.CF(CFoutput.Optindex,:)';  
 %             %% store the optimum paramters 
 %             d = ['The optimum parameters for','are : ',num2str( output.params.combo{CFoutput.Optindex})];
@@ -88,10 +88,10 @@ for a = 1:length(algoname)
             clear output   
         end 
     end
-    box(:,a) = mean_cohenkappa(:);
-    RFP(:,a) = CFoutput.rFP;
-    RFN(:,a) = CFoutput.rFN;
- 
+%     box(:,a) = mean_cohenkappa(:);
+%     RFP(:,a) = CFoutput.rFP;
+%     RFN(:,a) = CFoutput.rFN;
+%  
 %     figure(1)
 %     subplot(2,4,a)
 %     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.7 1]);

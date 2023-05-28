@@ -1,4 +1,4 @@
-function [CFoutput] = Computingcrosscorrelation(output,algoname,type,lamda_on,lamda_off)
+function [CFoutput] = Computingcrosscorrelation(output,algoname,a,type,lamda_on,lamda_off)
 %% Function to compute the cost function: maximum of latency, FPR and FNR and choose the
 %% paramter corresponding to minimum cost in terms of median and IQR (minimum Euclidean distance)
 % Input  : The binary output of the detector
@@ -99,16 +99,19 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,type,lamda_on,la
              
         end
       
-%         figure
-%         subplot(2,1,1)
-%         boxplot(rFP)
-%         title('False positive rate')
-%         ylim([0 0.2])
-%         subplot(2,1,2)
-%         boxplot(rFN)
-%         ylim([0 0.2])
-%         title('False negative rate')
-    %% Compute the optimum parameter
+        figure(a)
+        subplot(2,1,1)
+        boxplot(rFP')
+        ylim([-0.1 0.4])
+        title('False positive rate')
+        %ylim([0 0.2])
+        subplot(2,1,2)
+        boxplot(rFN')
+        ylim([-0.1 0.4])
+        %ylim([0 0.2])
+        title('False negative rate')
+        sgtitle(algoname)
+    % Compute the optimum parameter
    %% To find the closest point from origin to choose the best parameter.
     index    = find(mu == max(mu));%bestparam(Avg_CF, range_CF);
   
