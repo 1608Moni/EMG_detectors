@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges','Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','hodges','AGLRstep','AGLRstepLaplace'};%{'modifiedhodges','Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -21,7 +21,7 @@ CF         = struct();         %
 saveflag   = 1;                % 1 to enable saving the files
 
  lamda_on  = 500;%5000:-500:500; 
- lamda_off = 5000;%:500:5000; 
+ lamda_off = 5000;%500:500:5000; 
  
  
 %% Go through the datafiles and compute the cost function
@@ -55,7 +55,7 @@ for a = 1:length(algoname)
             [CFoutput] = Computingcrosscorrelation(output,algoname{a},a,string(type{1}),...
             lamda_on(k),lamda_off(i));         
             
-%             mean_cohenkappa(k,i) = CFoutput.mean; 
+%              mean_cohenkappa(k,i) = CFoutput.mean; 
 %             P(:,i)     = CFoutput.CF(CFoutput.Optindex,:)';  
 %             %% store the optimum paramters 
 %             d = ['The optimum parameters for','are : ',num2str( output.params.combo{CFoutput.Optindex})];
@@ -94,7 +94,7 @@ for a = 1:length(algoname)
 %  
 %     figure(1)
 %     subplot(2,4,a)
-%     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.7 1]);
+%     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.9 1]); %'ColorLimit',[0.7 1]
 %     h.Colormap = spring;
 %     ylabel('LamdaON')
 %     xlabel('LamdaOFF')
@@ -119,14 +119,14 @@ for a = 1:length(algoname)
 %         end
 %     end
 end
-figure
-subplot(2,1,1)
-boxplot(RFP,'Label',algoname);
-ylim([0 0.2])
-ylabel('False positive rate')
-title('500 ms Pulse')
-subplot(2,1,2)
-boxplot(RFN,'Label',algoname);
-ylim([0 0.2])
-ylabel('False negative rate')
-xlabel('Detectors')
+% figure
+% subplot(2,1,1)
+% boxplot(RFP,'Label',algoname);
+% ylim([0 0.2])
+% ylabel('False positive rate')
+% title('500 ms Pulse')
+% subplot(2,1,2)
+% boxplot(RFN,'Label',algoname);
+% ylim([0 0.2])
+% ylabel('False negative rate')
+% xlabel('Detectors')

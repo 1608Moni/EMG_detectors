@@ -103,13 +103,13 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,a,type,lamda_on,
         subplot(2,1,1)
         boxplot(rFP')
         ylim([-0.1 0.4])
-        title('False positive rate')
+        ylabel('False positive rate')
         %ylim([0 0.2])
         subplot(2,1,2)
         boxplot(rFN')
         ylim([-0.1 0.4])
         %ylim([0 0.2])
-        title('False negative rate')
+        xlabel('False negative rate')
         sgtitle(algoname)
     % Compute the optimum parameter
    %% To find the closest point from origin to choose the best parameter.

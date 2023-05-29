@@ -70,7 +70,7 @@ plotflag        = 'N';
      end
      if plotflag ~= "Y" 
         pathname   = fileparts(outdir);
-        name       = fullfile(pathname, strcat('Alpha_pulse500',EMG.method,EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat('Dur8Pulse500',EMG.method,EMG.mode,'Output',field));
         save(name,'-struct','AGLRstepOp','-v7.3') 
      end
 end

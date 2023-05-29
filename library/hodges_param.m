@@ -3,7 +3,7 @@ function params = hodges_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur8\';
 
 params          = struct();
 params.M        = 3000;           % Window to compute baseline (ms)
@@ -15,7 +15,7 @@ if mode == "Test"
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.Wsize  = optparams.param(1);
-    params.weight   = 1:10;
+    params.weight = optparams.param(2);
     params.fc     = optparams.param(3); 
 else
 %% Range of parameters to train    

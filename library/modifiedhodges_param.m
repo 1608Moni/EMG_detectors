@@ -4,7 +4,7 @@ function params = modifiedhodges_param(mode,type,SNR,detector)
 % different paramter combination.  
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur8\';
 
 %%
 params          = struct();
@@ -16,7 +16,7 @@ if mode == "Test"
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
-    params.weight = 1:10;%optparams.param(1);
+    params.weight = optparams.param(1);
     params.fc     = optparams.param(2);    
 else
 params.fc       = 0.5:1:10;      % Cutoff frequency range for lpf(Hz)

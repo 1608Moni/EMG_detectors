@@ -4,7 +4,7 @@ function params = AGLRstep_params(mode,type,SNR,detector)
 %
 %% Define varaible for the script
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\'; 
+Optdir          = '..\detectors_review_paper\Optparams\Dur8\'; 
 params        = struct;
 params.tB     = 3000;
 params.M      = 3000;
@@ -17,7 +17,7 @@ datafile = strcat(type,detector,num2str(round(SNR)),'.mat');
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.Wsize   = optparams.param(1);
-    params.weight  = 1:10;  
+    params.weight  = optparams.param(2); 
 else
 params.Wsize  = 0.1:0.05:0.5;
 params.weight = 1:5;
