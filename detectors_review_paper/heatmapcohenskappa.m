@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges','hodges','AGLRstep','AGLRstepLaplace'};%{'modifiedhodges','Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges'};%,'hodges','AGLRstep','AGLRstepLaplace'};%{'modifiedhodges','Detector2018','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','FuzzyEnt'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -20,8 +20,8 @@ SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
 saveflag   = 1;                % 1 to enable saving the files
 
- lamda_on  = 500;%5000:-500:500; 
- lamda_off = 5000;%500:500:5000; 
+ lamda_on  = 5000:-500:500; 
+ lamda_off = 500:500:5000; 
  
  
 %% Go through the datafiles and compute the cost function
@@ -41,7 +41,7 @@ for a = 1:length(algoname)
 %                datafile   = strcat('Param2',char(mode),'Output',field,'.mat');
 % %                disp('a')
 %             else
-               datafile   = strcat('Alpha_pulse500',char(mode),'Output',field,'.mat');
+               datafile   = strcat('Pulse500PmovePmove',char(mode),'Output',field,'.mat');
 %             end
            
 %%            
@@ -55,7 +55,7 @@ for a = 1:length(algoname)
             [CFoutput] = Computingcrosscorrelation(output,algoname{a},a,string(type{1}),...
             lamda_on(k),lamda_off(i));         
             
-%              mean_cohenkappa(k,i) = CFoutput.mean; 
+             mean_cohenkappa(k,i) = CFoutput.mean; 
 %             P(:,i)     = CFoutput.CF(CFoutput.Optindex,:)';  
 %             %% store the optimum paramters 
 %             d = ['The optimum parameters for','are : ',num2str( output.params.combo{CFoutput.Optindex})];
@@ -92,13 +92,13 @@ for a = 1:length(algoname)
 %     RFP(:,a) = CFoutput.rFP;
 %     RFN(:,a) = CFoutput.rFN;
 %  
-%     figure(1)
-%     subplot(2,4,a)
-%     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.9 1]); %'ColorLimit',[0.7 1]
-%     h.Colormap = spring;
-%     ylabel('LamdaON')
-%     xlabel('LamdaOFF')
-%     title(algoname{a})
+    figure(1)
+    subplot(2,4,a)
+    h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0.7 1]); %'ColorLimit',[0.7 1]
+    h.Colormap = spring;
+    ylabel('LamdaON')
+    xlabel('LamdaOFF')
+    title(algoname{a})
 %     if mode == "Test"
 %         %% Save the opt cost (Test data) and Plot the boxchart for the 2 different SNR and detectors
 %         Optcost{1} = Cost_SNR0;

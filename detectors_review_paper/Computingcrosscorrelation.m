@@ -75,14 +75,14 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,a,type,lamda_on,
                         [CorrCoeff(q,p),rFP(q,p),rFN(q,p)] = crosscorrcompute(groundtruth(p,tB:Wshift:end),binary1);               
 % %                     end
              
-%              figure(p)
-% % %              subplot(5,10,p)
-%              stairs(t,groundtruth(p,:),'Linewidth',1.5)
-%              hold on
-%              stairs(t1,binop(p,:),'r--','Linewidth',1.5)
-%              sgtitle(algoname)
-%              txt = {strcat(num2str(round( CorrCoeff(q,p),5)))};
-%              text(1.5,0.8,txt,'FontSize',8)    
+             figure(p)
+% %              subplot(5,10,p)
+             stairs(t,groundtruth(p,:),'Linewidth',1.5)
+             hold on
+             stairs(t1,binop(p,:),'r--','Linewidth',1.5)
+             sgtitle(algoname)
+             txt = {strcat(num2str(round( CorrCoeff(q,p),5)))};
+             text(1.5,0.8,txt,'FontSize',8)    
 %              name = char(figuredir + string(strcat('Constant','ON_',num2str(lamda_off),'OFF_',num2str(lamda_on),algoname)));
 %              export_fig(name,'-pdf','-append',figure(p)); 
 %              print(figure(p), '-append', '-dpsc2', strcat('ON_',num2str(lamda_off),'OFF_',num2str(lamda_on),algoname,'.ps'));
@@ -98,19 +98,19 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,a,type,lamda_on,
             
              
         end
-      
-        figure(a)
-        subplot(2,1,1)
-        boxplot(rFP')
-        ylim([-0.1 0.4])
-        ylabel('False positive rate')
-        %ylim([0 0.2])
-        subplot(2,1,2)
-        boxplot(rFN')
-        ylim([-0.1 0.4])
-        %ylim([0 0.2])
-        xlabel('False negative rate')
-        sgtitle(algoname)
+%       
+%         figure(a)
+%         subplot(2,1,1)
+%         boxplot(rFP')
+%         ylim([-0.1 0.4])
+%         ylabel('False positive rate')
+%         %ylim([0 0.2])
+%         subplot(2,1,2)
+%         boxplot(rFN')
+%         ylim([-0.1 0.4])
+%         %ylim([0 0.2])
+%         xlabel('False negative rate')
+%         sgtitle(algoname)
     % Compute the optimum parameter
    %% To find the closest point from origin to choose the best parameter.
     index    = find(mu == max(mu));%bestparam(Avg_CF, range_CF);
