@@ -3,7 +3,7 @@ function params = modifiedLidierth_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur13\';
 %% Define parameters in the function
 params        = struct;
 params.M      = 3000;                 % wnidow to compute the baseline thrshold
@@ -11,13 +11,13 @@ params.n      = 1;                    % atleast 1 out of a window cross threshol
 params.tB     = 3000;                 % start of relax phase to test (ms)
 
 if mode == "Test"
-    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat('new',type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
     disp('Read parameters from the file')
     params.fc     = optparams.param(1); 
-    params.weight = 1:10;%optparams.param(2);
+    params.weight = optparams.param(2);
     params.T2     = optparams.param(3);
     params.T1     = optparams.param(4);
 else

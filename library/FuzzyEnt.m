@@ -29,7 +29,7 @@ for k = 1:length(t)
                 % calculate Chebyshev distance, excluding self-matching case
                 dist = max(abs(tempMat(:,i+1:N-params.dim) - repmat(tempMat(:,i),1,N-params.dim-i)));
                 % calculate fuzzy function of the distance
-                D = exp(-((dist).^(params.n))./(params.r));
+                  D = exp(-((dist).^(params.n))./(params.r));
                 count(i) = sum(D)/(N-params.dim);
             end
             correl(m-params.dim+1) = sum(count)/(N-params.dim);

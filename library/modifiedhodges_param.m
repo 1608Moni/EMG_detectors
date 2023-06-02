@@ -4,7 +4,7 @@ function params = modifiedhodges_param(mode,type,SNR,detector)
 % different paramter combination.  
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\Dur13\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur13\pulse500\';
 
 %%
 params          = struct();
