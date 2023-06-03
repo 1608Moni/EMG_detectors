@@ -1,7 +1,7 @@
 function params = FuzzEntparams(mode,type,SNR,detector)
 %%
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\Dur13\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur13\pulse500\';
 params      = struct;
 params.dim  = 2;
 params.n    = 2;

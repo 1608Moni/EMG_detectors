@@ -79,7 +79,7 @@ plotflag        = 'N';%input(prompt,'s');
             end
            if plotflag ~= "Y" 
             pathname   = fileparts(outdir);
-            name       = fullfile(pathname, strcat('NewConstant',EMG.method,EMG.mode,'Output',field));
+            name       = fullfile(pathname, strcat('New',EMG.method,EMG.mode,'Output',field));
             save(name,'-struct','lidierthOp','-v7.3')           
            end
 end

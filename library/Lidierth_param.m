@@ -3,7 +3,7 @@ function params = Lidierth_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\Dur13\';
+Optdir          = '..\detectors_review_paper\Optparams\Dur13\pulse500\';
 %% Define parameters in the function
 params        = struct;
 params.M      = 3000;             % wnidow to compute the baseline thrshold

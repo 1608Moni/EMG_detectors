@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges','AGLRstep','hodges','AGLRstepLaplace','Detector2018','modifiedLidierth','FuzzyEnt','lidierth'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','AGLRstep','hodges','AGLRstepLaplace','Detector2018','modifiedLidierth','lidierth'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -38,10 +38,10 @@ for a = 1:length(algoname)
             num2str(dur),'SNR',num2str(SNRdB(1)),'force',num2str(force));
             end
              if string(algoname{a}) == "Detector2018" 
-                datafile   = strcat('ConstantPmove',char(mode),'Output',field,'.mat');
+                datafile   = strcat('New',char(mode),'Output',field,'.mat');
 % %                disp('a')
              else
-               datafile   = strcat('ConstantPmove',char(mode),'Output',field,'.mat');
+               datafile   = strcat('NewPmove',char(mode),'Output',field,'.mat');
              end
            
 %%            
