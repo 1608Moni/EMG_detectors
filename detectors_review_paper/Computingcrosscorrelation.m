@@ -9,7 +9,6 @@ function [CFoutput] = Computingcrosscorrelation(output,algoname,a,type,lamda_on,
       figuredir          = 'D:\EMG detectors\detectors_review_paper\Figures\';
       fs                 = output.dataparams.fs;
       t0                 = (output.dataparams.t0*output.dataparams.fs);      % Actual Onset time
-      tB                 = 3*fs;
       params             = output.params.combo;
       No_of_combo_params = numel(params); 
       Ntrial             = output.dataparams.notrials;
