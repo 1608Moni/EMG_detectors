@@ -102,25 +102,7 @@ for a = 1:length(algoname)
     ylabel('LamdaON')
     xlabel('LamdaOFF')
     title(algoname{a})
-%     if mode == "Test"
-%         %% Save the opt cost (Test data) and Plot the boxchart for the 2 different SNR and detectors
-%         Optcost{1} = Cost_SNR0;
-%         Optcost{2} = Cost_SNRneg3;
-%         pathname       = fileparts(savedir);
-%         text           = strcat('ValidatedcostforboxplotInfinitynormsorted',char(mode),type(k),'Detector',num2str(length(algoname)));
-%         name           = fullfile(pathname, text{1});
-%         if saveflag == 1
-%             save(strcat(name,'.mat'),'Optcost'); 
-%         end
-%         %% Savnig the best cost function distribution for further analysis
-%         CF.cost  = A;
-%         pathname       = fileparts(savedir);
-%         text           = strcat('AnovaInifinitynormsorted',char(mode),type(k),'Detector',num2str(length(algoname)));    
-%         name           = fullfile(pathname, text{1});
-%         if saveflag == 1
-%             save(name,'-struct','CF','-v7.3') 
-%         end
-%     end
+%   
 end
 figure
 boxplot(box,'Label',algoname);
@@ -128,6 +110,11 @@ hold on
 yline(0.2,'r--')
 title('500 ms Pulse')
 ylabel('cost')
+data = [rFP_SNR0, rFN_SNR0]; % Cost_SNR0, f_delToff_SNR0,  f_delTOn_SNR0,
+algorname = repmat({'modifiedhodges','FuzzyEnt','modifiedlidierth','AGLRstepLaplace','AGLRstep','lidierth','hodges','Detector2018'},1,2);
+costfactors = [repmat({'rFP'},1,length(algoname)),repmat({'rFN'},1,length(algoname))]; %repmat({'cost'},1,length(algoname)),repmat({'Off'},1,length(algoname)),repmat({'On'},1,length(algoname)),...
+boxplot(data,{algorname,costfactors},'colors',repmat('km',1,2),'factorgap',[7 1],'labelverbosity','minor','BoxStyle','filled');
+ylim([0 0.6])
 
 % figure
 % subplot(2,1,1)
