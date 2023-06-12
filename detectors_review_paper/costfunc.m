@@ -56,10 +56,14 @@ function [CFoutput] = costfunc(output,algoname,type)
             %% Compute cost function for N = 50 trails for each parameter combination
             for p = 1:Ntrial
                     binary1 = binop(p,:);
-                    t0cap1   = t0cap(p);                                  
-                [CF(q,p),...
-                Latency(q,p),f_delT(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0cap1...
-                                                              ,groundtruth(p,:),t0,tB,fs,Wshift);                 
+                    t0cap1   = t0cap(p);    
+            %%
+%                 [CF(q,p),...
+%                 Latency(q,p),f_delT(q,p),rFP(q,p),rFN(q,p)] = costfuncInfinityNorm_eachtrial(binary1,t0cap1...
+%                                                               ,groundtruth(p,:),t0,tB,fs,Wshift);  
+            %%
+            
+            
             end   
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination

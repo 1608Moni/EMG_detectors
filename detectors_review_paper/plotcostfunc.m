@@ -20,9 +20,9 @@ function [] = plotcostfunc(CF,name)
 %                    clear Bincentre
                    xlim([0 1])   
                end
-               hold on
-               [uopt,vopt]=ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
-               p2 = plot(vopt,uopt, 'Color', [0.8 0 0],'Linewidth',1.5);
+%                hold on
+%                [uopt,vopt]=ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
+%                p2 = plot(vopt,uopt, 'Color', [0.8 0 0],'Linewidth',1.5);
 %                p2 = histogram(CF.CF(CF.Optindex,:),'Displaystyle','stairs','BinWidth',0.2,'EdgeColor',[0.8, 0, 0],'EdgeAlpha',1);%'Displaystyle','stairs'
 %                   p2.Visible = 'off';  
 %                    for j = 1:length(p2.BinEdges)-1 
@@ -46,31 +46,31 @@ function [] = plotcostfunc(CF,name)
 
 
 %       figure(1)
-      subplot(1,3,2)
-      sz = 30;
-      scatter(CF.Avg_CF,CF.range_CF,sz,'filled')    
-      hold on
-      plot(CF.Avg_CF(CF.Optindex),CF.range_CF(CF.Optindex),'o','Color',[0.6 0 0.2],'MarkerFaceColor',[0.8 0 0],'MarkerSize',6);
-      xlabel('Median (C_{med})')
-      ylabel('Inter-quartile range (C_{irq})')
-      set(gca, "LineWidth",1.1)
-      set(gca,"FontSize",12);
+%       subplot(1,3,2)
+%       sz = 30;
+%       scatter(CF.Avg_CF,CF.range_CF,sz,'filled')    
+%       hold on
+%       plot(CF.Avg_CF(CF.Optindex),CF.range_CF(CF.Optindex),'o','Color',[0.6 0 0.2],'MarkerFaceColor',[0.8 0 0],'MarkerSize',6);
+%       xlabel('Median (C_{med})')
+%       ylabel('Inter-quartile range (C_{irq})')
+%       set(gca, "LineWidth",1.1)
+%       set(gca,"FontSize",12);
 
 %% Plot the factors of cost function
 %  hold on
-% % figure(1)
-% subplot(1,3,3)
-% [u1,v1] = ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
-% [u2,v2] = ksdensity(CF.f_delT(CF.Optindex,:),'Bandwidth',Bw);
-% [u3,v3] = ksdensity(CF.rFP(CF.Optindex,:),'Bandwidth',Bw);
-% [u4,v4] = ksdensity(CF.rFN(CF.Optindex,:),'Bandwidth',Bw);
-% p = area(v1,u1,'EdgeColor',[0.8, 0, 0],'FaceColor',[1 0.9 0.9],'LineWidth', 1.25);
-% hold on
-% plot(v2,u2,'Color','b','LineWidth', 1.25)
-% hold on
-% plot(v3,u3,'LineWidth', 1.25)
-% hold on
-% plot(v4,u4,'LineWidth', 1.25)
+figure(1)
+subplot(1,3,3)
+[u1,v1] = ksdensity(CF.CF(CF.Optindex,:),'Bandwidth',Bw);
+[u2,v2] = ksdensity(CF.f_delT(CF.Optindex,:),'Bandwidth',Bw);
+[u3,v3] = ksdensity(CF.rFP(CF.Optindex,:),'Bandwidth',Bw);
+[u4,v4] = ksdensity(CF.rFN(CF.Optindex,:),'Bandwidth',Bw);
+p = area(v1,u1,'EdgeColor',[0.8, 0, 0],'FaceColor',[1 0.9 0.9],'LineWidth', 1.25);
+hold on
+plot(v2,u2,'Color','b','LineWidth', 1.25)
+hold on
+plot(v3,u3,'LineWidth', 1.25)
+hold on
+plot(v4,u4,'LineWidth', 1.25)
 % histogram(CF.CF(CF.Optindex,:),'BinWidth',0.1,'EdgeColor',[0.8, 0, 0],'FaceColor',[0.8, 0, 0],'FaceAlpha',0.2,'LineWidth',1.5);%'Displaystyle','stairs'
 % hold on
 % histogram(CF.f_delT(CF.Optindex,:),'BinWidth',0.1,'Displaystyle','stairs','EdgeColor',[1 0.7 0.3],'LineWidth',1.5);%,'Displaystyle','stairs'
