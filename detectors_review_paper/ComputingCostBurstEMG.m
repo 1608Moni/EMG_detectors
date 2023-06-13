@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'FuzzyEnt','modifiedLidierth','AGLRstep','AGLRstepLaplace','lidierth','hodges','Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -20,8 +20,8 @@ SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
 saveflag   = 0;                % 1 to enable saving the files
 
- lamda_on  = 5000:-500:500; 
- lamda_off = 500:500:5000; 
+ lamda_on  = 500;%5000:-500:500; 
+ lamda_off = 500;%500:500:5000; 
  
  
 %% Go through the datafiles and compute the cost function
@@ -88,42 +88,54 @@ for a = 1:length(algoname)
             clear output   
         end 
     end
-    box(:,a) = mean_cohenkappa(:);
-     
-     RFP(:,a) = CFoutput.rFP;
-     RFN(:,a) = CFoutput.rFN;
-     fdelT_off(:,a) = CFoutput.fdetT_Off;
-     fdelT_ON(:,a) = CFoutput.fdelT_ON;
+     box(:,a) = mean_cohenkappa(:);
+     cost(:,a) = CFoutput.CF(:);
+     RFP(:,a) = CFoutput.rFP(:);
+     RFN(:,a) = CFoutput.rFN(:);
+     fdelT_off(:,a) = CFoutput.fdetT_Off(:);
+     fdelT_ON(:,a) = CFoutput.fdelT_ON(:);
+     avgOn(:,a) = CFoutput.Avg_Latency_ON;
+     avgOff(:,a) = CFoutput.Avg_Latency_off;
 %  
-    figure(1)
-    subplot(2,4,a)
-    h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0 0.6]); %'ColorLimit',[0.7 1]
-    h.Colormap = spring;
-    ylabel('LamdaON')
-    xlabel('LamdaOFF')
-    title(algoname{a})
+%     figure(1)
+%     subplot(2,4,a)
+%     h= heatmap(lamda_off,lamda_on,mean_cohenkappa,'ColorLimit',[0 0.6]); %'ColorLimit',[0.7 1]
+%     h.Colormap = spring;
+%     ylabel('LamdaON')
+%     xlabel('LamdaOFF')
+%     title(algoname{a})
 %   
 end
-figure
-boxplot(box,'Label',algoname);
-hold on
-yline(0.2,'r--')
-title('500 ms Pulse')
-ylabel('cost')
-data = [rFP_SNR0, rFN_SNR0]; % Cost_SNR0, f_delToff_SNR0,  f_delTOn_SNR0,
-algorname = repmat({'modifiedhodges','FuzzyEnt','modifiedlidierth','AGLRstepLaplace','AGLRstep','lidierth','hodges','Detector2018'},1,2);
-costfactors = [repmat({'rFP'},1,length(algoname)),repmat({'rFN'},1,length(algoname))]; %repmat({'cost'},1,length(algoname)),repmat({'Off'},1,length(algoname)),repmat({'On'},1,length(algoname)),...
-boxplot(data,{algorname,costfactors},'colors',repmat('km',1,2),'factorgap',[7 1],'labelverbosity','minor','BoxStyle','filled');
-ylim([0 0.6])
-
 % figure
-% subplot(2,1,1)
-% boxplot(RFP,'Label',algoname);
-% ylim([0 0.2])
-% ylabel('False positive rate')
+% boxplot(box,'Label',algoname);
+% hold on
+% yline(0.2,'r--')
 % title('500 ms Pulse')
-% subplot(2,1,2)
-% boxplot(RFN,'Label',algoname);
-% ylim([0 0.2])
-% ylabel('False negative rate')
-% xlabel('Detectors')
+% ylabel('cost')
+figure
+data = [RFP, RFN, fdelT_off, fdelT_ON]; % Cost_SNR0, f_delToff_SNR0,  f_delTOn_SNR0,
+algorname = repmat({'modifiedhodges','FuzzyEnt','modifiedLidierth','AGLRstep','AGLRstepLaplace','lidierth','hodges','Detector2018'},1,4);
+costfactors = [repmat({'rFP'},1,length(algoname)),repmat({'rFN'},1,length(algoname)),repmat({'Off'},1,length(algoname)),repmat({'On'},1,length(algoname))]; %repmat({'cost'},1,length(algoname)),repmat({'Off'},1,length(algoname)),repmat({'On'},1,length(algoname)),...
+boxplot(data,{algorname,costfactors},'colors',repmat('kmbg',1,4),'factorgap',[7 1],'labelverbosity','minor','BoxStyle','filled');
+ylim([0 1])
+
+figure
+subplot(4,1,1)
+boxplot(RFP,'Label',algoname);
+ylim([0 0.2])
+ylabel('False positive rate')
+title('500 ms Pulse')
+subplot(4,1,2)
+boxplot(RFN,'Label',algoname);
+ylim([0 0.2])
+ylabel('False negative rate')
+xlabel('Detectors')
+subplot(4,1,3)
+boxplot(fdelT_off,'Label',algoname);
+
+ylabel('latency_off')
+title('500 ms Pulse')
+subplot(4,1,4)
+boxplot( fdelT_ON,'Label',algoname);
+ylabel('latency_on')
+xlabel('Detectors')
