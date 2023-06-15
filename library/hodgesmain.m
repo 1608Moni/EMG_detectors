@@ -86,7 +86,8 @@ processSaveflag = 0;
         end
         if plotflag ~= "Y"
             pathname   = fileparts(outdir);
-            name       = fullfile(pathname, strcat('New',EMG.method,EMG.mode,'Output',field));
+            name       = fullfile(pathname, strcat(EMG.method,EMG.mode,'Output',field));
+            name
             save(name,'-struct','hodgesOp','-v7.3')    
             disp('filesaved')
         end

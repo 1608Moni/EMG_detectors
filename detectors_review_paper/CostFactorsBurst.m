@@ -103,12 +103,12 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                     text(4.5,0.4,txt,'FontSize',12) 
                     txt1 = {strcat('AvgLatencyOff = ',num2str(round(Latencyparams{q,p}.f_delT_Off,3)))};
                     text(4.5,0.3,txt1,'FontSize',12) 
-%                     pause(2)
-%                     close all
-                    
-                    
-                    
-                    name = strcat(algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
+% %                     pause(2)
+% %                     close all
+%                     
+%                     
+%                     
+                    name = strcat('corrected',algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
                     title(name)
                     export_fig(char(name),'-pdf','-append',figure(p)); 
                    
