@@ -11,7 +11,7 @@ params          = struct();
 params.tB       = 3000;           % start of relax phase to test (ms)
 params.M        = 3000; 
 if mode == "Test"  
-    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat('modifiedRFP&RFN13',type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

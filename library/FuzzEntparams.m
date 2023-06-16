@@ -9,7 +9,7 @@ params.r    = 0.25;
 params.tB   = 3000;
 params.M    = 3000;
 if mode == "Test"
-    datafile = strcat('new',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat('modifiedRFP&RFN13',type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

@@ -12,7 +12,7 @@ params.M        = 3000;          % Window to compute baseline (ms)
 params.tB       = 3000;          % start of relax phase to test (ms)
 %%
 if mode == "Test"
-   datafile = strcat('new',type,detector,num2str(round(SNR)),'.mat');    
+   datafile = strcat('modifiedRFP&RFN13',type,detector,num2str(round(SNR)),'.mat');    
 %To run the detector with parameters in the paper Balasubranian 2018 et al
 % datafile = strcat('Detector2018','.mat');    
 optparamsfile = Optdir + string(datafile);

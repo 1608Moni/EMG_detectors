@@ -68,7 +68,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                 [rFP(q,p),rFN(q,p)]= crosscorrcompute(groundtruth(p,tB:Wshift:end),binop(p,(tB/Wshift):end)); 
                  
                  %% compute cost 
-                CF(q,p) = max([Latencyparams{q,p}.f_delT_Off,  Latencyparams{q,p}.f_delT_ON ,rFP(q,p) ,rFN(q,p)]); % Computing the infinity norm     
+                CF(q,p) = max([Latencyparams{q,p}.f_delT_Off,  Latencyparams{q,p}.f_delT_ON ,min(10*rFP(q,p),1) ,min(10*rFN(q,p),1)]); % Computing the infinity norm     
                 f_delT_off(q,p) =  Latencyparams{q,p}.f_delT_Off;
                 f_delT_ON(q,p)  =  Latencyparams{q,p}.f_delT_ON;
                 Avg_Latency_ON(q,p)  = Latencyparams{q,p}.Avg_Latency_ON;
@@ -77,40 +77,40 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                     
                     
 % %                 
-                    figure(p)
-                   
-                    stairs(groundtruth(p,:),'LineWidth',1.5);
-                    hold on
-                    stairs(binop(p,:),'r');
-                    if (sum(isnan(Latencyparams{q,p}.t0cap_On)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_On == 0)) == 1)
-                        hold on                   
-                        stem(Latencyparams{q,p}.t0cap_On,binop(p,Latencyparams{q,p}.t0cap_On),'m','LineWidth',1);
-                    end
-                    if (sum(isnan(Latencyparams{q,p}.t0cap_off)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_off == 0)) == 1)
-                        hold on
-                        stem(Latencyparams{q,p}.t0cap_off,-binop(p,Latencyparams{q,p}.t0cap_off),'g','LineWidth',1);
-                    end
-                    hold on
-                    stem(Latencyparams{q,p}.lEdge_GT,groundtruth(p,Latencyparams{q,p}.lEdge_GT),'k');
-                    hold on
-                    stem(Latencyparams{q,p}.tEdge_GT,groundtruth(p,Latencyparams{q,p}.tEdge_GT),'c');
-                    ylim([-1.1 1.1])  
-                    txt = {strcat('rFP = ',num2str(round(rFP(q,p),3)))};
-                    text(4.5,0.8,txt,'FontSize',12) 
-                    txt1 = {strcat('rFN = ',num2str(round(rFN(q,p),3)))};
-                    text(4.5,0.6,txt1,'FontSize',12) 
-                    txt = {strcat('AvgLatencyOn = ',num2str(round(Latencyparams{q,p}.f_delT_ON,3)))};
-                    text(4.5,0.4,txt,'FontSize',12) 
-                    txt1 = {strcat('AvgLatencyOff = ',num2str(round(Latencyparams{q,p}.f_delT_Off,3)))};
-                    text(4.5,0.3,txt1,'FontSize',12) 
-% %                     pause(2)
-% %                     close all
-%                     
-%                     
-%                     
-                    name = strcat('corrected',algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
-                    title(name)
-                    export_fig(char(name),'-pdf','-append',figure(p)); 
+%                     figure(p)
+%                    
+%                     stairs(groundtruth(p,:),'LineWidth',1.5);
+%                     hold on
+%                     stairs(binop(p,:),'r');
+%                     if (sum(isnan(Latencyparams{q,p}.t0cap_On)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_On == 0)) == 1)
+%                         hold on                   
+%                         stem(Latencyparams{q,p}.t0cap_On,binop(p,Latencyparams{q,p}.t0cap_On),'m','LineWidth',1);
+%                     end
+%                     if (sum(isnan(Latencyparams{q,p}.t0cap_off)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_off == 0)) == 1)
+%                         hold on
+%                         stem(Latencyparams{q,p}.t0cap_off,-binop(p,Latencyparams{q,p}.t0cap_off),'g','LineWidth',1);
+%                     end
+%                     hold on
+%                     stem(Latencyparams{q,p}.lEdge_GT,groundtruth(p,Latencyparams{q,p}.lEdge_GT),'k');
+%                     hold on
+%                     stem(Latencyparams{q,p}.tEdge_GT,groundtruth(p,Latencyparams{q,p}.tEdge_GT),'c');
+%                     ylim([-1.1 1.1])  
+%                     txt = {strcat('rFP = ',num2str(round(rFP(q,p),3)))};
+%                     text(4.5,0.8,txt,'FontSize',12) 
+%                     txt1 = {strcat('rFN = ',num2str(round(rFN(q,p),3)))};
+%                     text(4.5,0.6,txt1,'FontSize',12) 
+%                     txt = {strcat('AvgLatencyOn = ',num2str(round(Latencyparams{q,p}.f_delT_ON,3)))};
+%                     text(4.5,0.4,txt,'FontSize',12) 
+%                     txt1 = {strcat('AvgLatencyOff = ',num2str(round(Latencyparams{q,p}.f_delT_Off,3)))};
+%                     text(4.5,0.3,txt1,'FontSize',12) 
+% % %                     pause(2)
+% % %                     close all
+% %                     
+% %                     
+% %                     
+%                     name = strcat('WeightedCost',algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
+%                     title(name)
+%                     export_fig(char(name),'-pdf','-append',figure(p)); 
                    
                  
             end 

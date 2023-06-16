@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'Detector2018'};%,'AGLRstepLaplace','FuzzyEnt','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'modifiedhodges','AGLRstepLaplace','modifiedLidierth','AGLRstep','lidierth','hodges'};%,,'Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 13;               % Duration of EMG signal in each trail (s)
@@ -20,8 +20,8 @@ SNRdB      = [0];           % Testing for 2 different SNR 0 dB and -3 dB
 CF         = struct();         % 
 saveflag   = 0;                % 1 to enable saving the files
 
- lamda_on  = 5000;%:-500:500; 
- lamda_off = 500;%:500:5000; 
+ lamda_on  = 5000:-500:500; 
+ lamda_off = 500:500:5000; 
  
  
 %% Go through the datafiles and compute the cost function
@@ -39,10 +39,10 @@ for a = 1:length(algoname)
             num2str(dur),'SNR',num2str(SNRdB(1)),'force',num2str(force));
             end
              if string(algoname{a}) == "Detector2018" 
-                datafile   = strcat('Pmove',char(mode),'Output',field,'.mat');
+                datafile   = strcat('WeightedCostPmove',char(mode),'Output',field,'.mat');
 % %                disp('a')
              else
-               datafile   = strcat('Pmove',char(mode),'Output',field,'.mat');
+               datafile   = strcat('WeightedCostPmove',char(mode),'Output',field,'.mat');
              end
            
 %%            
