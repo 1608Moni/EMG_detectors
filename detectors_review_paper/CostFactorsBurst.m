@@ -68,7 +68,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                 [rFP(q,p),rFN(q,p)]= crosscorrcompute(groundtruth(p,tB:Wshift:end),binop(p,(tB/Wshift):end)); 
                  
                  %% compute cost 
-                CF(q,p) = max([Latencyparams{q,p}.f_delT_Off,  Latencyparams{q,p}.f_delT_ON ,min(10*rFP(q,p),1) ,min(10*rFN(q,p),1)]); % Computing the infinity norm     
+                CF(q,p) = max([Latencyparams{q,p}.f_delT_Off,  Latencyparams{q,p}.f_delT_ON ,rFP(q,p) ,rFN(q,p)]); %min(10*rFP(q,p),1) ,min(10*rFN(q,p),1) Computing the infinity norm     
                 f_delT_off(q,p) =  Latencyparams{q,p}.f_delT_Off;
                 f_delT_ON(q,p)  =  Latencyparams{q,p}.f_delT_ON;
                 Avg_Latency_ON(q,p)  = Latencyparams{q,p}.Avg_Latency_ON;
@@ -111,7 +111,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
 %                     name = strcat('WeightedCost',algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
 %                     title(name)
 %                     export_fig(char(name),'-pdf','-append',figure(p)); 
-                   
+%                    
                  
             end 
 %         close all         
