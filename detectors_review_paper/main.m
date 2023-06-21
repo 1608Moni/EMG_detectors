@@ -13,12 +13,12 @@ close all;
 datadir         = '..\data\';
 addpath('..\library\');
 mode   = ["Test"];
-method = "Pmove";
+method = "T_EdgePmove";
 Model  = ["biophy"];
 SNR    = ["0"];
 trial  = 50;                % Total number of trials
-dur    = 13;                % Duration in seconds
-Detectors =["AGLRstep2","Detector2018"];%"hodges1","hodges2","AGLRstep1","AGLRstep2"];%,"Detector2018","lidierth1","bonato",...
+dur    = 15;                % Duration in seconds
+Detectors =["Detector2018"];%"hodges1","hodges2","AGLRstep1","AGLRstep2"];%,"Detector2018","lidierth1","bonato",...
     %"AGLRstep1","AGLRstep2","lidierth2","FuzzyEnt","TKEO","hodges1","hodges2"];
 %%
  lamda_on  = 500:500:5000;

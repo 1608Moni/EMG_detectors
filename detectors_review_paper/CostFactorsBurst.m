@@ -7,6 +7,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
 %% Initialise parameters
       datadir            = '..\data\';
       figuredir          = 'D:\EMG detectors\detectors_review_paper\Figures\';
+      method             = "T_EdgePmove";
       fs                 = output.dataparams.fs;
       t0                 = (output.dataparams.t0*output.dataparams.fs);      % Actual Onset time
       params             = output.params.combo;
@@ -27,7 +28,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
         groundtruth = GroundTruth(output.dataparams.dur*output.dataparams.fs,t0,type);
       elseif type == "biophy"
 %         if output.dataparams.mode == "Test" 
-            datafile   =  strcat('Pmove',char(output.dataparams.mode),...
+            datafile   =  strcat(char(method),char(output.dataparams.mode),...
                 'SNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));  
 %         else
 %            datafile   =  strcat('EMGDataSNR',num2str(SNR),'trail',num2str(Ntrial),'dur',num2str(dur),char(type));
@@ -62,10 +63,10 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                  binop(find(binop == 0)) = -1;
                  groundtruth(find(groundtruth == 0)) = -1;
                 
-                [Latencyparams{q,p}] = LatencyBurst1(groundtruth(p,:), binop(p,:),dur,fs,Wshift);                 
+                [Latencyparams{q,p}] = LatencyBurst2(groundtruth(p,1:Wshift:end), binop(p,:),dur,fs,Wshift);                 
                
                 %% To compute the rFP and rFN
-                [rFP(q,p),rFN(q,p)]= crosscorrcompute(groundtruth(p,tB:Wshift:end),binop(p,(tB/Wshift):end)); 
+                [rFP(q,p),rFN(q,p)]= crosscorrcompute(groundtruth(p,tB:Wshift:13000),binop(p,(tB/Wshift):13000/Wshift)); 
                  
                  %% compute cost 
                 CF(q,p) = max([Latencyparams{q,p}.f_delT_Off,  Latencyparams{q,p}.f_delT_ON ,rFP(q,p) ,rFN(q,p)]); %min(10*rFP(q,p),1) ,min(10*rFN(q,p),1) Computing the infinity norm     
@@ -77,40 +78,40 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
                     
                     
 % %                 
-%                     figure(p)
-%                    
-%                     stairs(groundtruth(p,:),'LineWidth',1.5);
-%                     hold on
-%                     stairs(binop(p,:),'r');
-%                     if (sum(isnan(Latencyparams{q,p}.t0cap_On)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_On == 0)) == 1)
-%                         hold on                   
-%                         stem(Latencyparams{q,p}.t0cap_On,binop(p,Latencyparams{q,p}.t0cap_On),'m','LineWidth',1);
-%                     end
-%                     if (sum(isnan(Latencyparams{q,p}.t0cap_off)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_off == 0)) == 1)
-%                         hold on
-%                         stem(Latencyparams{q,p}.t0cap_off,-binop(p,Latencyparams{q,p}.t0cap_off),'g','LineWidth',1);
-%                     end
+                    figure(p)
+                   
+                    stairs(groundtruth(p,1:Wshift:end),'LineWidth',1.5);
+                    hold on
+                    stairs(binop(p,:),'r');
+                    if (sum(isnan(Latencyparams{q,p}.t0cap_On)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_On == 0)) == 1)
+                        hold on                   
+                        stem(Latencyparams{q,p}.t0cap_On,binop(p,Latencyparams{q,p}.t0cap_On),'m','LineWidth',1);
+                    end
+                    if (sum(isnan(Latencyparams{q,p}.t0cap_off)) == 0) && (isempty(find(Latencyparams{q,p}.t0cap_off == 0)) == 1)
+                        hold on
+                        stem(Latencyparams{q,p}.t0cap_off,-binop(p,Latencyparams{q,p}.t0cap_off),'g','LineWidth',1);
+                    end
 %                     hold on
 %                     stem(Latencyparams{q,p}.lEdge_GT,groundtruth(p,Latencyparams{q,p}.lEdge_GT),'k');
 %                     hold on
 %                     stem(Latencyparams{q,p}.tEdge_GT,groundtruth(p,Latencyparams{q,p}.tEdge_GT),'c');
-%                     ylim([-1.1 1.1])  
-%                     txt = {strcat('rFP = ',num2str(round(rFP(q,p),3)))};
-%                     text(4.5,0.8,txt,'FontSize',12) 
-%                     txt1 = {strcat('rFN = ',num2str(round(rFN(q,p),3)))};
-%                     text(4.5,0.6,txt1,'FontSize',12) 
-%                     txt = {strcat('AvgLatencyOn = ',num2str(round(Latencyparams{q,p}.f_delT_ON,3)))};
-%                     text(4.5,0.4,txt,'FontSize',12) 
-%                     txt1 = {strcat('AvgLatencyOff = ',num2str(round(Latencyparams{q,p}.f_delT_Off,3)))};
-%                     text(4.5,0.3,txt1,'FontSize',12) 
-% % %                     pause(2)
-% % %                     close all
-% %                     
-% %                     
-% %                     
-%                     name = strcat('WeightedCost',algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
-%                     title(name)
-%                     export_fig(char(name),'-pdf','-append',figure(p)); 
+                    ylim([-1.1 1.1])  
+                    txt = {strcat('rFP = ',num2str(round(rFP(q,p),3)))};
+                    text(4.5,0.8,txt,'FontSize',12) 
+                    txt1 = {strcat('rFN = ',num2str(round(rFN(q,p),3)))};
+                    text(4.5,0.6,txt1,'FontSize',12) 
+                    txt = {strcat('AvgLatencyOn = ',num2str(round(Latencyparams{q,p}.f_delT_ON,3)))};
+                    text(4.5,0.4,txt,'FontSize',12) 
+                    txt1 = {strcat('AvgLatencyOff = ',num2str(round(Latencyparams{q,p}.f_delT_Off,3)))};
+                    text(4.5,0.3,txt1,'FontSize',12) 
+%                     pause(2)
+%                     close all
+% % %                     
+%                     
+%                     
+                    name = strcat(algoname,'Lamda_ON',num2str(lamda_on),'Lamda_OFF',num2str(lamda_off));
+                    title(name)
+                    export_fig(char(name),'-pdf','-append',figure(p)); 
 %                    
                  
             end 
