@@ -72,7 +72,7 @@ plotflag        = 'N';%input(prompt,'s');
         pathname   = fileparts(outdir);
 %         name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
         %%to save the parameter as in the paper
-        name       = fullfile(pathname, strcat('WeightedCost',EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
         save(name,'-struct','detectorOp','-v7.3')               
         end
 end

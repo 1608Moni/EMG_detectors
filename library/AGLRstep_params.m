@@ -4,14 +4,14 @@ function params = AGLRstep_params(mode,type,SNR,detector)
 %
 %% Define varaible for the script
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\Dur13\pulse500\'; 
+Optdir          = '..\detectors_review_paper\Optparams\'; 
 params        = struct;
 params.tB     = 3000;
 params.M      = 3000;
 
 %%
 if mode == "Test"
-datafile = strcat('modifiedRFP&RFN13',type,detector,num2str(round(SNR)),'.mat');    
+datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);

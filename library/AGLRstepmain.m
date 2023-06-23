@@ -70,7 +70,7 @@ plotflag        = 'N';
      end
      if plotflag ~= "Y" 
         pathname   = fileparts(outdir);
-        name       = fullfile(pathname, strcat('WeightedCost',EMG.method,EMG.mode,'Output',field));
+        name       = fullfile(pathname, strcat('Constant',EMG.method,EMG.mode,'Output',field));
         save(name,'-struct','AGLRstepOp','-v7.3') 
      end
 end

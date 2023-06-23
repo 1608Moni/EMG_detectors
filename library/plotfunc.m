@@ -76,9 +76,9 @@ plot(t,Output.emgrect,'Color', [0.8 0.85 1]);
 hold on
 plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
 hold on
-plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
+plot(t,Output.binop/10,'Color', [0 0 0 0.4], 'LineWidth',1)
 hold on
-plot(t,groundtruth,'Color','r','LineWidth',1)
+plot(t,groundtruth/10,'Color','r','LineWidth',1)
 hold on
 yline(Output.h,'r--')
 legend('emg_{rect}','emg_{lpf}','binop','groundtruth','thrshold')
@@ -241,6 +241,6 @@ if detector == "Detector2018"
 
 
 end
-pause(2)
-close all
+% pause(2)
+% close all
 end
