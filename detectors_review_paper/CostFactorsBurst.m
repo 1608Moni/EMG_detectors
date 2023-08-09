@@ -21,7 +21,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
       range_CF           = zeros(1,length(output.binop));
       tB                 = output.params.tB;
       CFoutput           = struct();
-      plotflag           = 0;   % 1 to enable plotting 0 otherwise
+      plotflag           = 1;   % 1 to enable plotting 0 otherwise
       
          
       %% Generating Groundtruth   
@@ -138,7 +138,7 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
 %             savefig(strcat('ON_4500','OFF_500',algoname,'.fig'));
                         
             %% Compute the median and IQR of the cost distribution of each parameter combination
-%             [Avg_CF(q), range_CF(q)] =  medIqr(cohenCoeff(q,:));
+             [Avg_CF(q), range_CF(q)] =  medIqr(CF(q,:));
              mu(q) = mean( CF(q,:));
             
              
@@ -171,14 +171,24 @@ function [CFoutput] = CostFactorsBurst(output,algoname,a,type,lamda_on,lamda_off
      CFoutput.Avg_Latency_off = Avg_Latency_off;
     % CFoutput.Optindex    = index;
      CFoutput.mean    = mu;
+     CFoutput.Avg_CF  = Avg_CF;
+     CFoutput.range_CF = range_CF;
      
      if  plotflag == 1
       %% Plot the cost function and factors plots
-      figure(1)
-      subplot(1,5,1)
-      [u,v]=ksdensity(CFoutput.CF(q,:),'Bandwidth',0.02);
-      hold on
-      p1 = plot(v,u, 'Color', [0.8 0.85 1]);
+        figure(1)
+        hold on
+        sz = 30;
+        scatter(CFoutput.Avg_CF,CFoutput.range_CF,sz,'MarkerFaceColor',[0 .5 .5]*a,'MarkerEdgeColor',[0 .5 .5]*a)    
+%         hold on
+%         plot(CF.Avg_CF(CF.Optindex),CF.range_CF(CF.Optindex),'o','Color',[0.6 0 0.2],'MarkerFaceColor',[0.8 0 0],'MarkerSize',6);
+        xlabel('Median (C_{med})')
+        ylabel('Inter-quartile range (C_{irq})')
+        set(gca, "LineWidth",1.1)
+        set(gca,"FontSize",12);
+        xlim([0 0.6])
+        ylim([0 0.6])
+        title(algoname)
         
      end
 end

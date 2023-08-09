@@ -12,7 +12,7 @@ Outdir     = strcat('output\',mode,'\');
 savedir    = strcat('costfunction\',mode,'\',opt,'\');
 %%
 type       = {'biophy'};
-algoname   = {'modifiedhodges','fuzzyEnt'};%'modifiedLidierth','AGLRstep','AGLRstepLaplace','lidierth','hodges','Detector2018'};%,'Detector2018'};%,'AGLRstepLaplace','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%'AGLRstepLaplace','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%,,'Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
+algoname   = {'fuzzyEnt','fuzzyEnt'};%,'modifiedhodges','modifiedLidierth','AGLRstep','AGLRstepLaplace','lidierth','hodges','Detector2018'};%,'Detector2018'};%,'AGLRstepLaplace','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%'AGLRstepLaplace','modifiedLidierth','AGLRstep','lidierth','hodges','Detector2018'};%,,'Detector2018'};%;'modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'FuzzyEnt','modifiedhodges','lidierth','modifiedLidierth','AGLRstep','hodges','AGLRstepLaplace','Detector2018'};%'modifiedhodges','AGLRstep','AGLRstepLaplace','FuzzyEnt','modifiedLidierth','hodges','Detector2018','lidierth','TKEO','bonato','SampEnt','CWT','SSA'};%,'hodges','modifiedhodges','lidierth','modifiedLidierth','bonato','TKEO','AGLRstep','AGLRstepLaplace','FuzzyEnt','SampEnt','CWT','SSA'};%,'lidierth','modifiedLidierth','Bonato','TKEO'};%'lidierth','modifiedLidierth','Bonato','TKEO','FuzzEnt','cwt','SSAEnt'};
 N          = 50;               % Number of trials
 force      = 300;              % forcelevel for biophy model : filename
 dur        = 15;               % Duration of EMG signal in each trail (s)
@@ -38,12 +38,15 @@ for a = 1:length(algoname)
             field      = strcat(algoname{a},'trail',num2str(N),type{1},'dur',...
             num2str(dur),'SNR',num2str(SNRdB(1)),'force',num2str(force));
             end
-             if string(algoname{a}) == "AGLRstepLaplace" || string(algoname{a}) == "AGLRstep" ||...
-                      string(algoname{a}) == "lidierth" || string(algoname{a}) == "modifiedLidierth"
-                 datafile   = strcat('WeightedCostT_EdgePmove',char(mode),'Output',field,'.mat');
-% % %                disp('a')
+%               if string(algoname{a}) == "AGLRstepLaplace" || string(algoname{a}) == "AGLRstep" ||...
+%                   string(algoname{a}) == "lidierth" || string(algoname{a}) == "modifiedLidierth"
+%                   datafile   = strcat('WeightedCostT_EdgePmove',char(mode),'Output',field,'.mat');
+%  % % %                disp('a')
+%               else
+              if a == 2
+                  datafile   = strcat('ConstantT_EdgePmove',char(mode),'Output',field,'.mat');
               else
-               datafile   = strcat('T_EdgePmove',char(mode),'Output',field,'.mat');
+                  datafile   = strcat('T_EdgePmove',char(mode),'Output',field,'.mat');
               end
            
 %%            
@@ -107,17 +110,17 @@ for a = 1:length(algoname)
      avgOn(:,a) = CFoutput.Avg_Latency_ON;
      avgOff(:,a) = CFoutput.Avg_Latency_off;
      
-     figure(a)
-     hold on
-     s = scatter(RFP(:,a),(1-RFN(:,a)));
-     s.AlphaData = 0.1;
-     s.MarkerFaceAlpha = 0.4;
-     s.MarkerEdgeAlpha = 0.2;
-    
-     xlabel('False Positive rate')
-     ylabel('True Positive rate')
-     xlim([0 1])
-     ylim([0 1])
+%      figure(a)
+%      hold on
+%      s = scatter(RFP(:,a),(1-RFN(:,a)));
+%      s.AlphaData = 0.1;
+%      s.MarkerFaceAlpha = 0.4;
+%      s.MarkerEdgeAlpha = 0.2;
+%     
+%      xlabel('False Positive rate')
+%      ylabel('True Positive rate')
+%      xlim([0 1])
+%      ylim([0 1])
      
 %  
 %     figure(1)
@@ -135,8 +138,8 @@ end
 % boxplot(box,'Label',algoname);
 % % hold on
 % yline(0.2,'r--')
-% title('500 ms Pulse')
-% ylabel('cost')
+%  title('Constant')
+%  ylabel('cost')
 % figure(3)
 % data = [RFP, RFN, fdelT_off, fdelT_ON]; % Cost_SNR0, f_delToff_SNR0,  f_delTOn_SNR0,
 % algorname = repmat(algoname,1,4);

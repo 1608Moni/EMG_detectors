@@ -11,7 +11,7 @@ params.n      = 1;                    % atleast 1 out of a window cross threshol
 params.tB     = 3000;                 % start of relax phase to test (ms)
 
 if mode == "Test"
-    datafile = strcat('modifiedRFP&RFN13',type,detector,num2str(round(SNR)),'.mat');    
+    datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
     optparams = load(optparamsfile);
