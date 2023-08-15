@@ -34,7 +34,7 @@ processSaveflag = 1;
             % Hodeges Detector
 %              figure(200*i); plot(EMG.Groundtruth(i,:),'LineWidth',1.25)
             if choice == '1'
-                hodgesOutput = hodges(x(i,:), params.combo{j}, params, EMG.param);
+%                 hodgesOutput = hodges(x(i,:), params.combo{j}, params, EMG.param);
             elseif choice == '2'
                 hodgesOutput = modifiedhodges(x(i,:), params.combo{j}, params, EMG.param);
             end            

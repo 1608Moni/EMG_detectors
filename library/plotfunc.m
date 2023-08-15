@@ -20,7 +20,9 @@ hold on
     end
 plot(t,Output.testfunc,'m','LineWidth',1.5)
 hold on
-plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
+plot(t,max(Output.emgrect)*Output.binop,'Color', [0 0 0], 'LineWidth',1)
+hold on
+plot(t,max(Output.emgrect)*groundtruth,'r','LineWidth',1)
 hold on
 yline(Output.thresh,'r--')
 % hold on
@@ -50,8 +52,8 @@ title(detector)
     end
 end
 
-if detector == "modifiedhodges" || detector == "modifiedLidierth"
-if detector == "modifiedLidierth"
+if detector == "modifiedhodges" || detector == "modifiedlidierth"
+if detector == "modifiedlidierth"
         figure
         subplot(3,1,1)
         plot(t,Output.emglpf,'m','LineWidth',1.5)
@@ -76,9 +78,9 @@ plot(t,Output.emgrect,'Color', [0.8 0.85 1]);
 hold on
 plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
 hold on
-plot(t,Output.binop/10,'Color', [0 0 0 0.4], 'LineWidth',1)
+plot(t,max(Output.emgrect)*Output.binop,'Color', [0 0 0 0.4], 'LineWidth',1)
 hold on
-plot(t,groundtruth/10,'Color','r','LineWidth',1)
+plot(t,max(Output.emgrect)*groundtruth,'Color','r','LineWidth',1)
 hold on
 yline(Output.h,'r--')
 legend('emg_{rect}','emg_{lpf}','binop','groundtruth','thrshold')
@@ -90,18 +92,20 @@ end
 end
 
 if detector == "AGLRstep" || detector == "AGLRstepLaplace"
-plot(t,Output.signcond,'Color', [0.8 0.85 1]);
+% plot(t,Output.signcond,'Color', [0.8 0.85 1]);
+% hold on
+plot(t,Output.testfunc, 'Color', [0.8 0.85 1], 'LineWidth',1);
 hold on
-plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
+plot(t,max(Output.testfunc)*Output.binop,'Color', [0 0 0], 'LineWidth',1)
 hold on
-plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',1)
+plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
 hold on
 yline(Output.h,'r--')
 hold on
-xline(Output.t0cap,'r','LineWidth',1)
-hold on
-xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('emg_{whitened}','testfunc','binop','thrshold','Onset_{est}','Onset_{act}')
+% xline(Output.t0cap,'r','LineWidth',1)
+% hold on
+% xline(Output.dataparams.t0,'g','LineWidth',1)
+legend('testfunc','binop','groundtruth','thrshold') %'emg_{whitened}',
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
@@ -114,13 +118,14 @@ plot(t,Output.testfunc,'Color', [0.6 0 0.2]);
 hold on
 yline(Output.h,'r--')
 subplot(2,1,2)
-plot(t,Output.binop,'Color', [0 0 0], 'LineWidth',0.5)
+plot(t,max(Output.testfunc)*Output.binop,'Color', [0 0 0], 'LineWidth',0.5)
 hold on
-xline(Output.t0cap,'r','LineWidth',1)
+plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
+% xline(Output.t0cap,'r','LineWidth',1)
 ylim([-0.1 1.1])
-hold on
-xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('testfunc','binop','thrshold','Onset_{est}','Onset_{act}')
+% hold on
+% xline(Output.dataparams.t0,'g','LineWidth',1)
+legend('testfunc','thrshold','binop','groundtruth')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
@@ -222,7 +227,7 @@ xlabel('Time (ms)')
 title('CUMSUM statistics')
 end
 
-if detector == "Detector2018"
+if detector == "EMGdetector"
  p = Output.paramcombo(3);
  subplot(2,1,1)
  plot(t,Output.emgbpf,'Color',[0.8 0.85 1]);
@@ -231,12 +236,12 @@ if detector == "Detector2018"
  hold on;
  yline(Output.h);
  hold on
- stem(t(1:p:end),(Output.bin1)/2,'LineWidth',1.25,'Color',[0 0 0]);
- ylim([-0.1 1.1])
+ stairs(t(1:p:end),max(Output.emgbpf)*(Output.bin1)/2,'LineWidth',1.25,'Color',[0 0 0]);
+%  ylim([-0.1 1.1])
  subplot(2,1,2)
- stem(t(1:p:end),(Output.binop),'LineWidth',1.25);
- hold on
- xline(Output.t0cap)
+ stairs(t(1:p:end),(Output.binop),'LineWidth',1.25);
+%  hold on
+%  xline(Output.t0cap)
  ylim([-0.1 1.1])
 
 

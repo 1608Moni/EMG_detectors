@@ -94,13 +94,13 @@ bin1 = bin1(1:p:end);
 
 
 
-%% If the decision rule not satisfied
-if isempty(binop(binop(Dataparams.t0*Dataparams.fs/p:end)>0)) == 1
-    t0cap = NaN;
-    disp('Onset not found')
-else
-    t0cap = t1(Dataparams.t0*Dataparams.fs/p-1 + min(find(binop(Dataparams.t0*Dataparams.fs/p:end) == 1))-1);
-end
+% %% If the decision rule not satisfied
+% if isempty(binop(binop(Dataparams.t0*Dataparams.fs/p:end)>0)) == 1
+%     t0cap = NaN;
+%     disp('Onset not found')
+% else
+%     t0cap = t1(Dataparams.t0*Dataparams.fs/p-1 + min(find(binop(Dataparams.t0*Dataparams.fs/p:end) == 1))-1);
+% end
 % 
 % subplot(2,1,1)
 % plot(t(1:p:end),g(1:p:end),'Color',[0 0 1 0.4]);hold on; yline(h);
@@ -123,7 +123,7 @@ detectorOutput.emgbpf     = EMG_bpf;
 detectorOutput.testfunc   = g;
 detectorOutput.binop      = binop;
 detectorOutput.bin1       = bin1;
-detectorOutput.t0cap      = NaN;
+% detectorOutput.t0cap      = NaN;
 detectorOutput.paramcombo = variable;
 detectorOutput.h          = h;
 detectorOutput.mean_baseline  = mean_base;

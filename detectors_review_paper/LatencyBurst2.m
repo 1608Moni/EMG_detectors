@@ -16,7 +16,7 @@ function [LatencyParams] = LatencyBurst2(groundtruth, binop,dur,fs,Wshift)
 %                     tEdge_binop = tEdge_binop/ Wshift;
                   
                     if isempty(lEdge_GT) == 1
-                        if isempty(lEdge_binop) == 1
+                        if isempty(lEdge_binop) == 1 
                             disp('No leading edge found')
                             t0cap_On = 0;
                             Latency_On = 0; 
@@ -30,13 +30,13 @@ function [LatencyParams] = LatencyBurst2(groundtruth, binop,dur,fs,Wshift)
                         end
                     end
 %                     
-                     if isempty(tEdge_GT) == 1
-                        if isempty(tEdge_binop) == 1
+                     if isempty(tEdge_GT) == 1 && isempty(lEdge_GT) == 0
+                        if isempty(tEdge_binop) == 1 
                             disp('No trailing edge found')
                             Compute_latoff = 0; 
                             t0cap_off = 0;
                             Latency_Off = 0; 
-                            f_delT_Off = 0;
+                            f_delT_Off = 0;                                
                         else
                             Compute_latoff = 0; 
                             t0cap_off = NaN;
@@ -47,12 +47,15 @@ function [LatencyParams] = LatencyBurst2(groundtruth, binop,dur,fs,Wshift)
  %%                                                       
                     for h = 1:length(lEdge_GT)                      %%
                         if Compute_laton == 1
+                            if length(lEdge_GT) ~= length(tEdge_GT)
+                                tEdge_GT = [tEdge_GT dur*fs];
+                            end
                             if isempty (find(binop(lEdge_GT(h):tEdge_GT(h)) == 1)) ~=1
                                 t0cap_On(h) = (lEdge_GT(h)-1)+min(find(binop(lEdge_GT(h):tEdge_GT(h)) == 1));
                                 Latency_On(h) = (min(find(binop(lEdge_GT(h):tEdge_GT(h)) == 1))-1)*Wshift;
                               %%  
-                                if (0 <= Latency_On(h) ) && (Latency_On(h)  <= 250)        % condition for 100 ms
-                                    f_delT_ON(h) = (Latency_On(h) /250);
+                                if (0 <= Latency_On(h) ) && (Latency_On(h)  <= 125)        % condition for 100 ms
+                                    f_delT_ON(h) = (Latency_On(h) /125);
                                 else
                                     f_delT_ON(h) = 1;
                                 end
@@ -70,11 +73,11 @@ function [LatencyParams] = LatencyBurst2(groundtruth, binop,dur,fs,Wshift)
 %                              end
 %                             
                             for i = 1:length(tEdge_GT)
-                                if isempty (find(binop(tEdge_GT(i):lEdge_GT(i)) == -1)) ~=1
-                                t0cap_off(i) = (tEdge_GT(i)-1)+min(find(binop(tEdge_GT(i):lEdge_GT(i)) == -1));
-                                Latency_Off(i) = (min(find(binop(tEdge_GT(i):lEdge_GT(i)) == -1))-1)*Wshift;
-                                    if (0 <= Latency_Off(i)) && (Latency_Off(i)  <= 250)        % condition for 100 ms
-                                        f_delT_Off(i) = (Latency_Off(i)/250);
+                                if isempty (find(binop(tEdge_GT(i):lEdge_GT(i)) == 0)) ~=1
+                                t0cap_off(i) = (tEdge_GT(i)-1)+min(find(binop(tEdge_GT(i):lEdge_GT(i)) == 0));
+                                Latency_Off(i) = (min(find(binop(tEdge_GT(i):lEdge_GT(i)) == 0)))*Wshift;
+                                    if (0 <= Latency_Off(i)) && (Latency_Off(i)  <= 125)        % condition for 100 ms
+                                        f_delT_Off(i) = (Latency_Off(i)/125);
                                     else
                                         f_delT_Off(i) = 1;
                                     end
@@ -112,7 +115,7 @@ function [LatencyParams] = LatencyBurst2(groundtruth, binop,dur,fs,Wshift)
                      LatencyParams.Avg_Latency_ON  = mean(Latency_On);
                      LatencyParams.Avg_Latency_Off = mean(Latency_Off);
                      
-                     %% Computing f_delT considering the average latency on and off < 250 ms
+                     %% Computing f_delT considering the average latency on and off < 125 ms
                     
                      
                       

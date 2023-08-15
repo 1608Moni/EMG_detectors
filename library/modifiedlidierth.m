@@ -48,13 +48,13 @@ for i = 1:length(t)
     end
 end
 
-%% If the decision rule not satisfied
-if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
-    t0cap = NaN;
-    disp('Onset not found')
-else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
-end
+% %% If the decision rule not satisfied
+% if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
+%     t0cap = NaN;
+%     disp('Onset not found')
+% else
+%     t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+% end
 
 
 %% Save internal variables in a struct
@@ -63,7 +63,7 @@ lidierthOutput.emglpf     = EMG_lpf;
 lidierthOutput.binop      = binop;
 lidierthOutput.bin1       = bin1;
 lidierthOutput.bin2       = bin2;
-lidierthOutput.t0cap      = NaN;
+% lidierthOutput.t0cap      = NaN;
 lidierthOutput.paramcombo = variable;
 lidierthOutput.h          = h;
 lidierthOutput.mean_baseline  = mean_baseline;

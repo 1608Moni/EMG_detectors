@@ -3,11 +3,11 @@ function params = hodges_param(mode,type,SNR,detector)
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\Dur13\';
 
 params          = struct();
-params.M        = 3000;           % Window to compute baseline (ms)
-params.tB       = 3000;           % start of relax phase to test (ms)
+params.M        = 500;           % Window to compute baseline (sample number)
+params.tB       = 1000;           % start of relax phase to test (sample number)
 if mode == "Test"
     datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;

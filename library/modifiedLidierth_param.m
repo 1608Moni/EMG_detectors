@@ -1,14 +1,14 @@
-function params = modifiedLidierth_param(mode,type,SNR,detector)
+function params = modifiedlidierth_param(mode,type,SNR,detector)
 %% Function to define parameters of Lidierth. 
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\';
+Optdir          = '..\detectors_review_paper\Optparams\pulse500\Dur13\';
 %% Define parameters in the function
 params        = struct;
-params.M      = 3000;                 % wnidow to compute the baseline thrshold
+params.M      = 500;                % wnidow to compute the baseline thrshold
 params.n      = 1;                    % atleast 1 out of a window cross threshold
-params.tB     = 3000;                 % start of relax phase to test (ms)
+params.tB     = 1000;                 % start of relax phase to test (ms)
 
 if mode == "Test"
     datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
@@ -18,8 +18,8 @@ if mode == "Test"
     disp('Read parameters from the file')
     params.fc     = optparams.param(1); 
     params.weight = optparams.param(2);
-    params.T2     = optparams.param(3);
-    params.T1     = optparams.param(4);
+    params.T2     = round(optparams.param(3)/2);
+    params.T1     = round(optparams.param(4)/2);
 else
 params.fc     = 1.5:2:10;             % LPF cutoff frequency
 params.weight = 1:3;                  % multiplier for threshold 

@@ -35,20 +35,20 @@ for i = 1:length(t)
     end
 end
 
-%% If the decision rule not satisfied
-if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end) > 0 )) == 1
-    t0cap = NaN;
-    disp('Onset not found')
-else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
-end
+% %% If the decision rule not satisfied
+% if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end) > 0 )) == 1
+%     t0cap = NaN;
+%     disp('Onset not found')
+% else
+%     t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+% end
 
 
 %% Saving internal variable in structure
 hodgesOutput.emgrect    = EMG_rect;
 hodgesOutput.testfunc     = EMG_lpf;
 hodgesOutput.binop      = binop;
-hodgesOutput.t0cap      = NaN;
+% hodgesOutput.t0cap      = NaN;
 hodgesOutput.paramcombo = variable;
 hodgesOutput.h  = h;
 hodgesOutput.mean_baseline  = mean_baseline;

@@ -36,20 +36,20 @@ for i = 1:length(t)
     end
 end
 
-%% If the decision rule not satisfied
-if isempty(binop(binop>0)) == 1
-    t0cap = NaN;
-    disp('Onset not found')
-else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
-end
+% %% If the decision rule not satisfied
+% if isempty(binop(binop>0)) == 1
+%     t0cap = NaN;
+%     disp('Onset not found')
+% else
+%     t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+% end
 
 
 %% Save internal variables in a struct
 AGLRstepOutput.signcond   = y;
 AGLRstepOutput.testfunc   = S;
 AGLRstepOutput.binop      = binop;
-AGLRstepOutput.t0cap      = NaN;
+% AGLRstepOutput.t0cap      = NaN;
 AGLRstepOutput.paramcombo = variable;
 AGLRstepOutput.h          = h; 
 AGLRstepOutput.mean_baseline  = mean_baseline;

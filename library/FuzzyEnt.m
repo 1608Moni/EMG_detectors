@@ -29,7 +29,7 @@ for k = 1:length(t)
                 % calculate Chebyshev distance, excluding self-matching case
                 dist = max(abs(tempMat(:,i+1:N-params.dim) - repmat(tempMat(:,i),1,N-params.dim-i)));
                 % calculate fuzzy function of the distance
-                  D = exp(-((dist).^(params.n))./(params.r));
+                D = exp(-((dist).^(params.n))./(params.r));
                 count(i) = sum(D)/(N-params.dim);
             end
             correl(m-params.dim+1) = sum(count)/(N-params.dim);
@@ -49,19 +49,19 @@ for k = 1:length(t)
     end
 end
 
-%% If the decision rule not satisfied
-if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
-    t0cap = NaN;
-    disp('Onset not found')
-else
-    t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
-end
+% %% If the decision rule not satisfied
+% if isempty(binop(binop(Dataparams.t0*Dataparams.fs:end)>0)) == 1
+%     t0cap = NaN;
+%     disp('Onset not found')
+% else
+%     t0cap = t(Dataparams.t0*Dataparams.fs-1 + min(find(binop(Dataparams.t0*Dataparams.fs:end) == 1)));
+% end
 
 
 %% Save internal variables in a struct
 fuzzEntOutput.testfunc   = fuzzen;
 fuzzEntOutput.binop      = binop;
-fuzzEntOutput.t0cap      = NaN;
+% fuzzEntOutput.t0cap      = NaN;
 fuzzEntOutput.paramcombo = variable;
 fuzzEntOutput.h          = h; 
 fuzzEntOutput.mean_baseline  = mean_baseline;
