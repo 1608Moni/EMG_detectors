@@ -1,15 +1,20 @@
-function params = lidierth_param(mode,type,SNR,detector)
+function params = lidierth_param(mode,type,SNR,detector, method)
 %% Function to define parameters of Lidierth. 
 % The parameters are combined in a array to analyse the detector for
 % different paramter combination.  
 addpath('..\detectors_review_paper\');
-Optdir          = '..\detectors_review_paper\Optparams\pulse500\Dur13\';
+
 %% Define parameters in the function
 params        = struct;
 params.M      = 500;             % wnidow to compute the baseline thrshold
-params.tB     = 1000;             % start of relax phase to test (ms)
+params.tB     = 2000;             % start of relax phase to test (ms)
 params.n      = 1; 
 if mode == "Test"
+    if method == "step"
+        Optdir          = '..\detectors_review_paper\Optparams\';
+    elseif method == "pulse"
+        Optdir          = '..\detectors_review_paper\Optparams\pulse500\Dur13\';
+    end
     datafile = strcat(type,detector,num2str(round(SNR)),'.mat');    
     optparamsfile = Optdir + datafile;
 %% Read .mat file to get the optimsed paramters
@@ -20,10 +25,10 @@ if mode == "Test"
     params.T2      = round(optparams.param(3)/2);  
     params.T1      = round(optparams.param(4)/2);
 else
-params.Wsize  = 0.1:0.1:0.5;     % Moving avg window 
-params.weight = 1:3;             % multiplier for threshold 
-params.T2     = 5:10:95;          % window to check if atleast 1 crosses
-params.T1     = [30,60,100];     % Condition for period of active state[50,60,70,80,90,100];               % atleast 1 out of a window cross threshold
+params.Wsize  = 0.1:0.1:0.2;     % Moving avg window 
+params.weight = 1:5;             % multiplier for threshold 
+params.T2     = round((5:10:95)/2);          % window to check if atleast 1 crosses
+params.T1     = ([30,60,100])/2;     % Condition for period of active state[50,60,70,80,90,100];               % atleast 1 out of a window cross threshold
 end
 %% 
 

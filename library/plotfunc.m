@@ -14,6 +14,7 @@ hold on
     if detector == "hodges"
     plot(t,Output.emglpf, 'Color', [0.6 0 0.2], 'LineWidth',1);
     hold on
+    plot(t,Output.movAvg,'r')
     else
     plot(t,Output.movAvg, 'Color', [0.6 0 0.2], 'LineWidth',1);
     hold on    
@@ -21,10 +22,12 @@ hold on
 plot(t,Output.testfunc,'m','LineWidth',1.5)
 hold on
 plot(t,max(Output.emgrect)*Output.binop,'Color', [0 0 0], 'LineWidth',1)
-hold on
-plot(t,max(Output.emgrect)*groundtruth,'r','LineWidth',1)
+% hold on
+% plot(t,max(Output.emgrect)*groundtruth,'r','LineWidth',1)
 hold on
 yline(Output.thresh,'r--')
+hold on
+yline(Output.mean_baseline,'k')
 % hold on
 % xline(Output.t0cap,'r','LineWidth',1)
 % hold on
@@ -80,8 +83,8 @@ plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
 hold on
 plot(t,max(Output.emgrect)*Output.binop,'Color', [0 0 0 0.4], 'LineWidth',1)
 hold on
-plot(t,max(Output.emgrect)*groundtruth,'Color','r','LineWidth',1)
-hold on
+% plot(t,max(Output.emgrect)*groundtruth,'Color','r','LineWidth',1)
+% hold on
 yline(Output.h,'r--')
 legend('emg_{rect}','emg_{lpf}','binop','groundtruth','thrshold')
 xlabel('Time (sec)')
@@ -98,14 +101,14 @@ plot(t,Output.testfunc, 'Color', [0.8 0.85 1], 'LineWidth',1);
 hold on
 plot(t,max(Output.testfunc)*Output.binop,'Color', [0 0 0], 'LineWidth',1)
 hold on
-plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
-hold on
+% plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
+% hold on
 yline(Output.h,'r--')
 hold on
 % xline(Output.t0cap,'r','LineWidth',1)
 % hold on
 % xline(Output.dataparams.t0,'g','LineWidth',1)
-legend('testfunc','binop','groundtruth','thrshold') %'emg_{whitened}',
+legend('testfunc','binop','thrshold') %'emg_{whitened}',
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
@@ -116,11 +119,13 @@ if detector == "FuzzyEnt" || detector == "SampEnt" || detector == "CWT"
 subplot(2,1,1)
 plot(t,Output.testfunc,'Color', [0.6 0 0.2]);
 hold on
-yline(Output.h,'r--')
+if isnan(Output.h) == 0
+    yline(Output.h,'r--')
+end
 subplot(2,1,2)
 plot(t,max(Output.testfunc)*Output.binop,'Color', [0 0 0], 'LineWidth',0.5)
-hold on
-plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
+% hold on
+% plot(t,max(Output.testfunc)*groundtruth,'r','LineWidth',1)
 % xline(Output.t0cap,'r','LineWidth',1)
 ylim([-0.1 1.1])
 % hold on
