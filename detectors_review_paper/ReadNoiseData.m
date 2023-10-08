@@ -14,7 +14,7 @@ subfolders = subfolders(~ismember({subfolders.name}, {'.', '..'}));
 Detectors = ["modifiedhodges"];
 
 tr = 1;
-for l = 1:length(subfolders)
+for l = :length(subfolders)
     PatientfolderName = subfolders(l).name;
     Foldcontents = dir(fullfile(DatafolderPath,  PatientfolderName));
     sessionfolders = Foldcontents([Foldcontents.isdir]);
@@ -36,7 +36,7 @@ for l = 1:length(subfolders)
             end
             
             if isempty(files) == 0 
-             filePath = fullfile(folderPath, files(2).name);
+             filePath = fullfile(folderPath, files(1).name);
                 EMGdata = load(filePath);      
                  disp(strcat(PatientfolderName,'SessionNo', num2str(m)));
                     for o = 1:length(Detectors)

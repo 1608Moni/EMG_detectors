@@ -9,7 +9,7 @@ mode = "Train";
 method = "";
 type = "";
 SNR = [];
-Datatype = "Restdata";
+Datatype = "filterdata";
 %% Define the parameters
 Dataparams.fs = 500;
 fieldList = fieldnames(Data);    
