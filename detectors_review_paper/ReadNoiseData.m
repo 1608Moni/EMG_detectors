@@ -4,9 +4,9 @@ close all
 
 
 
-DatafolderPath = 'F:\StrokeData\NewData\';
+DatafolderPath = 'E:\StrokeData\NewData';
 NewDatafolder = 'E:\outputData\';
- addpath '    D:\EMG detectors\library'
+ addpath 'E:\EMG_detectors\library'
 
 contents = dir(DatafolderPath);
 subfolders = contents([contents.isdir]);
@@ -14,7 +14,7 @@ subfolders = subfolders(~ismember({subfolders.name}, {'.', '..'}));
 Detectors = ["modifiedhodges"];
 
 tr = 1;
-for l = :length(subfolders)
+for l = 2:length(subfolders)
     PatientfolderName = subfolders(l).name;
     Foldcontents = dir(fullfile(DatafolderPath,  PatientfolderName));
     sessionfolders = Foldcontents([Foldcontents.isdir]);
@@ -40,10 +40,10 @@ for l = :length(subfolders)
                 EMGdata = load(filePath);      
                  disp(strcat(PatientfolderName,'SessionNo', num2str(m)));
                     for o = 1:length(Detectors)
-                        [output, datatype] = detectorsmain(EMGdata, Detectors(o));  
+                        [output, datatype] = detectorsmain(EMGdata.finalEMGdata  , Detectors(o));  
                     end
                     
-                    if datatype == "filterdata"
+                    if datatype == "filteredData"
                         name = "EMG";
                     else
                         name = "Noise";
@@ -60,10 +60,9 @@ for l = :length(subfolders)
 % %                     export_fig(char(name),'-pdf','-append',figure(tr));
 %                      tr = tr+1;
 %                     pause(2)
-%                     close all
-                     
+%                     close all 
                     %% Save  data
-                        finalfilename = fullfile(OutputFolderPath , strcat('Alpha',name,Detectors(o),'.mat'));
+                        finalfilename = fullfile(OutputFolderPath , strcat('Coarsesearch',name,Detectors(o),'.mat'));
                         save(finalfilename,'output','-v7.3');  
                     
           end

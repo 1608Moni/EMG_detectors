@@ -1,5 +1,5 @@
 function [pd] = probdetection(BinaryOp)
 
-pd = length(find(BinaryOp(2001:end) == 1)) / length(BinaryOp(2001:end));
+pd = sum(BinaryOp,2) / length(BinaryOp(1,2001:end));
 
 end

@@ -2,8 +2,8 @@ function plotfunc(Output,j,detector,groundtruth)
 %% Function to plot internal variables of the detector
 
 %% Initialise parameters
-fs           = Output.dataparams.fs;
-t            = (1/fs):(1/fs):Output.dataparams.dur;
+fs           = 500;%Output.dataparams.fs;
+% t            = (1/fs):(1/fs):5482;%Output.dataparams.dur;
 
 
 
@@ -77,20 +77,20 @@ if detector == "modifiedlidierth"
         ylim([-0.1 1.1])
 else
     
-plot(t,Output.emgrect,'Color', [0.8 0.85 1]);
+plot(Output.emgrect(2,:),'Color', [0.8 0.85 1]);
 hold on
-plot(t,Output.testfunc, 'Color', [0.6 0 0.2], 'LineWidth',1);
+plot(Output.testfunc(2,:), 'Color', [0.6 0 0.2], 'LineWidth',1);
 hold on
-plot(t,max(Output.emgrect)*Output.binop,'Color', [0 0 0 0.4], 'LineWidth',1)
+plot(max(Output.emgrect(1,:))*Output.binop(1,:),'Color', [0 0 0 0.4], 'LineWidth',1)
 hold on
 % plot(t,max(Output.emgrect)*groundtruth,'Color','r','LineWidth',1)
 % hold on
-yline(Output.h,'r--')
+yline(Output.h(2),'r--')
 legend('emg_{rect}','emg_{lpf}','binop','groundtruth','thrshold')
 xlabel('Time (sec)')
 ylabel('Amplitude')
 title(detector)
-
+close all
 end
 end
 

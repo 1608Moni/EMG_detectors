@@ -1,0 +1,607 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>PatientWiseDistanceMeasure</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2023-10-16">
+<meta name="DC.source" content="PatientWiseDistanceMeasure.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#2">Get the parameters</a>
+</li>
+<li>
+<a href="#4">sessionwise Prob of detection</a>
+</li>
+<li>
+<a href="#5">All sessions together</a>
+</li>
+<li>
+<a href="#6">plot the probability distribution of null hypothesis H0;</a>
+</li>
+<li>
+<a href="#8">Cummulate all zscore for each combination in a array to plot boxplot</a>
+</li>
+<li>
+<a href="#9">To ensure number of bins and binwidth is same'BinWidth',0.05</a>
+</li>
+<li>
+<a href="#11">Computing the KL divergence</a>
+</li>
+<li>
+<a href="#12">Computing the median/IQR ratio of the normalise z-scores</a>
+</li>
+<li>
+<a href="#13">Computing the Total variance distance</a>
+</li>
+<li>
+<a href="#18">plot the surface plot of the KL close all</a>
+</li>
+<li>
+<a href="#19">heat map of the trials</a>
+</li>
+<li>
+<a href="#20">Finding best parameter</a>
+</li>
+<li>
+<a href="#21">Choosing parameter that has lesser false positive rate at H0 condition</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">clc
+clear <span class="string">all</span>
+close <span class="string">all</span>
+
+addpath <span class="string">'E:\EMG_detectors\library'</span>
+Detectors = [<span class="string">"modifiedhodges"</span>];
+</pre>
+<h2 id="2">Get the parameters</h2>
+<pre class="codeinput">    mode = <span class="string">"Train"</span>;
+    method = <span class="string">""</span>;
+    type = <span class="string">""</span>;
+    SNR = [];
+   paramfuncname = strcat(Detectors(1), <span class="string">'_param'</span>);
+   paramfunc =  str2func(paramfuncname);
+   params = paramfunc(mode,type,SNR,Detectors(1),method);
+   combo = 1:numel(params.combo);
+   Params = string(combo);
+    cutoff = params.fc;
+paramcombo = repmat(Params,1,2);
+costfactors = [repmat({<span class="string">'E'</span>},1,length(Params)),repmat({<span class="string">'N'</span>},1,length(Params))];
+</pre>
+<pre class="codeinput">patient = 2;
+name = strcat(<span class="string">'Patient'</span>,num2str(patient),<span class="string">'modifiedhodgesPdALLcombo.mat'</span>);
+MaxSepAllcombo = load(fullfile(<span class="string">'E:\EMG_detectors\detectors_review_paper\Probdetection\'</span>,name));
+
+<span class="comment">% for k = 1:length(NoTrialPatient)</span>
+</pre>
+<h2 id="4">sessionwise Prob of detection</h2>
+<pre class="codeinput">    PmoveEMG = MaxSepAllcombo.H1;   <span class="comment">%MaxSepAllcombo.MaxSepAllcombo(:,1:2:end);</span>
+    PmoveNoise = MaxSepAllcombo.H0; <span class="comment">%MaxSepAllcombo.MaxSepAllcombo(:,2:2:end);</span>
+</pre>
+<h2 id="5">All sessions together</h2>
+<pre class="codeinput">    PdH1_Allsession = cell2mat(PmoveEMG);
+    PdH0_Allsession = cell2mat(PmoveNoise);
+    <span class="comment">% %% Plot boxplot of Pd</span>
+    figure
+    BoxplotData = [PdH1_Allsession PdH0_Allsession];
+    boxplot(BoxplotData,{paramcombo,costfactors},<span class="string">'colors'</span>,repmat(<span class="string">'km'</span>,1,2),<span class="string">'factorgap'</span>,[7 1],<span class="string">'labelverbosity'</span>,<span class="string">'minor'</span>,<span class="string">'BoxStyle'</span>,<span class="string">'filled'</span>);
+    ylabel(<span class="string">'ProbDetection'</span>)
+    title(strcat(Detectors(1),<span class="string">'_Patient_'</span>,num2str(patient)),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>)
+
+
+
+<span class="comment">% % Include only the trials for which there is some EMG activity than noise</span>
+<span class="comment">%  Activetrials = PmoveEMG &gt; PmoveNoise;</span>
+ fig1  =1;
+ Zscore = [];
+ grp = [];
+ n=1;
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_01.png" alt=""> <h2 id="6">plot the probability distribution of null hypothesis H0;</h2>
+<pre class="codeinput">
+<span class="keyword">for</span> i=1:length(combo)
+</pre>
+<pre class="codeinput">    n=n+1;
+    <span class="comment">% index = find(Activetrials(:,i) == 1);</span>
+    Pmovenoise_Log = log(PdH0_Allsession(:,i));
+    Pmovenoise_Log = Pmovenoise_Log(Pmovenoise_Log ~= 0);
+    Pmoveemg_Log = log(PdH1_Allsession(:,i));
+    Pmoveemg_Log =  Pmoveemg_Log( Pmoveemg_Log ~= 0);
+    meanH0 = mean(Pmovenoise_Log(isfinite(Pmovenoise_Log)));
+    stdH0 = std(Pmovenoise_Log(isfinite(Pmovenoise_Log)));
+    zH0 = (Pmovenoise_Log - meanH0)./stdH0;
+    zH1 = (Pmoveemg_Log - meanH0)./stdH0;
+</pre>
+<h2 id="8">Cummulate all zscore for each combination in a array to plot boxplot</h2>
+<pre class="codeinput">    zH1 = zH1(isfinite(zH1));
+    grp = [grp; (i)*ones(size(zH1))];
+
+    Zscore = [Zscore; zH1];
+    medianZH1 = median(zH1,<span class="string">'omitnan'</span>);
+    rangeZH1 = iqr(zH1);
+    ratiomeas(i) = medianZH1/rangeZH1;
+</pre>
+<h2 id="9">To ensure number of bins and binwidth is same'BinWidth',0.05</h2>
+<p>Define the desired bin width and calculate the number of bins.</p>
+<pre class="codeinput">    bin_width = 0.05;  <span class="comment">% Adjust the bin width as needed.</span>
+    num_bins = (max(max(PdH0_Allsession(:,i), PdH1_Allsession(:,i))) - min(min(PdH0_Allsession(:,i), PdH1_Allsession(:,i)))) / bin_width;
+
+    <span class="comment">% Calculate the bin edges for both histograms.</span>
+    bin_edges = linspace(min(min(PdH0_Allsession(:,i), PdH1_Allsession(:,i))), max(max(PdH0_Allsession(:,i), PdH1_Allsession(:,i))), num_bins + 1);
+</pre>
+<p>fig1;</p>
+<pre class="codeinput">    fig = figure(fig1);
+    fig.Position = [1 1 1280 647.3333];
+
+    ind = mod(i,10);
+    <span class="keyword">if</span> ind == 0
+        disp(<span class="string">'inside loop'</span>)
+        ind = 10;
+        fig1 = fig1 + 1;
+    <span class="keyword">end</span>
+    subplot(2,5,ind)
+    <span class="comment">% figure</span>
+     h_H0 = histogram(PdH0_Allsession(:,i),<span class="string">'BinEdges'</span>,bin_edges,<span class="string">'Normalization'</span>,<span class="string">'pdf'</span>,<span class="string">'Displaystyle'</span>,<span class="string">'stairs'</span>,<span class="string">'EdgeColor'</span>,[0.6 0.2 0.4],<span class="string">'LineWidth'</span>,1.5);
+     hold <span class="string">on</span>
+<span class="comment">%     xline(mean(zH0(isfinite(zH0))),'k--')</span>
+     h_H1 = histogram(PdH1_Allsession(:,i),<span class="string">'BinEdges'</span>,bin_edges,<span class="string">'Normalization'</span>,<span class="string">'pdf'</span>,<span class="string">'Displaystyle'</span>,<span class="string">'stairs'</span>,<span class="string">'EdgeColor'</span>,[0 0 0.8],<span class="string">'LineWidth'</span>,1.5);
+     title(strcat(<span class="string">'weight_'</span>,string(params.combo{i}(1))),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>);
+     sgtitle(strcat(<span class="string">'cutoff_'</span>,string(params.combo{i}(2))),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>);
+     IQR_H0(i) = iqr(h_H0.Values);
+
+     <span class="comment">% storing the probability distribution of prob of detection under H0</span>
+     <span class="comment">% condition</span>
+     Prob_H0(:,i) = h_H0.Values;
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_02.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_04.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_06.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_08.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_10.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_12.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_14.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_16.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_18.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_20.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_22.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_24.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_26.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_28.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_30.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_32.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_34.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_36.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_38.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_40.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_42.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_44.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_46.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_48.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_50.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_52.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_54.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_56.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_58.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_60.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_62.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_64.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_66.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_68.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_70.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_72.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_74.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_76.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_78.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_80.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_82.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_84.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_86.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_88.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_90.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_92.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_94.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_96.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_98.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_100.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_102.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_104.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_106.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_108.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_110.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_112.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_114.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_116.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_118.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_120.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_122.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_124.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_126.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_128.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_130.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_132.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_134.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_136.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_138.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_140.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_142.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_144.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_146.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_148.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_150.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_152.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_154.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_156.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_158.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_160.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_162.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_164.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_166.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_168.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_170.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_172.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_174.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_176.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_178.png" alt=""> <pre class="codeoutput">inside loop
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_180.png" alt=""> <h2 id="11">Computing the KL divergence</h2>
+<pre>   % (a) For only the probabilities</pre>
+<pre class="codeinput">     kl(i) = kldistance(h_H0.Values,h_H1.Values,h_H0.BinWidth);
+</pre>
+<h2 id="12">Computing the median/IQR ratio of the normalise z-scores</h2>
+<pre class="codeinput">    ratiomediqr(i) = median(zH1)/iqr(zH1);
+</pre>
+<h2 id="13">Computing the Total variance distance</h2>
+<pre>   variancemeas = abs(PdH1_Allsession(:,i) - PdH0_Allsession(:,i));
+   PH1_TVD = normalisevalue(PdH1_Allsession(:,i));
+   PH0_TVD = normalisevalue(PdH0_Allsession(:,i));</pre>
+<pre class="codeinput">    TVD(i) = 0.5 * sum(h_H0.BinWidth*abs(h_H1.Values - h_H0.Values));
+</pre>
+<pre class="codeinput">    hold <span class="string">on</span>
+</pre>
+<pre class="codeinput">    xText1 = 0.5; <span class="comment">% X-coordinate</span>
+    yText1 = 4; <span class="comment">% Y-coordinate</span>
+    xText2 = 0.5; <span class="comment">% X-coordinate</span>
+    yText2 = 5; <span class="comment">% Y-coordinate</span>
+    xText3 = 0.5; <span class="comment">% X-coordinate</span>
+    yText3 = 6; <span class="comment">% Y-coordinate</span>
+
+    <span class="comment">% Get the current x and y limits of the plot</span>
+    xLimits = xlim;
+    yLimits = ylim;
+
+
+    text(0.5,(yLimits(2)-yLimits(1))/2, strcat(<span class="string">'KLD : '</span> ,num2str(round(kl(i),4))));
+    text(0.5,(yLimits(2)-yLimits(1))/1.5, strcat(<span class="string">'medIqrRatio : '</span> ,num2str(round(ratiomediqr(i),2))));
+    text(0.5,(yLimits(2)-yLimits(1))/1.8, strcat(<span class="string">'TVD : '</span> ,num2str(round(TVD(i) ,4))));
+
+<span class="comment">%     ylim([0 500])</span>
+        <span class="comment">% if fig1 &gt; 1 &amp;&amp; ind == 5</span>
+        <span class="comment">%     name = 'Modifiedhodgesmaxsepereation';</span>
+        <span class="comment">%     export_fig(char(name),'-pdf','-append',figure(fig1-1));</span>
+        <span class="comment">% end</span>
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_03.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_05.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_07.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_09.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_11.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_13.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_15.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_17.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_19.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_21.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_23.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_25.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_27.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_29.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_31.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_33.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_35.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_37.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_39.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_41.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_43.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_45.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_47.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_49.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_51.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_53.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_55.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_57.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_59.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_61.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_63.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_65.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_67.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_69.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_71.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_73.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_75.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_77.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_79.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_81.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_83.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_85.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_87.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_89.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_91.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_93.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_95.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_97.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_99.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_101.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_103.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_105.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_107.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_109.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_111.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_113.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_115.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_117.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_119.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_121.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_123.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_125.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_127.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_129.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_131.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_133.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_135.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_137.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_139.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_141.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_143.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_145.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_147.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_149.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_151.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_153.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_155.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_157.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_159.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_161.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_163.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_165.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_167.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_169.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_171.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_173.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_175.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_177.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_179.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_181.png" alt=""> <pre class="codeinput">
+<span class="keyword">end</span>
+</pre>
+<pre class="codeinput"> figure
+ boxplot(Zscore,grp)
+ ylabel(<span class="string">'zscores'</span>)
+ xlabel(<span class="string">'parametercombination'</span>)
+ title(strcat(Detectors(1),<span class="string">'_Patient_'</span>,num2str(patient)),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>)
+<span class="comment">%  title('AGLR-L')</span>
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_182.png" alt=""> <h2 id="18">plot the surface plot of the KL close all</h2>
+<pre class="codeinput"> figure
+ surf_kl = reshape(kl,[10,9]);
+s1 = surface(surf_kl);
+
+
+
+colorbar
+ylabel(<span class="string">'alpha'</span>);
+xlabel(<span class="string">'cut-off freq'</span>);
+zlabel(<span class="string">'Distance'</span>)
+title(strcat(<span class="string">'KL_divergence'</span>,Detectors(1),<span class="string">'_Patient_'</span>,num2str(patient)),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>)
+
+figure
+surf_TVD = reshape(TVD,[10,9]);
+s2 = surface(surf_TVD);
+<span class="comment">% % view(3);</span>
+<span class="comment">%</span>
+colorbar
+ylabel(<span class="string">'alpha'</span>);
+xlabel(<span class="string">'cut-off freq'</span>);
+zlabel(<span class="string">'Distance'</span>)
+title(strcat(<span class="string">'TVD'</span>,Detectors(1),<span class="string">'_Patient_'</span>,num2str(patient)),<span class="string">'Interpreter'</span>,<span class="string">'none'</span>)
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_183.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_184.png" alt=""> <h2 id="19">heat map of the trials</h2>
+<pre class="codeinput">figure
+h1 = heatmap(surf_kl);
+ylabel(<span class="string">'alpha'</span>);
+xlabel(<span class="string">'cut-off freq'</span>);
+title(strcat(<span class="string">'KLdivergence'</span>,Detectors(1),<span class="string">'-Patient'</span>,num2str(patient)))
+h1.ColorLimits = [0.37 0.4262];
+
+figure
+h2 = heatmap(surf_TVD);
+ylabel(<span class="string">'alpha'</span>);
+xlabel(<span class="string">'cut-off freq'</span>);
+title(strcat(<span class="string">'TVD'</span>,Detectors(1),<span class="string">'-Patient'</span>,num2str(patient)))
+h2.ColorLimits = [0.35 0.4262];
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_185.png" alt=""> <img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_186.png" alt=""> <h2 id="20">Finding best parameter</h2>
+<pre class="codeinput">in_kl = find(kl == max(kl));
+in_TVD = find(TVD == max(TVD));
+bestparam_kl = params.combo{in_kl}
+bestparam_TVD = params.combo{in_TVD}
+</pre>
+<pre class="codeoutput">
+bestparam_kl =
+
+    5.0000    4.5000
+
+
+bestparam_TVD =
+
+    4.0000    5.5000
+
+</pre>
+<h2 id="21">Choosing parameter that has lesser false positive rate at H0 condition</h2>
+<pre class="codeinput">optind = find(TVD &gt; 0.37);
+med = median(PdH0_Allsession(:,optind));
+range = iqr(PdH0_Allsession(:,optind));
+distance       = sqrt(med.^2 + range.^2);
+[value, index] = min(distance);
+
+bestparam = params.combo{optind(index)}
+
+
+
+figure
+scatter(med,range);
+hold <span class="string">on</span>
+plot(med(index),range(index),<span class="string">'o'</span>,<span class="string">'Color'</span>,[0.6 0 0.2])
+xlabel(<span class="string">'median pH0'</span>)
+ylabel(<span class="string">'IQR of pH0'</span>)
+
+
+
+<span class="comment">% end</span>
+</pre>
+<pre class="codeoutput">
+bestparam =
+
+    6.0000    3.5000
+
+</pre>
+<img vspace="5" hspace="5" src="PatientWiseDistanceMeasure_187.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+clc
+clear all
+close all
+
+addpath 'E:\EMG_detectors\library'
+Detectors = ["modifiedhodges"];
+%%  Get the parameters
+    mode = "Train";
+    method = "";
+    type = "";
+    SNR = [];
+   paramfuncname = strcat(Detectors(1), '_param');
+   paramfunc =  str2func(paramfuncname);
+   params = paramfunc(mode,type,SNR,Detectors(1),method);
+   combo = 1:numel(params.combo);
+   Params = string(combo);
+    cutoff = params.fc;
+paramcombo = repmat(Params,1,2);
+costfactors = [repmat({'E'},1,length(Params)),repmat({'N'},1,length(Params))];
+%%
+patient = 2;
+name = strcat('Patient',num2str(patient),'modifiedhodgesPdALLcombo.mat');
+MaxSepAllcombo = load(fullfile('E:\EMG_detectors\detectors_review_paper\Probdetection\',name));
+
+% for k = 1:length(NoTrialPatient)
+    %% sessionwise Prob of detection
+    PmoveEMG = MaxSepAllcombo.H1;   %MaxSepAllcombo.MaxSepAllcombo(:,1:2:end);
+    PmoveNoise = MaxSepAllcombo.H0; %MaxSepAllcombo.MaxSepAllcombo(:,2:2:end);
+
+    %% All sessions together
+    PdH1_Allsession = cell2mat(PmoveEMG);
+    PdH0_Allsession = cell2mat(PmoveNoise);
+    % %% Plot boxplot of Pd
+    figure
+    BoxplotData = [PdH1_Allsession PdH0_Allsession];
+    boxplot(BoxplotData,{paramcombo,costfactors},'colors',repmat('km',1,2),'factorgap',[7 1],'labelverbosity','minor','BoxStyle','filled');
+    ylabel('ProbDetection')
+    title(strcat(Detectors(1),'_Patient_',num2str(patient)),'Interpreter','none')
+
+
+
+% % Include only the trials for which there is some EMG activity than noise 
+%  Activetrials = PmoveEMG > PmoveNoise;
+ fig1  =1;
+ Zscore = [];
+ grp = [];
+ n=1;
+%% plot the probability distribution of null hypothesis H0;
+for i=1:length(combo)
+    n=n+1;
+    % index = find(Activetrials(:,i) == 1);
+    Pmovenoise_Log = log(PdH0_Allsession(:,i));
+    Pmovenoise_Log = Pmovenoise_Log(Pmovenoise_Log ~= 0);
+    Pmoveemg_Log = log(PdH1_Allsession(:,i));
+    Pmoveemg_Log =  Pmoveemg_Log( Pmoveemg_Log ~= 0);    
+    meanH0 = mean(Pmovenoise_Log(isfinite(Pmovenoise_Log)));
+    stdH0 = std(Pmovenoise_Log(isfinite(Pmovenoise_Log)));
+    zH0 = (Pmovenoise_Log - meanH0)./stdH0;
+    zH1 = (Pmoveemg_Log - meanH0)./stdH0;
+    
+    %% Cummulate all zscore for each combination in a array to plot boxplot
+    zH1 = zH1(isfinite(zH1));
+    grp = [grp; (i)*ones(size(zH1))];
+   
+    Zscore = [Zscore; zH1];     
+    medianZH1 = median(zH1,'omitnan');
+    rangeZH1 = iqr(zH1);   
+    ratiomeas(i) = medianZH1/rangeZH1;
+    
+    %% To ensure number of bins and binwidth is same'BinWidth',0.05
+    % Define the desired bin width and calculate the number of bins.
+    bin_width = 0.05;  % Adjust the bin width as needed.
+    num_bins = (max(max(PdH0_Allsession(:,i), PdH1_Allsession(:,i))) - min(min(PdH0_Allsession(:,i), PdH1_Allsession(:,i)))) / bin_width;
+
+    % Calculate the bin edges for both histograms.
+    bin_edges = linspace(min(min(PdH0_Allsession(:,i), PdH1_Allsession(:,i))), max(max(PdH0_Allsession(:,i), PdH1_Allsession(:,i))), num_bins + 1);
+    %%
+    % fig1;
+    fig = figure(fig1);
+    fig.Position = [1 1 1280 647.3333];
+
+    ind = mod(i,10);
+    if ind == 0
+        disp('inside loop')
+        ind = 10;
+        fig1 = fig1 + 1;
+    end
+    subplot(2,5,ind) 
+    % figure
+     h_H0 = histogram(PdH0_Allsession(:,i),'BinEdges',bin_edges,'Normalization','pdf','Displaystyle','stairs','EdgeColor',[0.6 0.2 0.4],'LineWidth',1.5);
+     hold on
+%     xline(mean(zH0(isfinite(zH0))),'kREPLACE_WITH_DASH_DASH')
+     h_H1 = histogram(PdH1_Allsession(:,i),'BinEdges',bin_edges,'Normalization','pdf','Displaystyle','stairs','EdgeColor',[0 0 0.8],'LineWidth',1.5);
+     title(strcat('weight_',string(params.combo{i}(1))),'Interpreter','none');
+     sgtitle(strcat('cutoff_',string(params.combo{i}(2))),'Interpreter','none');
+     IQR_H0(i) = iqr(h_H0.Values);
+    
+     % storing the probability distribution of prob of detection under H0
+     % condition
+     Prob_H0(:,i) = h_H0.Values;
+%% Computing the KL divergence
+%     % (a) For only the probabilities    
+     kl(i) = kldistance(h_H0.Values,h_H1.Values,h_H0.BinWidth);
+
+%% Computing the median/IQR ratio of the normalise z-scores
+    ratiomediqr(i) = median(zH1)/iqr(zH1);
+
+%% Computing the Total variance distance
+%     variancemeas = abs(PdH1_Allsession(:,i) - PdH0_Allsession(:,i));
+%     PH1_TVD = normalisevalue(PdH1_Allsession(:,i));
+%     PH0_TVD = normalisevalue(PdH0_Allsession(:,i));
+    TVD(i) = 0.5 * sum(h_H0.BinWidth*abs(h_H1.Values - h_H0.Values));
+    %%
+    hold on
+
+    %% 
+    xText1 = 0.5; % X-coordinate
+    yText1 = 4; % Y-coordinate
+    xText2 = 0.5; % X-coordinate
+    yText2 = 5; % Y-coordinate
+    xText3 = 0.5; % X-coordinate
+    yText3 = 6; % Y-coordinate
+
+    % Get the current x and y limits of the plot
+    xLimits = xlim;
+    yLimits = ylim;
+
+    
+    text(0.5,(yLimits(2)-yLimits(1))/2, strcat('KLD : ' ,num2str(round(kl(i),4))));
+    text(0.5,(yLimits(2)-yLimits(1))/1.5, strcat('medIqrRatio : ' ,num2str(round(ratiomediqr(i),2))));
+    text(0.5,(yLimits(2)-yLimits(1))/1.8, strcat('TVD : ' ,num2str(round(TVD(i) ,4))));
+
+%     ylim([0 500])
+        % if fig1 > 1 && ind == 5
+        %     name = 'Modifiedhodgesmaxsepereation';
+        %     export_fig(char(name),'-pdf','-append',figure(fig1-1));
+        % end
+
+end
+
+%%
+ figure
+ boxplot(Zscore,grp)
+ ylabel('zscores')
+ xlabel('parametercombination')
+ title(strcat(Detectors(1),'_Patient_',num2str(patient)),'Interpreter','none')  
+%  title('AGLR-L')
+ 
+ %% plot the surface plot of the KL close all
+ figure
+ surf_kl = reshape(kl,[10,9]);
+s1 = surface(surf_kl);
+
+
+
+colorbar
+ylabel('alpha');
+xlabel('cut-off freq');
+zlabel('Distance')
+title(strcat('KL_divergence',Detectors(1),'_Patient_',num2str(patient)),'Interpreter','none')
+
+figure
+surf_TVD = reshape(TVD,[10,9]);
+s2 = surface(surf_TVD);
+% % view(3);
+% 
+colorbar
+ylabel('alpha');
+xlabel('cut-off freq');
+zlabel('Distance')
+title(strcat('TVD',Detectors(1),'_Patient_',num2str(patient)),'Interpreter','none')
+
+%% heat map of the trials
+figure
+h1 = heatmap(surf_kl);
+ylabel('alpha');
+xlabel('cut-off freq');
+title(strcat('KLdivergence',Detectors(1),'-Patient',num2str(patient)))
+h1.ColorLimits = [0.37 0.4262];
+
+figure
+h2 = heatmap(surf_TVD);
+ylabel('alpha');
+xlabel('cut-off freq');
+title(strcat('TVD',Detectors(1),'-Patient',num2str(patient)))
+h2.ColorLimits = [0.35 0.4262];
+
+%% Finding best parameter
+
+in_kl = find(kl == max(kl));
+in_TVD = find(TVD == max(TVD));
+bestparam_kl = params.combo{in_kl}
+bestparam_TVD = params.combo{in_TVD}
+
+%% Choosing parameter that has lesser false positive rate at H0 condition
+optind = find(TVD > 0.37);
+med = median(PdH0_Allsession(:,optind));
+range = iqr(PdH0_Allsession(:,optind));
+distance       = sqrt(med.^2 + range.^2);
+[value, index] = min(distance); 
+
+bestparam = params.combo{optind(index)}
+
+
+
+figure
+scatter(med,range);
+hold on
+plot(med(index),range(index),'o','Color',[0.6 0 0.2])
+xlabel('median pH0')
+ylabel('IQR of pH0')
+
+
+
+% end
+ 
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

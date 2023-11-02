@@ -1,81 +1,158 @@
-             %For each parameter combination compute cost function      
-             for q = 1:No_of_combo_params      
-                binop    =  output.binop{q};
-                t0cap    =  output.t0cap{q};
-                %% To Obtain the Wshift to generalise time samples  for computing the factor
-                if string(algoname) == "Detector2018" 
-                    params = output.params.combo{q};              
-                    Wshift = params(3);
-                    Wsize  = params(1)*fs;
-                    fs1    = fs/Wshift ;
-                    t1     = (1/fs1):(1/fs1):output.dataparams.dur;
-                elseif string(algoname) == "bonato"
-                    Wshift = 2;
-                    Wsize  = 0;
-                else
-                    Wshift = 1;
-                    Wsize  = 0;
-                end
-                %% Compute cost function for N = 50 trails for each parameter combination
-                t1 = (Wshift/fs):(Wshift/fs):dur; 
-                t = (1/fs):(1/fs):13;
-                for p = 1:N
-                    binop(find(binop == 0)) = -1;
-                    groundtruth(find(groundtruth == 0)) = -1;
-                    
-                    %% To compute the latency of the burst
-                    [lEdge_GT, tEdge_GT] = edge(groundtruth(p,:));
-                    [lEdge_Bin, tEdge_Bin] = edge(binop(p,:));
-                    if length(lEdge_GT) > length(tEdge_GT)
-                       tEdge_GT = [tEdge_GT dur*fs];
-                    end                   
-                    for h = 1:length(tEdge_GT)
-                        t0cap_On(h) = (lEdge_GT(h)-1)+min(find(binop(p,lEdge_GT(h):tEdge_GT(h)) == 1));
-                        Latency_On(h) = min(find(binop(p,lEdge_GT(h):tEdge_GT(h)) == 1))-1;
-                        if h > 1 
-                            t0cap_off(h-1) = (tEdge_GT(h-1)-1)+min(find(binop(p,tEdge_GT(h-1):lEdge_GT(h)) == -1));
-                            Latency_Off(h-1) = min(find(binop(p,tEdge_GT(h-1):lEdge_GT(h)) == -1))-1;
-                        end                       
-                    end
-                    
-                    if (length(lEdge_GT) == length(tEdge_GT)) && (tEdge_GT(end) ~= (dur*fs)/Wshift)
-                        tempVar = (tEdge_GT(end)-1)+min(find(binop(p,tEdge_GT(end):end) == -1));
-                        Latency_temp = min(find(binop(p,tEdge_GT(end):end) == -1));
-                        t0cap_off = [t0cap_off tempVar];
-                        Latency_Off = [Latency_Off Latency_temp];
-                    end
-                    
-                   
-                    Avg_Latency_ON(q,p) = mean(Latency_On);
-                    Avg_Latency_Off(q,p) = mean(Latency_Off);
-                    
-                    %% To compute the rFP and rFN
-                    [rFP(q,p),rFN(q,p)]= crosscorrcompute(groundtruth(p,tB:Wshift:end),binop(p,(tB/Wshift):end));
-                    
-                    
-                    
-                    figure(p)
-%                     subplot(2,1,1)
-                    stairs(groundtruth(p,:),'LineWidth',1.5);
-                    hold on
-                    stairs(binop(p,:),'r');
-                    hold on                   
-                    stem(t0cap_On,binop(p,t0cap_On),'m','LineWidth',1);
-                    hold on
-                    stem(t0cap_off,-binop(p,t0cap_off),'g','LineWidth',1);
-                    hold on
-                    stem(lEdge_GT,groundtruth(p,lEdge_GT),'k');
-                    hold on
-                    stem(tEdge_GT,groundtruth(p,tEdge_GT),'c');
-                    ylim([-1.1 1.1])  
-                    
+clc
+clear all
+close all
 
-                    clear tEdge_GT;
-                    clear lEdge_GT;
-                    clear t0cap_off;
-                    clear t0cap_On;
-                    
-%                   
+DatafolderPath = 'E:\outputData\';
+addpath '    D:\EMG detectors\library'
+ 
+contents = dir(DatafolderPath);
+subfolders = contents([contents.isdir]);
+subfolders = subfolders(~ismember({subfolders.name}, {'.', '..'}));
+
+Datatypes = ["EMG","Noise"];
+Detectors = ["modifiedhodges"];
+
+No_of_paramCombo = 190;
+MaxSepAllcombo = [];
+b = 1;
+noparams = [44];%[7,8,15,16,24,25,34,35,43,44,53,54,63,64,72,73,82,83];
+for i = 1:length(noparams)
+   l=2;
+ 
+    % for l = 1:length(subfolders)
+          tr = 1;
+        PatientfolderName = subfolders(l).name;
+        Foldcontents = dir(fullfile(DatafolderPath,  PatientfolderName));
+        sessionfolders = Foldcontents([Foldcontents.isdir]);
+        sessionfolders = sessionfolders(~ismember({sessionfolders.name}, {'.', '..'}));   
+       
+        for m = 1:length(sessionfolders)    
+            folderPath = fullfile(DatafolderPath,  PatientfolderName, sessionfolders(m).name,'output' );
+            files = dir(fullfile(folderPath, '*.mat')); 
+            if isempty(files) == 0
+                 % Search the file of the required detector and datatype 
+                for k = 1:length(files)
+                    [~, fileName{k}, fileExtension] = fileparts(files(k).name);
                 end
-            
-             end
+
+% Compute the prob of detection for both onlyrest and move data
+       for o = 1:length(Datatypes)
+                    index11 = find(string(fileName) == strcat('Alltrials',Datatypes(1),Detectors(1)));
+                    % load the data
+                    filePath_data = fullfile(folderPath, files(index11).name);
+                    EMGdata = load(filePath_data);  
+
+                    index2 = find(string(fileName) == strcat('Alltrials',Datatypes(2),Detectors(1)));
+                    % load the data
+                    filePath_Noise = fullfile(folderPath, files(index2).name);
+                    Noisedata = load(filePath_Noise);
+
+% For each parameter combination
+                       
+                            BinaryOpData = EMGdata.output{1,noparams(i)}.binop;     
+                            BinaryOpNoise = Noisedata.output{1,noparams(i)}.binop;
+                            ProbDetEMG = probdetection(BinaryOpData);
+                            ProbDetNoise = probdetection(BinaryOpNoise);
+%                         Pd{l,tr} = ProbDet;
+                           
+    %                     %% Plot binaryop and prob detection
+                        % if tr == 33
+                        for j = 1:size(BinaryOpData,1)
+                        fig= figure;
+                        fig.Position = [1 1 1280 647.3333];
+                        subplot(2,1,1)
+                        plot( EMGdata.output{1,noparams(i)}.emgrect(j,:),'Color', [0.8 0.85 1])
+                        hold on
+                        plot(EMGdata.output{1,noparams(i)}.testfunc(j,:),'m','LineWidth',1.5);
+                        hold on
+                        plot(max(EMGdata.output{1,noparams(i)}.emgrect(j,:)).*EMGdata.output{1,noparams(i)}.binop(j,:),'k');
+                        hold on
+                        yline(EMGdata.output{1,noparams(i)}.h(j),'r--');
+                        txt = {strcat('ProbDet = ',num2str(round(ProbDetEMG(j),3)))};
+                        text(1.5,0.8,txt,'FontSize',12)
+                        title(Datatypes(1))
+                        subplot(2,1,2)
+                        plot(Noisedata.output{1,noparams(i)}.emgrect(j,:),'Color', [0.8 0.85 1]);
+                        hold on
+                        plot(Noisedata.output{1,noparams(i)}.testfunc(j,:),'m','LineWidth',1.5);
+                        hold on
+                        plot(max(Noisedata.output{1,noparams(i)}.emgrect(j,:)).*Noisedata.output{1,noparams(i)}.binop(j,:),'k');
+                        hold on
+                        yline(Noisedata.output{1,noparams(i)}.h(j),'r--');
+                        txt = {strcat('ProbDet = ',num2str(round(ProbDetNoise(j),3)))};
+                        text(1.5,0.8,txt,'FontSize',12)
+                        % txt = {strcat('Ratio = ',num2str(ProbDetNoise(l,tr)*log(ProbDetNoise(l,tr)/ProbDetEMG(l,tr))))};
+                        % text(1.5,10,txt,'FontSize',12)
+                        title(Datatypes(2))
+                        sgtitle(strcat('Combo',num2str(i),sessionfolders(m).name,'Trial',num2str(j)),'Interpreter','none');
+                        % pause(2)
+                        % close all;
+                        % NormaliseH1(j,:) = (EMGdata.output{i,j}.testfunc-EMGdata.output{i,j}.mean_baseline)/EMGdata.output{i,j}.stdv_baseline;
+                        % NormaliseH0(j,:) = (EMGdata.output{i,j}.testfunc-EMGdata.output{i,j}.mean_baseline)/EMGdata.output{i,j}.stdv_baseline;
+                        % 
+% 
+%                           fig1 = figure;
+% %                         figure(1)
+%                           fig1.Position = [120.3333 208.3333 1.0467e+03 410.6667];
+%                           % subplot(1,2,1)
+%                           histogram(EMGdata.output{noparams(i),j}.testfunc(2002:end),'BinWidth',0.5,'Displaystyle','stairs')
+% %                         hold on
+% %                         xline(1,'r--')
+%                           hold on
+%                           xline(EMGdata.output{noparams(i),j}.h,'r--')
+% %                         hold on
+% %                         xline(EMGdata.output{i,j}.mean_baseline, 'r')
+% %                         hold on
+% %                         xline(Noisedata.output{i,j}.stdv_baseline , 'g')
+% % %     xline(H0stats(j,3),'r--')
+%                             hold on; 
+%                             histogram(Noisedata.output{noparams(i),j}.testfunc(2002:end),'BinWidth',0.05,'Displaystyle','stairs','EdgeColor',[0.6 0.2 0.4])
+%                             hold on
+%                             xline(Noisedata.output{noparams(i),j}.h,'k--')
+% %                          hold on
+% %                         xline(Noisedata.output{i,j}.mean_baseline, 'k')
+% %                         hold on
+% %                         xline(Noisedata.output{i,j}.stdv_baseline , 'y')
+% % %                         title(strcat('H0',num2str(cutoff(j))))
+%                          legend('H1','h_H1','H0','h_H0');
+%                            xlim([0 50])
+%                             ylim([0 800])
+%                          subplot(1,2,2)
+%                         histogram(EMGdata.output{i,j}.testfunc(2002:end),'BinWidth',0.05,'Displaystyle','stairs')
+%                         hold on
+%                         xline(EMGdata.output{i,j}.h,'r--')
+% %     xline(H0stats(j,3),'r--')
+%                         hold on; 
+%                         histogram(Noisedata.output{i,j}.testfunc(2002:end),'BinWidth',0.05,'Displaystyle','stairs','EdgeColor',[0.6 0.2 0.4])
+%                         hold on
+%                         xline(Noisedata.output{i,j}.h,'k--')
+% %                         title(strcat('H0',num2str(cutoff(j))))
+%                         legend('H1','h_H1','H0','h_H0');
+%                         name = 'ModifiedhodgesP2filtercharalpha2';
+%                         export_fig(char(name),'-pdf','-append',figure(b));
+                         pause(2)
+                         close all
+%                          EMGdata.output{i, j}.paramcombo
+                        % end
+                         b = b+1; 
+                         tr = tr+1;
+                        end
+            end
+           % disp(['Completed computing seperation for session:', num2str(m)]);
+        end
+        % disp(['Completed computing seperation :', PatientfolderName, 'Combo', num2str(noparams(i))]);
+     end
+    PdEMG = ProbDetEMG';
+    PdNoise = ProbDetNoise';
+    
+    MaxSep = [PdEMG(:) PdNoise(:)];
+    MaxSepAllcombo = [MaxSepAllcombo MaxSep];
+    paramcombo{i} = EMGdata.output{i, 1}.paramcombo;   
+%     figure(1)
+%     hold on
+%     boxplot(MaxSep);
+end
+% 
+%  Probdet.MaxSepAllcombo = MaxSepAllcombo;
+%  Probdet.paramcombo = paramcombo; 
+%  save('D:\EMG detectors\detectors_review_paper\Probdetection\lidierthPdALLcombo.mat','-struct','Probdet','-v7.3');

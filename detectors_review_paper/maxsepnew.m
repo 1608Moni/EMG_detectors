@@ -3,7 +3,7 @@ clear all
 close all
 
 DatafolderPath = 'E:\outputData\';
-addpath '    D:\EMG detectors\library'
+addpath '    E:\EMG detectors\library\'
  
 contents = dir(DatafolderPath);
 subfolders = contents([contents.isdir]);
@@ -25,15 +25,16 @@ Detectors = ["modifiedhodges"];
 No_of_paramCombo = numel(params.combo);
 MaxSepAllcombo = [];
 % b = 1;
-%  for i = 1:No_of_paramCombo
+% for i = 1:No_of_paramCombo
 %      Data_H1 =[];
 PdEMG = [];
 PdNoise = [];
 testfuncEMG = [];
 testfuncNoise = [];
-l=2;
-%    for l = 1:length(subfolders)
-          tr = 1;
+% l=2;
+l = 8;
+% for l = 8:length(subfolders)
+          % tr = 1;
         PatientfolderName = subfolders(l).name;
         Foldcontents = dir(fullfile(DatafolderPath,  PatientfolderName));
         sessionfolders = Foldcontents([Foldcontents.isdir]);
@@ -49,54 +50,54 @@ l=2;
                 end 
                 %% Compute the prob of detection for both onlyrest and move data
         %         for o = 1:length(Datatypes)
-                    index11 = find(string(fileName) == strcat(Datatypes(1),Detectors(1)));
+                    index11 = find(string(fileName) == strcat('Alltrials',Datatypes(1),Detectors(1)));
                     % load the data
                     filePath_data = fullfile(folderPath, files(index11).name);
                     EMGdata = load(filePath_data);  
                     
                     %% Obtaining the binop from all the cell elements
-                    %nameFieldArray = cellfun(@(s) s.binop  , EMGdata.output, 'UniformOutput', false);
-                    testfuncH1 = cellfun(@(s) s.testfunc  , EMGdata.output(2:5:end,:), 'UniformOutput', false);
+                    nameFieldArray = cellfun(@(s) s.binop  , EMGdata.output, 'UniformOutput', false);
+                    % testfuncH1 = cellfun(@(s) s.testfunc  , EMGdata.output(2:5:end,:), 'UniformOutput', false);
                     % get the shift params if its EMGdetector
-%                     if Detectors(1) == "EMGdetector"
-%                         Wshift = cellfun(@(x) x(3), params.combo, 'UniformOutput', false);
-%                         Wshift= cell2mat(Wshift);
-%                         w = Wshift(:);
-%                         wnew = repmat(w,[1,size(EMGdata.output,2)]);
-%                         ProbDetEMG = cellfun(@(x, startIdx) length(find(x(round(2002/startIdx):end) == 1))/length(x(round(2002/startIdx):end)),...
-%                          nameFieldArray, num2cell(wnew));
-%                     else
-%                         ProbDetEMG = cellfun(@(x) length(find(x(2001:end) == 1))/length(x(2001:end)), nameFieldArray);
-%                     end
+                    if Detectors(1) == "EMGdetector"
+                        Wshift = cellfun(@(x) x(3), params.combo, 'UniformOutput', false);
+                        Wshift= cell2mat(Wshift);
+                        w = Wshift(:);
+                        wnew = repmat(w,[1,size(EMGdata.output,2)]);
+                        ProbDetEMG = cellfun(@(x, startIdx) length(find(x(round(2002/startIdx):end) == 1))/length(x(round(2002/startIdx):end)),...
+                         nameFieldArray, num2cell(wnew));
+                    else
+                        ProbDetEMG = cellfun(@(x) length(find(x(:,2001:end) == 1))/length(x(2001:end)), nameFieldArray);
+                    end
                   
-                    index2 = find(string(fileName) == strcat(Datatypes(2),Detectors(1)));
+                    index2 = find(string(fileName) == strcat('Alltrials',Datatypes(2),Detectors(1)));
                     % load the data
                     filePath_Noise = fullfile(folderPath, files(index2).name);
                     Noisedata = load(filePath_Noise);
                     
                      %% Obtaining the binop from all the cell elements
-%                     binopH0 = cellfun(@(s) s.binop  , Noisedata.output, 'UniformOutput', false);
-                    testfuncH0 = cellfun(@(s) s.testfunc  , Noisedata.output(2:5:end,:), 'UniformOutput', false);
+                    binopH0 = cellfun(@(s) s.binop  , Noisedata.output, 'UniformOutput', false);
+                    % testfuncH0 = cellfun(@(s) s.testfunc  , Noisedata.output(2:5:end,:), 'UniformOutput', false);
                     % get the shift params if its EMGdetector
-%                     if Detectors(1) == "EMGdetector"
-%                         Wshift = cellfun(@(x) x(3), params.combo, 'UniformOutput', false);
-%                         Wshift= cell2mat(Wshift);
-%                         w = Wshift(:);
-%                         wnew = repmat(w,[1,size(Noisedata.output,2)]);
-%                         ProbDetNoise = cellfun(@(x, startIdx) length(find(x(round(2002/startIdx):end) == 1))/length(x(round(2002/startIdx):end)),...
-%                          binopH0, num2cell(wnew));
-%                     else
-%                         ProbDetNoise = cellfun(@(x) length(find(x(2001:end) == 1))/length(x(2001:end)), binopH0);
-%                     end
+                    if Detectors(1) == "EMGdetector"
+                        Wshift = cellfun(@(x) x(3), params.combo, 'UniformOutput', false);
+                        Wshift= cell2mat(Wshift);
+                        w = Wshift(:);
+                        wnew = repmat(w,[1,size(Noisedata.output,2)]);
+                        ProbDetNoise = cellfun(@(x, startIdx) length(find(x(round(2002/startIdx):end) == 1))/length(x(round(2002/startIdx):end)),...
+                         binopH0, num2cell(wnew));
+                    else
+                        ProbDetNoise = cellfun(@(x) length(find(x(2001:end) == 1))/length(x(2001:end)), binopH0);
+                    end
                    
                     %% For each parameter combination
 
-%                         for j = 1:size(EMGdata.output,2)
-%                             BinaryOpData = EMGdata.output{i,j}.binop;     
-%                             BinaryOpNoise = Noisedata.output{i,j}.binop;
-%                             ProbDetEMG(l,tr) = probdetection(BinaryOpData);
-%                             ProbDetNoise(l,tr) = probdetection(BinaryOpNoise);
-% %                         Pd{l,tr} = ProbDet;
+                        % for j = 1:size(EMGdata.output,2)
+                        %     BinaryOpData = EMGdata.output{i,j}.binop;     
+                        %     BinaryOpNoise = Noisedata.output{i,j}.binop;
+                        %     ProbDetEMG(l,tr) = probdetection(BinaryOpData);
+                        %     ProbDetNoise(l,tr) = probdetection(BinaryOpNoise);
+%                         Pd{l,tr} = ProbDet;
 %                            
 %     %                     %% Plot binaryop and prob detection
 % %                         fig= figure(b);
@@ -132,19 +133,23 @@ l=2;
 % %     %                     close all
 % %                          EMGdata.output{i, j}.paramcombo
 % %                         b = b+1; 
-%                          tr = tr+1;
-%                         end
+                        %   tr = tr+1;
+                        % end
             end
            disp(['Completed computing seperation for session:', num2str(m)]);
-%         PdEMG = [PdEMG ProbDetEMG];
-%         PdNoise = [PdNoise ProbDetNoise];
-        testfuncEMG = [testfuncEMG testfuncH1 ];
-        testfuncNoise =[testfuncNoise testfuncH0 ];
+        PdEMG = [PdEMG ProbDetEMG];
+        PdNoise = [PdNoise ProbDetNoise];
+        % testfuncEMG = [testfuncEMG testfuncH1 ];
+        % testfuncNoise =[testfuncNoise testfuncH0 ];
         end
         
         disp(['Completed computing seperation :', PatientfolderName]);
 %    end
-    
+% if l > 1
+%     NoTrialPatient(l) = size(PdEMG,2) - sum(NoTrialPatient) ;
+% else
+%     NoTrialPatient(l) = size(PdEMG,2);
+% end
 %%
 % 
 % b = cell2mat(testfuncNoise);
@@ -153,12 +158,12 @@ l=2;
 %     hold on; 
 %     histogram(b(j,:),'BinWidth',0.5,'Displaystyle','stairs')
 %     xlim([0 500])
-% end
+ % end
 
-save('testfuncH0alpha2P2.mat','testfuncNoise','-v7.3')
-save('testfuncH1alpha2P2.mat','testfuncEMG','-v7.3')
-%     PdEMG = ProbDetEMG';
-%     PdNoise = ProbDetNoise';
+% save('testfuncH0alpha2P2.mat','testfuncNoise','-v7.3')
+% save('testfuncH1alpha2P2.mat','testfuncEMG','-v7.3')
+    % PdEMG = ProbDetEMG';
+    % PdNoise = ProbDetNoise';
 %     
 %     MaxSep = [PdEMG(:) PdNoise(:)];
 %     MaxSepAllcombo = [MaxSepAllcombo MaxSep];
@@ -166,9 +171,10 @@ save('testfuncH1alpha2P2.mat','testfuncEMG','-v7.3')
 %     figure(1)
 %     hold on
 %     boxplot(MaxSep);
-%  end
+  % end
 % 
-%  Probdet.H0 = PdNoise' ;
-%  Probdet.H1 = PdEMG';
-%  Probdet.paramcombo = params.combo; 
-%  save('D:\EMG detectors\detectors_review_paper\Probdetection\NewhodgesPdALLcombo.mat','-struct','Probdet','-v7.3');
+ Probdet.H0 = PdNoise' ;
+ Probdet.H1 = PdEMG';
+ Probdet.paramcombo = params.combo; 
+
+ save('E:\EMG_detectors\detectors_review_paper\Probdetection\Patient8modifiedhodgesPdALLcombo.mat','-struct','Probdet','-v7.3');

@@ -4,7 +4,7 @@ function [kl] = kldistance(p,q,delx)
 %     PH1 = normalisevalue(q);
     
     klmeasure_ = (p .* log(p./q))*delx;
-    kl = nansum(klmeasure_);
+    kl = nansum(klmeasure_(isfinite(klmeasure_)));
 %     if choise == 1
 %        kl = nansum(klmeasure_(isfinite(abs(klmeasure_))));
 %     elseif choise  == 2
